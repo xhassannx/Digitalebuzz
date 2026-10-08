@@ -1,0 +1,138 @@
+/**
+ * Restyles default panel pages when rendered inside RateHonk v1 (skin provider).
+ */
+.ratehonk-page-skin {
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  color: #111c2d;
+}
+
+.ratehonk-page-skin > .container {
+  max-width: none;
+  width: 100%;
+  padding: 0;
+}
+
+.ratehonk-page-skin h1 {
+  font-size: 30px;
+  font-weight: 600;
+  line-height: 38px;
+  letter-spacing: -0.6px;
+  color: #111c2d;
+}
+
+.ratehonk-page-skin h1 svg {
+  display: none;
+}
+
+.ratehonk-page-skin .text-muted-foreground {
+  color: #717786;
+}
+
+.ratehonk-page-skin [role="tablist"] {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 4px;
+  height: auto;
+  gap: 0;
+}
+
+.ratehonk-page-skin [role="tab"][data-state="active"] {
+  background: var(--rh-brand-light, #dfe8ff);
+  color: var(--rh-brand, #0059bb);
+  border-radius: 10px;
+  box-shadow: none;
+}
+
+.ratehonk-page-skin [role="tab"]:not([data-state="active"]) {
+  color: #414754;
+}
+
+.ratehonk-page-skin .rounded-lg.border.bg-card,
+.ratehonk-page-skin .rounded-lg.border.shadow-sm {
+  border-color: #e5e7eb;
+  background: #ffffff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.ratehonk-page-skin input:not([type="checkbox"]):not([type="radio"]),
+.ratehonk-page-skin textarea {
+  border-color: #e5e7eb;
+  border-radius: 12px;
+}
+
+.ratehonk-page-skin input:focus-visible,
+.ratehonk-page-skin textarea:focus-visible {
+  ring-color: var(--rh-brand, #0059bb);
+}
+
+.ratehonk-page-skin button.bg-primary,
+.ratehonk-page-skin button.bg-\[\#0059bb\],
+.ratehonk-page-skin button.bg-\[var\(--rh-brand\)\] {
+  background-color: var(--rh-brand, #0059bb);
+  border-color: var(--rh-brand, #0059bb);
+  color: #ffffff;
+}
+
+.ratehonk-page-skin button.bg-primary:hover,
+.ratehonk-page-skin button.bg-\[\#0059bb\]:hover,
+.ratehonk-page-skin button.bg-\[var\(--rh-brand\)\]:hover,
+.ratehonk-page-skin button.hover\:bg-\[\#004a9a\]:hover,
+.ratehonk-page-skin button.hover\:bg-\[var\(--rh-brand-hover\)\]:hover {
+  background-color: var(--rh-brand-hover, #004a9a);
+  color: #ffffff;
+}
+
+.ratehonk-page-skin button.bg-\[\#dfe8ff\],
+.ratehonk-page-skin button.bg-\[var\(--rh-brand-light\)\] {
+  background-color: var(--rh-brand-light, #dfe8ff);
+  color: var(--rh-brand, #0059bb);
+}
+
+.ratehonk-page-skin a.text-primary,
+.ratehonk-page-skin span.text-primary {
+  color: var(--rh-brand, #0059bb);
+}
+
+.ratehonk-page-skin .border-primary {
+  border-color: var(--rh-brand, #0059bb);
+}
+
+.ratehonk-page-skin h2.text-xl {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #111c2d;
+}
+
+.ratehonk-page-skin h2,
+.ratehonk-page-skin h3 {
+  color: #111c2d;
+}
+
+.ratehonk-page-skin .container {
+  max-width: none;
+}
+
+.ratehonk-page-skin label {
+  color: #414754;
+  font-weight: 500;
+}
+
+.ratehonk-page-skin button[data-state="checked"] {
+  background-color: var(--rh-brand, #0059bb);
+  border-color: var(--rh-brand, #0059bb);
+}
+
+.ratehonk-page-skin .shadow-md,
+.ratehonk-page-skin .shadow-lg {
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.ratehonk-page-skin select {
+  border-color: #e5e7eb;
+  border-radius: 12px;
+}
+
+.ratehonk-page-skin .divide-border > :not([hidden]) ~ :not([hidden]) {
+  border-color: #e5e7eb;
+}

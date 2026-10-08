@@ -1,0 +1,13 @@
+.ratehonk-integrations-content .integrations-page-chrome {
+  display: none;
+}
+
+.ratehonk-integrations-content .integrations-rh-card {
+  border-color: #e5e7eb;
+  background: #ffffff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.ratehonk-integrations-content .integrations-rh-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 89, 187, 0.08);
+}

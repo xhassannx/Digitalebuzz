@@ -1,0 +1,101 @@
+ fluent-ffmpeg@2.1.3: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
+npm WARN cleanup Failed to remove some directories [
+npm WARN cleanup   [
+npm WARN cleanup     '\\\\?\\D:\\Downlaods\\CRM\\WhatsAppSaas\\node_modules\\esbuild',
+npm WARN cleanup     [Error: EBUSY: resource busy or locked, rmdir 'D:\Downlaods\CRM\WhatsAppSaas\node_modules\esbuild'] {
+npm WARN cleanup       errno: -4082,
+npm WARN cleanup       code: 'EBUSY',
+npm WARN cleanup       syscall: 'rmdir',
+npm WARN cleanup       path: 'D:\\Downlaods\\CRM\\WhatsAppSaas\\node_modules\\esbuild'
+npm WARN cleanup     }
+npm WARN cleanup   ],
+npm WARN cleanup   [
+npm WARN cleanup     '\\\\?\\D:\\Downlaods\\CRM\\WhatsAppSaas\\node_modules\\es5-ext',
+npm WARN cleanup     [Error: EBUSY: resource busy or locked, rmdir 'D:\Downlaods\CRM\WhatsAppSaas\node_modules\es5-ext'] {
+npm WARN cleanup       errno: -4082,
+npm WARN cleanup       code: 'EBUSY',
+npm WARN cleanup       syscall: 'rmdir',
+npm WARN cleanup       path: 'D:\\Downlaods\\CRM\\WhatsAppSaas\\node_modules\\es5-ext'
+npm WARN cleanup     }
+npm WARN cleanup   ],
+npm WARN cleanup   [
+npm WARN cleanup     '\\\\?\\D:\\Downlaods\\CRM\\WhatsAppSaas\\node_modules\\puppeteer',
+npm WARN cleanup     [Error: EBUSY: resource busy or locked, rmdir 'D:\Downlaods\CRM\WhatsAppSaas\node_modules\puppeteer'] {
+npm WARN cleanup       errno: -4082,
+npm WARN cleanup       code: 'EBUSY',
+npm WARN cleanup       syscall: 'rmdir',
+npm WARN cleanup       path: 'D:\\Downlaods\\CRM\\WhatsAppSaas\\node_modules\\puppeteer'
+npm WARN cleanup     }
+npm WARN cleanup   ],
+npm WARN cleanup   [
+npm WARN cleanup     '\\\\?\\D:\\Downlaods\\CRM\\WhatsAppSaas\\node_modules',
+npm WARN cleanup     [Error: EBUSY: resource busy or locked, rmdir 'D:\Downlaods\CRM\WhatsAppSaas\node_modules\es5-ext'] {
+npm WARN cleanup       errno: -4082,
+npm WARN cleanup       code: 'EBUSY',
+npm WARN cleanup       syscall: 'rmdir',
+npm WARN cleanup       path: 'D:\\Downlaods\\CRM\\WhatsAppSaas\\node_modules\\es5-ext'
+npm WARN cleanup     }
+npm WARN cleanup   ],
+npm WARN cleanup   [
+npm WARN cleanup     '\\\\?\\D:\\Downlaods\\CRM\\WhatsAppSaas\\node_modules\\vite\\node_modules',
+npm WARN cleanup     [Error: EBUSY: resource busy or locked, rmdir 'D:\Downlaods\CRM\WhatsAppSaas\node_modules\vite\node_modules\esbuild'] {
+npm WARN cleanup       errno: -4082,
+npm WARN cleanup       code: 'EBUSY',
+npm WARN cleanup       syscall: 'rmdir',
+npm WARN cleanup       path: 'D:\\Downlaods\\CRM\\WhatsAppSaas\\node_modules\\vite\\node_modules\\esbuild'
+npm WARN cleanup     }
+npm WARN cleanup   ],
+npm WARN cleanup   [
+npm WARN cleanup     '\\\\?\\D:\\Downlaods\\CRM\\WhatsAppSaas\\node_modules\\@esbuild-kit\\core-utils\\node_modules',
+npm WARN cleanup     [Error: EBUSY: resource busy or locked, rmdir 'D:\Downlaods\CRM\WhatsAppSaas\node_modules\@esbuild-kit\core-utils\node_modules\esbuild'] {
+npm WARN cleanup       errno: -4082,
+npm WARN cleanup       code: 'EBUSY',
+npm WARN cleanup       syscall: 'rmdir',
+npm WARN cleanup       path: 'D:\\Downlaods\\CRM\\WhatsAppSaas\\node_modules\\@esbuild-kit\\core-utils\\node_modules\\esbuild'
+npm WARN cleanup     }
+npm WARN cleanup   ],
+npm WARN cleanup   [
+npm WARN cleanup     '\\\\?\\D:\\Downlaods\\CRM\\WhatsAppSaas\\node_modules\\vite',
+npm WARN cleanup     [Error: EBUSY: resource busy or locked, rmdir 'D:\Downlaods\CRM\WhatsAppSaas\node_modules\vite\node_modules\esbuild'] {
+npm WARN cleanup       errno: -4082,
+npm WARN cleanup       code: 'EBUSY',
+npm WARN cleanup       syscall: 'rmdir',
+npm WARN cleanup       path: 'D:\\Downlaods\\CRM\\WhatsAppSaas\\node_modules\\vite\\node_modules\\esbuild'
+npm WARN cleanup     }
+npm WARN cleanup   ],
+npm WARN cleanup   [
+npm WARN cleanup     '\\\\?\\D:\\Downlaods\\CRM\\WhatsAppSaas\\node_modules\\@esbuild-kit\\core-utils',
+npm WARN cleanup     [Error: EBUSY: resource busy or locked, rmdir 'D:\Downlaods\CRM\WhatsAppSaas\node_modules\@esbuild-kit\core-utils\node_modules\esbuild'] {
+npm WARN cleanup       errno: -4082,
+npm WARN cleanup       code: 'EBUSY',
+npm WARN cleanup       syscall: 'rmdir',
+npm WARN cleanup       path: 'D:\\Downlaods\\CRM\\WhatsAppSaas\\node_modules\\@esbuild-kit\\core-utils\\node_modules\\esbuild'
+npm WARN cleanup     }
+npm WARN cleanup   ],
+npm WARN cleanup   [
+npm WARN cleanup     '\\\\?\\D:\\Downlaods\\CRM\\WhatsAppSaas\\node_modules\\@esbuild-kit',
+npm WARN cleanup     [Error: EBUSY: resource busy or locked, rmdir 'D:\Downlaods\CRM\WhatsAppSaas\node_modules\@esbuild-kit\core-utils\node_modules\esbuild'] {
+npm WARN cleanup       errno: -4082,
+npm WARN cleanup       code: 'EBUSY',
+npm WARN cleanup       syscall: 'rmdir',
+npm WARN cleanup       path: 'D:\\Downlaods\\CRM\\WhatsAppSaas\\node_modules\\@esbuild-kit\\core-utils\\node_modules\\esbuild'
+npm WARN cleanup     }
+npm WARN cleanup   ],
+npm WARN cleanup   [
+npm WARN cleanup     '\\\\?\\D:\\Downlaods\\CRM\\WhatsAppSaas\\node_modules\\@tanstack\\react-query',
+npm WARN cleanup     [Error: EPERM: operation not permitted, rmdir 'D:\Downlaods\CRM\WhatsAppSaas\node_modules\@tanstack\react-query\build'] {
+npm WARN cleanup       errno: -4048,
+npm WARN cleanup       code: 'EPERM',
+npm WARN cleanup       syscall: 'rmdir',
+npm WARN cleanup       path: 'D:\\Downlaods\\CRM\\WhatsAppSaas\\node_modules\\@tanstack\\react-query\\build'
+npm WARN cleanup     }
+npm WARN cleanup   ]
+npm WARN cleanup ]
+npm ERR! code 1
+npm ERR! path D:\Downlaods\CRM\WhatsAppSaas\node_modules\rollup
+npm ERR! command failed
+npm ERR! command C:\WINDOWS\system32\cmd.exe /d /s /c patch-package
+npm ERR! 'patch-package' is not recognized as an internal or external command,
+npm ERR! operable program or batch file.
+
+npm ERR! A complete log of this run can be found in: C:\Users\sahil\AppData\Local\npm-cache\_logs\2025-11-07T17_17_44_470Z-debug-0.log

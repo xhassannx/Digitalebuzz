@@ -1,0 +1,293 @@
+/**
+ * Nova chat/inbox — Figma node 371:9851
+ */
+
+[data-rh-shell] .nova-inbox {
+  --nova-inbox-list-width: 25%;
+  --nova-chat-row-width: 95%;
+  --nova-summarize-width: 2.75rem;
+  --nova-card-pad-x: 0.875rem;
+  /* Follow active shell brand (Nova blue / Atlas emerald via --rh-brand) */
+  --nova-blue: var(--rh-brand, #2563eb);
+  --nova-blue-soft: var(--rh-brand-light, #93c5fd);
+  --nova-list-bg: #f0f1f3;
+  --nova-row-active-bg: #eef5ff;
+  --nova-row-active-border: #cfe0fc;
+  --nova-row-active-shadow: 0 2px 6px rgba(37, 99, 235, 0.1);
+  min-height: 0;
+  flex: 1;
+  background: var(--nova-list-bg);
+}
+
+/* Atlas emerald inbox accents */
+html[data-panel-template="helicoptic-v1"] [data-rh-shell] .nova-inbox,
+html[data-panel-template="helicoptic-v1"] .nova-inbox,
+[data-panel-template="helicoptic-v1"] .nova-inbox {
+  --nova-blue: var(--rh-brand, #047857);
+  --nova-blue-soft: var(--rh-brand-light, #d1fae5);
+  --nova-row-active-bg: #ecfdf5;
+  --nova-row-active-border: #a7f3d0;
+  --nova-row-active-shadow: 0 2px 6px rgba(4, 120, 87, 0.12);
+}
+
+/* Lock list rail width — overrides Tailwind w-full on the sidebar */
+[data-rh-shell] .nova-inbox [data-testid="page-chat"] > .flex.flex-1 > .border-r {
+  width: var(--nova-inbox-list-width) !important;
+  min-width: var(--nova-inbox-list-width) !important;
+  max-width: var(--nova-inbox-list-width) !important;
+  flex: 0 0 var(--nova-inbox-list-width) !important;
+}
+
+@media (min-width: 1024px) {
+  [data-rh-shell] .nova-inbox [data-testid="page-chat"] > .flex.flex-1 > .border-r + div {
+    flex: 1 1 auto !important;
+    min-width: 0;
+    padding-right: 1rem;
+  }
+}
+
+@media (max-width: 1023px) {
+  [data-rh-shell] .nova-inbox [data-testid="page-chat"] > .flex.flex-1 > .border-r {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    flex: 1 1 auto !important;
+  }
+}
+
+[data-rh-shell] .nova-inbox [data-testid="page-chat"] {
+  background: var(--nova-list-bg) !important;
+}
+
+[data-rh-shell] .nova-inbox [data-testid="page-chat"] > .flex.flex-1 > .border-r {
+  background: var(--nova-list-bg) !important;
+  border-color: #e5e7eb !important;
+  box-shadow: none !important;
+}
+
+[data-rh-shell] .nova-inbox [data-testid="inbox-list-toolbar"] {
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+[data-rh-shell] .nova-inbox [data-testid="inbox-list-toolbar"] + div,
+[data-rh-shell] .nova-inbox [data-testid="page-chat"] [data-radix-scroll-area-viewport],
+[data-rh-shell] .nova-inbox .divide-y,
+[data-rh-shell] .nova-inbox .nova-chat-list {
+  background: var(--nova-list-bg) !important;
+}
+
+[data-rh-shell] .nova-inbox .divide-y,
+[data-rh-shell] .nova-inbox .nova-chat-list {
+  display: block !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  padding: 0.5rem 0 0.75rem;
+  box-sizing: border-box;
+}
+
+/* Radix ScrollArea injects min-width:100% + display:table — reset for list */
+[data-rh-shell] .nova-inbox [data-radix-scroll-area-viewport] > div {
+  display: block !important;
+  min-width: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+[data-rh-shell] .nova-inbox .divide-y > :not([hidden]) ~ :not([hidden]),
+[data-rh-shell] .nova-inbox .nova-chat-list > :not([hidden]) ~ :not([hidden]) {
+  border: none;
+}
+
+/* Card — 50% of list width; body fills space left of summarize */
+[data-rh-shell] .nova-inbox .nova-chat-row,
+[data-rh-shell] .nova-inbox .nova-chat-row.nova-chat-row--active {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: stretch;
+  width: var(--nova-chat-row-width) !important;
+  max-width: 100%;
+  min-height: 4.75rem;
+  margin: 0 0.625rem 0.625rem;
+  overflow: hidden;
+  border-radius: 0.875rem;
+  border: 1px solid #e8eaef;
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
+}
+
+[data-rh-shell] .nova-inbox .nova-chat-row.nova-chat-row--active {
+  background: var(--nova-row-active-bg);
+  border-color: var(--nova-row-active-border);
+  box-shadow: var(--nova-row-active-shadow);
+}
+
+[data-rh-shell] .nova-inbox .nova-chat-row-check {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  padding-left: 0.75rem;
+}
+
+[data-rh-shell] .nova-inbox .nova-chat-row-body {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  flex: 1 1 0;
+  min-width: 0;
+  width: auto;
+  max-width: calc(100% - var(--nova-summarize-width));
+  overflow: hidden;
+  padding: 0.875rem var(--nova-card-pad-x);
+  text-align: left;
+  cursor: pointer;
+}
+
+[data-rh-shell] .nova-inbox .nova-chat-row:has(.nova-chat-row-check) .nova-chat-row-body {
+  max-width: calc(100% - var(--nova-summarize-width));
+}
+
+[data-rh-shell] .nova-inbox .nova-chat-row-text {
+  flex: 1 1 0;
+  min-width: 0;
+  overflow: hidden;
+}
+
+[data-rh-shell] .nova-inbox .nova-chat-row-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+[data-rh-shell] .nova-inbox .nova-contact-name {
+  flex: 1 1 0;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--nova-blue) !important;
+}
+
+[data-rh-shell] .nova-inbox .nova-last-message {
+  margin-top: 0.125rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+[data-rh-shell] .nova-inbox .nova-unread-badge {
+  flex-shrink: 0;
+  margin-top: 0.125rem;
+  margin-right: 0;
+  height: 1.25rem;
+  min-width: 1.25rem;
+  padding: 0 0.35rem;
+  width: auto;
+  background-color: var(--nova-blue) !important;
+  border: 2px solid #ffffff;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+/* Summarize strip — fixed width, never shrinks */
+[data-rh-shell] .nova-inbox .nova-summarize-btn {
+  position: relative;
+  z-index: 1;
+  display: flex !important;
+  flex: 0 0 var(--nova-summarize-width);
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  width: var(--nova-summarize-width);
+  min-width: var(--nova-summarize-width);
+  max-width: var(--nova-summarize-width);
+  height: auto;
+  align-self: stretch;
+  min-height: 4.75rem;
+  margin: 0;
+  padding: 0.5rem 0.25rem;
+  border: none;
+  border-radius: 0 0.875rem 0.875rem 0;
+  background: var(--nova-blue);
+  color: #ffffff;
+  cursor: pointer;
+}
+
+[data-rh-shell] .nova-inbox .nova-summarize-btn .nova-summarize-icon {
+  width: 1rem;
+  height: 1rem;
+}
+
+[data-rh-shell] .nova-inbox .nova-summarize-btn .nova-summarize-label {
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1.05;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  white-space: nowrap;
+}
+
+[data-rh-shell] .nova-inbox .nova-summarize-btn--muted {
+  background: var(--nova-blue-soft);
+}
+
+[data-rh-shell] .nova-inbox .nova-chat-row.nova-chat-row--active .nova-summarize-btn,
+[data-rh-shell] .nova-inbox .nova-chat-row.nova-chat-row--active .nova-summarize-btn--muted {
+  background: var(--nova-blue);
+}
+
+/* Chat pane */
+[data-rh-shell] .nova-inbox [data-testid="header-conversation"] {
+  background: #ffffff !important;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+[data-rh-shell] .nova-inbox [data-testid="scroll-messages"] {
+  background: #f5f5f5;
+}
+
+[data-rh-shell] .nova-inbox .group\/bubble > div[style*="borderRadius"] {
+  border: 1px solid #e5e7eb !important;
+}
+
+[data-rh-shell] .nova-inbox .group\/bubble > div.bg-sky-100 {
+  background-color: #f3f4f6 !important;
+  color: #374151 !important;
+}
+
+/* Keep bubble meta + links readable on themed bubbles */
+[data-rh-shell] .nova-inbox .group\/bubble .msg-bubble-meta {
+  color: #54656f !important;
+  opacity: 1 !important;
+}
+
+[data-rh-shell] .nova-inbox .group\/bubble .msg-bubble-link {
+  color: #0369a1 !important;
+  text-decoration: underline !important;
+}
+
+[data-rh-shell] .nova-inbox .chat-composer-shell,
+[data-rh-shell] .nova-inbox .wa-message-composer {
+  background: #ffffff !important;
+  border-top: 1px solid #e5e7eb;
+}
+
+[data-rh-shell] .nova-inbox .wa-message-composer textarea,
+[data-rh-shell] .nova-inbox .wa-message-composer [contenteditable] {
+  background: #f3f4f6 !important;
+  border-radius: 1.25rem !important;
+}
+
+[data-rh-shell] .nova-inbox .wa-send-mic-btn {
+  background: var(--nova-blue) !important;
+}
+
+@media (max-width: 1023px) {
+  [data-rh-shell] .nova-inbox .nova-summarize-btn {
+    min-height: 4.25rem;
+  }
+}

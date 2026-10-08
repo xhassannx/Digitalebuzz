@@ -1,0 +1,187 @@
+/**
+ * Atlas AI Assistants - Rh Emerald "Refined Aesthetic"
+ * Scoped to helicoptic-v1 so Nova AI Assistants chrome stays unchanged.
+ */
+
+html[data-panel-template="helicoptic-v1"] .rh-ai-assistant-atlas {
+  color: #111c2d;
+}
+
+html[data-panel-template="helicoptic-v1"] .rh-ai-assistant-atlas h1,
+html[data-panel-template="helicoptic-v1"] .rh-ai-assistant-atlas h2 {
+  color: #111c2d;
+  letter-spacing: -0.02em;
+}
+
+html[data-panel-template="helicoptic-v1"] .rh-ai-assistant-atlas .text-muted-foreground {
+  color: #717786 !important;
+}
+
+/* Underline tabs (Settings / Knowledge Base / Agent Rules) */
+html[data-panel-template="helicoptic-v1"] .rh-ai-assistant-atlas [role="tablist"] {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  width: 100%;
+  height: auto;
+  justify-content: flex-start;
+  padding: 0;
+  margin-bottom: 0.25rem;
+  background: transparent !important;
+  border-radius: 0 !important;
+  border-bottom: 1px solid #e5e7eb;
+  box-shadow: none !important;
+}
+
+html[data-panel-template="helicoptic-v1"] .rh-ai-assistant-atlas [role="tab"] {
+  position: relative;
+  height: auto;
+  padding: 0.625rem 0.125rem !important;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #6b7280 !important;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+html[data-panel-template="helicoptic-v1"] .rh-ai-assistant-atlas [role="tab"]:hover {
+  color: #111827 !important;
+}
+
+html[data-panel-template="helicoptic-v1"] .rh-ai-assistant-atlas [role="tab"][data-state="active"] {
+  color: var(--rh-brand, #047857) !important;
+}
+
+html[data-panel-template="helicoptic-v1"] .rh-ai-assistant-atlas [role="tab"][data-state="active"]::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: var(--rh-brand, #047857);
+  border-radius: 2px 2px 0 0;
+}
+
+/* Soft cards */
+html[data-panel-template="helicoptic-v1"] .rh-ai-assistant-atlas .rounded-lg.border.bg-card,
+html[data-panel-template="helicoptic-v1"] .rh-ai-assistant-atlas .rounded-lg.border,
+html[data-panel-template="helicoptic-v1"] .rh-ai-assistants-list .rounded-lg.border.bg-card,
+html[data-panel-template="helicoptic-v1"] .rh-ai-assistants-list .rh-table-card {
+  border-color: #e5e7eb !important;
+  border-radius: 1rem !important;
+  background: #ffffff !important;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+}
+
+html[data-panel-template="helicoptic-v1"] .rh-ai-assistant-atlas input:not([type="checkbox"]):not([type="radio"]),
+html[data-panel-template="helicoptic-v1"] .rh-ai-assistant-atlas textarea,
+html[data-panel-template="helicoptic-v1"] .rh-ai-assistant-atlas select,
+html[data-panel-template="helicoptic-v1"] .rh-ai-assistants-list input:not([type="checkbox"]):not([type="radio"]) {
+  border-color: #e5e7eb !important;
+  border-radius: 0.75rem !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+}
+
+html[data-panel-template="helicoptic-v1"] .rh-ai-assistant-atlas input:focus-visible,
+html[data-panel-template="helicoptic-v1"] .rh-ai-assistant-atlas textarea:focus-visible,
+html[data-panel-template="helicoptic-v1"] .rh-ai-assistant-atlas select:focus-visible {
+  border-color: color-mix(in srgb, var(--rh-brand, #047857) 55%, #e5e7eb) !important;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--rh-brand, #047857) 14%, transparent) !important;
+}
+
+html[data-panel-template="helicoptic-v1"] .rh-ai-assistant-atlas button.bg-primary,
+html[data-panel-template="helicoptic-v1"] .rh-ai-assistant-atlas .rh-ai-primary-btn,
+html[data-panel-template="helicoptic-v1"] .rh-ai-assistants-list .rh-ai-primary-btn,
+html[data-panel-template="helicoptic-v1"] .rh-ai-primary-btn {
+  border-color: var(--rh-brand, #047857) !important;
+  background: var(--rh-brand, #047857) !important;
+  color: #ffffff !important;
+  border-radius: 0.75rem !important;
+}
+
+html[data-panel-template="helicoptic-v1"] .rh-ai-assistant-atlas button.bg-primary:hover,
+html[data-panel-template="helicoptic-v1"] .rh-ai-assistant-atlas .rh-ai-primary-btn:hover,
+html[data-panel-template="helicoptic-v1"] .rh-ai-assistants-list .rh-ai-primary-btn:hover,
+html[data-panel-template="helicoptic-v1"] .rh-ai-primary-btn:hover {
+  background: var(--rh-brand-hover, #065f46) !important;
+}
+
+html[data-panel-template="helicoptic-v1"] .rh-ai-assistant-atlas button[class*="border"]:not(.bg-primary):not(.rh-ai-primary-btn),
+html[data-panel-template="helicoptic-v1"] .rh-ai-assistants-list button[class*="border"]:not(.bg-primary):not(.rh-ai-primary-btn) {
+  border-color: #e5e7eb !important;
+  border-radius: 0.75rem !important;
+}
+
+/* Role / prompt selection cards — do not match primary CTA buttons */
+html[data-panel-template="helicoptic-v1"] .rh-ai-assistant-atlas .border-primary.bg-primary\/5,
+html[data-panel-template="helicoptic-v1"] .rh-ai-assistant-atlas div[class*="border-primary"][class*="bg-primary"] {
+  border-color: var(--rh-brand, #047857) !important;
+  background: var(--rh-brand-soft, #ecfdf5) !important;
+}
+
+html[data-panel-template="helicoptic-v1"] .rh-ai-assistant-atlas button[role="switch"][data-state="checked"] {
+  background: var(--rh-brand, #047857) !important;
+}
+
+/* Tables */
+html[data-panel-template="helicoptic-v1"] .rh-ai-assistant-atlas table thead tr,
+html[data-panel-template="helicoptic-v1"] .rh-ai-assistants-list table thead tr {
+  background: var(--rh-brand-soft, #ecfdf5) !important;
+}
+
+html[data-panel-template="helicoptic-v1"] .rh-ai-assistant-atlas table th,
+html[data-panel-template="helicoptic-v1"] .rh-ai-assistants-list table th {
+  color: #414754 !important;
+  font-weight: 600 !important;
+}
+
+html[data-panel-template="helicoptic-v1"] .rh-ai-assistant-atlas table tbody tr:hover,
+html[data-panel-template="helicoptic-v1"] .rh-ai-assistants-list table tbody tr:hover {
+  background: color-mix(in srgb, var(--rh-brand, #047857) 5%, #ffffff) !important;
+}
+
+/* Empty state (list + knowledge) */
+html[data-panel-template="helicoptic-v1"] .rh-ai-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 3.5rem 1.5rem;
+}
+
+html[data-panel-template="helicoptic-v1"] .rh-ai-empty-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.75rem;
+  height: 3.75rem;
+  margin-bottom: 1.25rem;
+  border-radius: 0.875rem;
+  background: var(--rh-brand-soft, #ecfdf5);
+  color: var(--rh-brand, #047857);
+}
+
+html[data-panel-template="helicoptic-v1"] .rh-ai-empty-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+html[data-panel-template="helicoptic-v1"] .rh-ai-empty-desc {
+  max-width: 28rem;
+  margin-top: 0.5rem;
+  margin-bottom: 1.25rem;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: #6b7280;
+}
+
+html[data-panel-template="helicoptic-v1"] .rh-ai-assistant-atlas .border-dashed {
+  border-color: #d1d5db !important;
+  border-radius: 1rem !important;
+}

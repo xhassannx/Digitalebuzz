@@ -1,0 +1,89 @@
+/**
+ * Atlas Templates — Rh Emerald table chrome for WhatsApp Templates page.
+ * Scoped to helicoptic-v1 so Nova stays on brand blue.
+ */
+
+html[data-panel-template="helicoptic-v1"] .rh-templates-atlas,
+html[data-panel-template="helicoptic-v1"] .atlas-templates-page {
+  color: #111c2d;
+}
+
+html[data-panel-template="helicoptic-v1"] .rh-templates-atlas h1,
+html[data-panel-template="helicoptic-v1"] .atlas-templates-page h1 {
+  color: #111c2d;
+  letter-spacing: -0.02em;
+}
+
+html[data-panel-template="helicoptic-v1"] .rh-templates-table-card {
+  border-radius: 1rem !important;
+  border-color: #e5e7eb !important;
+  background: #ffffff !important;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+  overflow: hidden;
+}
+
+/* Let the page scroll container own sticky headers (Table's inner overflow breaks sticky). */
+.rh-templates-table-scroll .rh-table-root {
+  overflow: visible !important;
+}
+
+.rh-templates-table-scroll thead th {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+html[data-panel-template="helicoptic-v1"] .rh-templates-table-card table thead {
+  background: var(--rh-brand-soft, #ecfdf5) !important;
+}
+
+html[data-panel-template="helicoptic-v1"] .rh-templates-table-card table thead tr {
+  background: var(--rh-brand-soft, #ecfdf5) !important;
+}
+
+html[data-panel-template="helicoptic-v1"] .rh-templates-table-card table thead th {
+  background: var(--rh-brand-soft, #ecfdf5) !important;
+  box-shadow: 0 1px 0 0 #e5e7eb;
+}
+
+html[data-panel-template="helicoptic-v1"] .rh-templates-table-card table th {
+  color: #414754 !important;
+  font-weight: 600 !important;
+}
+
+html[data-panel-template="helicoptic-v1"] .rh-templates-table-card table tbody tr:hover {
+  background: color-mix(in srgb, var(--rh-brand, #047857) 5%, #ffffff) !important;
+}
+
+html[data-panel-template="helicoptic-v1"] .rh-templates-table-card table td {
+  border-color: #eef2f1 !important;
+}
+
+html[data-panel-template="helicoptic-v1"] .atlas-templates-page [role="tablist"] {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.75rem;
+  padding: 0.25rem;
+}
+
+html[data-panel-template="helicoptic-v1"] .atlas-templates-page [role="tab"][data-state="active"] {
+  background: color-mix(in srgb, var(--rh-brand, #047857) 12%, #ffffff) !important;
+  color: var(--rh-brand, #047857) !important;
+  box-shadow: none !important;
+}
+
+html[data-panel-template="helicoptic-v1"] .atlas-templates-page button.bg-primary {
+  background: var(--rh-brand, #047857) !important;
+  border-color: var(--rh-brand, #047857) !important;
+  color: #ffffff !important;
+  border-radius: 0.75rem !important;
+}
+
+html[data-panel-template="helicoptic-v1"] .atlas-templates-page button.bg-primary:hover {
+  background: var(--rh-brand-hover, #065f46) !important;
+}
+
+html[data-panel-template="helicoptic-v1"] .atlas-templates-page button[class*="border"]:not(.bg-primary) {
+  border-radius: 0.75rem;
+  border-color: #e5e7eb !important;
+}

@@ -1,0 +1,13 @@
+/**
+ * Integration connect/configure modals — all panel templates (default, helicoptic-v1, ratehonk-v1).
+ * Portaled dialogs must sit above sidebars and page chrome.
+ */
+html [data-radix-dialog-overlay],
+html [data-radix-alert-dialog-overlay] {
+  z-index: 200;
+}
+
+html [role="dialog"][class*="translate-x-[-50%]"],
+html [role="alertdialog"] {
+  z-index: 201;
+}

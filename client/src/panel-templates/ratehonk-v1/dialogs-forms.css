@@ -1,0 +1,300 @@
+/**
+ * RateHonk v1 — dialogs, sheets, alert dialogs, and form popups (portaled + in-panel).
+ * Targets centered modals vs side sheets separately so inbox sheets are not squashed.
+ */
+
+/* —— Overlay (default Dialog overlay lacks inset/bg) —— */
+html[data-rh-shell] [data-radix-dialog-overlay],
+html[data-rh-shell] [data-radix-alert-dialog-overlay] {
+  inset: 0 !important;
+  background-color: rgb(17 28 45 / 0.55) !important;
+  z-index: 200;
+}
+
+html[data-rh-shell] [role="dialog"][class*="translate-x-[-50%]"],
+html[data-rh-shell] [role="alertdialog"] {
+  z-index: 201;
+}
+
+/* Centered modal dialogs & alert dialogs */
+html[data-rh-shell] [role="dialog"][class*="translate-x-[-50%]"],
+html[data-rh-shell] [role="alertdialog"] {
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  color: #111c2d;
+  border-color: #e5e7eb !important;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 12px 40px rgb(17 28 45 / 0.18);
+  max-height: min(92dvh, 900px);
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  gap: 1rem;
+}
+
+html[data-rh-shell] [role="dialog"][class*="translate-x-[-50%]"] > button.absolute,
+html[data-rh-shell] [role="alertdialog"] > button:last-child {
+  z-index: 2;
+}
+
+/* Titles & descriptions */
+html[data-rh-shell] [role="dialog"][class*="translate-x-[-50%]"] h2,
+html[data-rh-shell] [role="alertdialog"] h2 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #111c2d;
+  line-height: 1.35;
+  padding-right: 1.75rem;
+  word-break: break-word;
+}
+
+html[data-rh-shell] [role="dialog"][class*="translate-x-[-50%]"] p.text-muted-foreground,
+html[data-rh-shell] [role="alertdialog"] p {
+  color: #717786;
+  font-size: 0.875rem;
+  line-height: 1.45;
+}
+
+/* Form fields inside popups */
+html[data-rh-shell] [role="dialog"][class*="translate-x-[-50%]"] label,
+html[data-rh-shell] [role="alertdialog"] label,
+html[data-rh-shell] [role="dialog"][class*="inset-y-0"] label {
+  color: #414754;
+  font-weight: 500;
+  font-size: 0.875rem;
+}
+
+html[data-rh-shell] [role="dialog"] input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
+html[data-rh-shell] [role="dialog"] textarea,
+html[data-rh-shell] [role="alertdialog"] input:not([type="checkbox"]):not([type="radio"]),
+html[data-rh-shell] [role="alertdialog"] textarea,
+html[data-rh-shell] [role="dialog"] [role="combobox"],
+html[data-rh-shell] [role="dialog"] button[role="combobox"] {
+  max-width: 100%;
+  border-color: #e5e7eb;
+  border-radius: 10px;
+}
+
+html[data-rh-shell] [role="dialog"] .space-y-4 > .grid.grid-cols-2,
+html[data-rh-shell] [role="dialog"] .grid.grid-cols-2:not([class*="md:"]),
+html[data-rh-shell] [role="dialog"] .grid.grid-cols-3:not([class*="md:"]) {
+  gap: 0.75rem;
+}
+
+/* Dialog / alert footers */
+html[data-rh-shell] [role="dialog"][class*="translate-x-[-50%]"] footer,
+html[data-rh-shell] [role="dialog"][class*="translate-x-[-50%]"] [class*="flex-col-reverse"],
+html[data-rh-shell] [role="alertdialog"] footer {
+  gap: 0.5rem;
+  padding-top: 0.25rem;
+  border-top: 1px solid #f3f4f6;
+  margin-top: 0.25rem;
+}
+
+/* Side sheets — scrollable by default (create plan, admin forms, etc.) */
+html[data-rh-shell] [role="dialog"][class*="inset-y-0"] {
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  display: flex;
+  flex-direction: column;
+  max-height: 100dvh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Side sheets with internal scroll regions (inbox contact panel, etc.) */
+html[data-rh-shell] [role="dialog"][class*="inset-y-0"][class*="flex-col"] {
+  overflow: hidden;
+}
+
+html[data-rh-shell] [role="dialog"][class*="inset-y-0"] > *:not(button.absolute) {
+  min-width: 0;
+}
+
+/* Dropdowns / selects portaled from forms — above dialog overlay (201) */
+html[data-rh-shell] [data-radix-popper-content-wrapper] {
+  z-index: 250 !important;
+}
+
+html[data-rh-shell] [data-radix-select-content] {
+  z-index: 250 !important;
+}
+
+html[data-rh-shell] [role="listbox"],
+html[data-rh-shell] [role="menu"],
+html[data-rh-shell] [data-radix-select-viewport] {
+  font-family: "Inter", system-ui, sans-serif;
+  border-color: #e5e7eb;
+  border-radius: 10px;
+  max-height: min(320px, 50dvh);
+}
+
+/* —— Desktop —— */
+@media (min-width: 768px) {
+  html[data-rh-shell] [role="dialog"][class*="translate-x-[-50%]"],
+  html[data-rh-shell] [role="alertdialog"] {
+    width: 100%;
+    max-width: min(32rem, calc(100vw - 3rem));
+    padding: 1.5rem;
+  }
+
+  html[data-rh-shell] [role="dialog"][class*="translate-x-[-50%]"][class*="max-w-xs"] {
+    max-width: 20rem !important;
+  }
+
+  html[data-rh-shell] [role="dialog"][class*="translate-x-[-50%]"][class*="max-w-md"] {
+    max-width: 28rem !important;
+  }
+
+  html[data-rh-shell] [role="dialog"][class*="translate-x-[-50%]"][class*="max-w-lg"] {
+    max-width: 32rem !important;
+  }
+
+  html[data-rh-shell] [role="dialog"][class*="translate-x-[-50%]"][class*="max-w-xl"] {
+    max-width: 36rem !important;
+  }
+
+  html[data-rh-shell] [role="dialog"][class*="translate-x-[-50%]"][class*="max-w-2xl"] {
+    max-width: 42rem !important;
+  }
+
+  html[data-rh-shell] [role="dialog"][class*="translate-x-[-50%]"][class*="max-w-3xl"] {
+    max-width: 48rem !important;
+    width: calc(100vw - 3rem) !important;
+  }
+
+  html[data-rh-shell] [role="dialog"][class*="translate-x-[-50%]"][class*="max-w-4xl"] {
+    max-width: 56rem !important;
+    width: calc(100vw - 3rem) !important;
+  }
+
+  html[data-rh-shell] [role="dialog"][class*="translate-x-[-50%]"][class*="max-w-5xl"] {
+    max-width: 64rem !important;
+    width: calc(100vw - 3rem) !important;
+  }
+
+  html[data-rh-shell] [role="dialog"][class*="translate-x-[-50%]"][class*="max-w-6xl"] {
+    max-width: 72rem !important;
+    width: calc(100vw - 3rem) !important;
+  }
+
+  html[data-rh-shell] [role="dialog"][class*="translate-x-[-50%]"][class*="max-w-7xl"] {
+    max-width: 80rem !important;
+    width: calc(100vw - 3rem) !important;
+  }
+
+  html[data-rh-shell] [role="dialog"].dummy-chatbot-flow-preview-dialog,
+  html[data-rh-shell] [role="dialog"][class*="dummy-chatbot-flow-preview-dialog"] {
+    width: min(96vw, 1440px) !important;
+    max-width: min(96vw, 1440px) !important;
+    height: min(86vh, 860px) !important;
+    max-height: min(86vh, 860px) !important;
+    padding: 0 !important;
+    gap: 0 !important;
+    overflow: hidden !important;
+  }
+
+  /* Create / edit invoice — match form + preview width (not full viewport) */
+  html[data-rh-shell] [role="dialog"].create-invoice-dialog,
+  html[data-rh-shell] [role="dialog"][class*="create-invoice-dialog"] {
+    max-width: min(56rem, calc(100vw - 2rem)) !important;
+    width: calc(100vw - 2rem) !important;
+    max-height: 96dvh !important;
+  }
+
+  html[data-rh-shell] [role="dialog"][class*="translate-x-[-50%]"] footer,
+  html[data-rh-shell] [role="dialog"][class*="translate-x-[-50%]"] [class*="flex-col-reverse"],
+  html[data-rh-shell] [role="alertdialog"] footer {
+    flex-direction: row !important;
+    justify-content: flex-end !important;
+    align-items: center;
+  }
+
+  html[data-rh-shell] [role="dialog"][class*="translate-x-[-50%]"] footer button,
+  html[data-rh-shell] [role="dialog"][class*="translate-x-[-50%]"] [class*="flex-col-reverse"] > button,
+  html[data-rh-shell] [role="alertdialog"] footer button {
+    width: auto !important;
+    min-width: 5rem;
+  }
+
+  html[data-rh-shell] [role="dialog"][class*="inset-y-0"][class*="sm:max-w-4xl"] {
+    max-width: 56rem !important;
+    width: min(56rem, 90vw) !important;
+  }
+
+  html[data-rh-shell] [role="dialog"][class*="inset-y-0"].sm\:max-w-sm {
+    max-width: 24rem !important;
+  }
+}
+
+/* —— Mobile —— */
+@media (max-width: 767px) {
+  html[data-rh-shell] [role="dialog"][class*="translate-x-[-50%]"],
+  html[data-rh-shell] [role="alertdialog"] {
+    left: 50% !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    width: calc(100vw - 1.25rem) !important;
+    max-width: calc(100vw - 1.25rem) !important;
+    max-height: 92dvh;
+    padding: 1rem 1rem 1.25rem;
+    border-radius: 12px;
+  }
+
+  html[data-rh-shell] [role="dialog"][class*="translate-x-[-50%]"] footer,
+  html[data-rh-shell] [role="dialog"][class*="translate-x-[-50%]"] [class*="flex-col-reverse"],
+  html[data-rh-shell] [role="alertdialog"] footer {
+    flex-direction: column-reverse !important;
+    align-items: stretch !important;
+  }
+
+  html[data-rh-shell] [role="dialog"][class*="translate-x-[-50%]"] footer button,
+  html[data-rh-shell] [role="dialog"][class*="translate-x-[-50%]"] [class*="flex-col-reverse"] > button,
+  html[data-rh-shell] [role="alertdialog"] footer button {
+    width: 100% !important;
+    min-height: 2.75rem;
+  }
+
+  html[data-rh-shell] [role="dialog"][class*="translate-x-[-50%]"] .grid.grid-cols-2,
+  html[data-rh-shell] [role="dialog"][class*="translate-x-[-50%]"] .grid.grid-cols-3,
+  html[data-rh-shell] [role="alertdialog"] .grid.grid-cols-2 {
+    grid-template-columns: 1fr !important;
+  }
+
+  html[data-rh-shell] [role="dialog"][class*="translate-x-[-50%]"] .flex.gap-2:has(> button),
+  html[data-rh-shell] [role="dialog"][class*="translate-x-[-50%]"] .flex.gap-3:has(> button) {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  html[data-rh-shell] [role="dialog"][class*="translate-x-[-50%]"] .flex.gap-2:has(> button) > *,
+  html[data-rh-shell] [role="dialog"][class*="translate-x-[-50%]"] .flex.gap-3:has(> button) > * {
+    width: 100%;
+  }
+
+  /* Full-width sheets on phone */
+  html[data-rh-shell] [role="dialog"][class*="inset-y-0"] {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  html[data-rh-shell] [role="dialog"].dummy-chatbot-flow-preview-dialog,
+  html[data-rh-shell] [role="dialog"][class*="dummy-chatbot-flow-preview-dialog"] {
+    width: calc(100vw - 1.25rem) !important;
+    max-width: calc(100vw - 1.25rem) !important;
+    height: min(88dvh, 720px) !important;
+    max-height: min(88dvh, 720px) !important;
+    padding: 0 !important;
+    gap: 0 !important;
+    overflow: hidden !important;
+  }
+
+  html[data-rh-shell] [data-radix-popper-content-wrapper] {
+    max-width: calc(100vw - 1rem);
+  }
+
+  html[data-rh-shell] [role="listbox"],
+  html[data-rh-shell] [role="menu"] {
+    max-width: calc(100vw - 1.5rem);
+  }
+}

@@ -1,0 +1,153 @@
+.ratehonk-invoice-content .invoice-page-chrome {
+  display: none;
+}
+
+.ratehonk-invoice-content .rh-invoice-section {
+  overflow: hidden;
+  padding: 0;
+}
+
+.ratehonk-invoice-content .rh-invoice-section-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 1px solid #f3f4f6;
+  padding: 1.25rem 1.25rem 1rem;
+}
+
+@media (min-width: 640px) {
+  .ratehonk-invoice-content .rh-invoice-section-header {
+    padding: 1.5rem 1.5rem 1.25rem;
+  }
+}
+
+.ratehonk-invoice-content .rh-invoice-section-body {
+  padding: 1.25rem;
+}
+
+@media (min-width: 640px) {
+  .ratehonk-invoice-content .rh-invoice-section-body {
+    padding: 1.5rem;
+  }
+}
+
+.ratehonk-invoice-content .rh-invoice-field-grid {
+  gap: 1rem;
+}
+
+.ratehonk-invoice-content .rh-invoice-signature-preview {
+  border: 1px dashed #d1d5db;
+  border-radius: 12px;
+  background: linear-gradient(180deg, #fafbff 0%, #f9fafb 100%);
+}
+
+.ratehonk-invoice-content .rh-invoice-automation-tile {
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  background: #fafbff;
+  padding: 1rem 1.25rem;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.ratehonk-invoice-content .rh-invoice-automation-tile:hover {
+  border-color: #cddaff;
+  box-shadow: 0 2px 8px rgba(0, 89, 187, 0.06);
+}
+
+.ratehonk-invoice-content .rh-invoice-template-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  background: #fafbff;
+  padding: 1rem;
+}
+
+.ratehonk-invoice-content .rh-invoice-save-bar {
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+  margin-top: 0.5rem;
+  border-top: 1px solid #e5e7eb;
+  background: rgb(255 255 255 / 0.92);
+  padding-top: 1rem;
+  padding-bottom: 0.5rem;
+  backdrop-filter: blur(8px);
+}
+
+.ratehonk-invoice-list-content .invoice-list-page-chrome {
+  display: none;
+}
+
+.ratehonk-invoice-recurring-content .invoice-list-page-chrome {
+  display: none;
+}
+
+/* Avoid double gutters when page is wrapped in RhPageLayout */
+.ratehonk-invoice-content .rh-page-gutter,
+.ratehonk-invoice-list-content .rh-page-gutter,
+.ratehonk-invoice-recurring-content .rh-page-gutter,
+.ratehonk-lead-status-content .rh-page-gutter {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+/* Stronger left/right breathing room on invoice + lead status shells */
+.ratehonk-invoice.rh-page-shell,
+.ratehonk-invoice-list.rh-page-shell,
+.ratehonk-invoice-recurring.rh-page-shell,
+.ratehonk-lead-status.rh-page-shell {
+  padding-left: 1.5rem !important;
+  padding-right: 1.5rem !important;
+}
+
+@media (min-width: 640px) {
+  .ratehonk-invoice.rh-page-shell,
+  .ratehonk-invoice-list.rh-page-shell,
+  .ratehonk-invoice-recurring.rh-page-shell,
+  .ratehonk-lead-status.rh-page-shell {
+    padding-left: 2.5rem !important;
+    padding-right: 2.5rem !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .ratehonk-invoice.rh-page-shell,
+  .ratehonk-invoice-list.rh-page-shell,
+  .ratehonk-invoice-recurring.rh-page-shell,
+  .ratehonk-lead-status.rh-page-shell {
+    padding-left: 3.5rem !important;
+    padding-right: 3.5rem !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .ratehonk-invoice.rh-page-shell,
+  .ratehonk-invoice-list.rh-page-shell,
+  .ratehonk-invoice-recurring.rh-page-shell,
+  .ratehonk-lead-status.rh-page-shell {
+    padding-left: 4rem !important;
+    padding-right: 4rem !important;
+  }
+}
+
+.ratehonk-invoice-content label {
+  color: #414754;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.ratehonk-invoice-content input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
+.ratehonk-invoice-content textarea,
+.ratehonk-invoice-content button[role="combobox"] {
+  min-height: 2.75rem;
+  border-color: #e5e7eb;
+  border-radius: 12px;
+  background-color: #ffffff;
+}
+
+.ratehonk-invoice-content textarea {
+  min-height: 7rem;
+}

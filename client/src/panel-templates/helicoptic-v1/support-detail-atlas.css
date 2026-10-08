@@ -1,0 +1,395 @@
+/* Atlas Emerald Support ticket detail — Figma Rh-whatsapp "Refined Aesthetic" */
+
+.atlas-support-detail,
+[data-rh-shell] .atlas-support-detail,
+html[data-panel-template="helicoptic-v1"] .atlas-support-detail {
+  --atlas-sd-brand: var(--rh-brand, #047857);
+  --atlas-sd-brand-hover: var(--rh-brand-hover, #065f46);
+  --atlas-sd-brand-soft: var(--rh-brand-soft, #ecfdf5);
+  --atlas-sd-border: #e5e7eb;
+  color: #111827;
+}
+
+/* Back link */
+.atlas-support-detail .atlas-sd-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 1.1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #6b7280;
+  transition: color 0.15s ease;
+}
+
+.atlas-support-detail .atlas-sd-back:hover {
+  color: var(--atlas-sd-brand);
+}
+
+/* Cards */
+.atlas-support-detail .atlas-sd-card {
+  border-radius: 16px;
+  border: 1px solid var(--atlas-sd-border);
+  background: #ffffff;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+}
+
+.atlas-support-detail .atlas-sd-header-card {
+  margin-bottom: 1rem;
+  padding: 1.35rem;
+}
+
+.atlas-support-detail .atlas-sd-header-top {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+@media (min-width: 640px) {
+  .atlas-support-detail .atlas-sd-header-top {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.atlas-support-detail .atlas-sd-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.35;
+  color: #0f172a;
+}
+
+@media (min-width: 640px) {
+  .atlas-support-detail .atlas-sd-title {
+    font-size: 1.25rem;
+  }
+}
+
+.atlas-support-detail .atlas-sd-meta {
+  margin-top: 0.25rem;
+  font-size: 0.8125rem;
+  color: #6b7280;
+}
+
+.atlas-support-detail .atlas-sd-status {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  border-radius: 9999px;
+  padding: 0.2rem 0.7rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.atlas-support-detail .atlas-sd-portal-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border-radius: 9px;
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  padding: 0.45rem 0.85rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #111827;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.atlas-support-detail .atlas-sd-portal-btn:hover {
+  background: var(--atlas-sd-brand-soft);
+  border-color: #a7f3d0;
+}
+
+/* Conversation */
+.atlas-support-detail .atlas-sd-conv-head {
+  padding: 1.15rem 1.35rem 0.9rem;
+  border-bottom: 1px solid #f1f3f5;
+}
+
+.atlas-support-detail .atlas-sd-conv-title {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.atlas-support-detail .atlas-sd-conv-sub {
+  margin-top: 0.2rem;
+  font-size: 0.8125rem;
+  color: #6b7280;
+}
+
+/* Fill the panel main area; only the message list scrolls (no outer page scrollbar). */
+.atlas-support-detail.atlas-sd-shell {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.atlas-support-detail .atlas-sd-shell-inner {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+  max-width: 60rem;
+  margin-left: auto;
+  margin-right: auto;
+  overflow: hidden;
+}
+
+.atlas-support-detail .atlas-sd-toolbar {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.atlas-support-detail .atlas-sd-toolbar .atlas-sd-back {
+  margin-bottom: 0;
+}
+
+/* One card: header + thread + reply (same pattern as Whitelabel Admin) */
+.atlas-support-detail .atlas-sd-card--detail {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.atlas-support-detail .atlas-sd-detail-header {
+  flex-shrink: 0;
+  padding: 1rem 1.25rem 0.9rem;
+  border-bottom: 1px solid #f1f3f5;
+}
+
+.atlas-support-detail .atlas-sd-controls {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.65rem;
+  margin-top: 0.85rem;
+}
+
+@media (min-width: 640px) {
+  .atlas-support-detail .atlas-sd-controls {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.atlas-support-detail .atlas-sd-control {
+  min-width: 0;
+}
+
+.atlas-support-detail .atlas-sd-messages {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  gap: 0.85rem;
+  min-height: 180px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 1.15rem 1.25rem;
+  background: #f8faf9;
+}
+
+.atlas-support-detail .atlas-sd-reply {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  gap: 0.55rem;
+  padding: 0.9rem 1.25rem 1.15rem;
+  border-top: 1px solid #f1f3f5;
+  background: #ffffff;
+}
+
+.atlas-support-detail .atlas-sd-reply-label {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.atlas-support-detail .atlas-sd-msg {
+  flex-shrink: 0;
+  border-radius: 12px;
+  border: 1px solid var(--atlas-sd-border);
+  background: #ffffff;
+  padding: 0.85rem 1rem;
+}
+
+.atlas-support-detail .atlas-sd-msg--agent {
+  background: var(--atlas-sd-brand-soft);
+  border-color: #bbf7d0;
+  border-left: 4px solid var(--atlas-sd-brand);
+}
+
+.atlas-support-detail .atlas-sd-msg--technical {
+  background: #f5f3ff;
+  border-color: #ddd6fe;
+  border-left: 4px solid #7c3aed;
+}
+
+.atlas-support-detail .atlas-sd-field-label {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.atlas-support-detail .atlas-sd-header-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.atlas-support-detail .atlas-sd-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 2.35rem;
+  width: 2.35rem;
+  border-radius: 9px;
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  color: #4b5563;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.atlas-support-detail .atlas-sd-icon-btn:hover {
+  background: var(--atlas-sd-brand-soft);
+  border-color: #a7f3d0;
+  color: var(--atlas-sd-brand);
+}
+
+.atlas-support-detail .atlas-sd-msg-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  font-size: 0.75rem;
+  color: #9ca3af;
+}
+
+.atlas-support-detail .atlas-sd-msg-author {
+  font-weight: 600;
+  color: #4b5563;
+}
+
+.atlas-support-detail .atlas-sd-msg-body {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: #1f2937;
+  white-space: pre-wrap;
+}
+
+.atlas-support-detail .atlas-sd-msg-attach {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.5rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--atlas-sd-brand);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.atlas-support-detail .atlas-sd-msg-attach:hover {
+  color: var(--atlas-sd-brand-hover);
+}
+
+.atlas-support-detail .atlas-sd-reply-input {
+  width: 100%;
+  min-height: 72px;
+  max-height: 140px;
+  resize: vertical;
+  border-radius: 12px;
+  border: 1px solid var(--atlas-sd-border);
+  background: #ffffff;
+  padding: 0.7rem 0.85rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: #111827;
+  outline: none;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.atlas-support-detail .atlas-sd-reply-input::placeholder {
+  color: #9ca3af;
+}
+
+.atlas-support-detail .atlas-sd-reply-input:focus {
+  border-color: var(--atlas-sd-brand);
+  box-shadow: 0 0 0 3px rgba(4, 120, 87, 0.12);
+}
+
+.atlas-support-detail .atlas-sd-reply-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.atlas-support-detail .atlas-sd-attach-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 2.25rem;
+  width: 2.25rem;
+  border-radius: 9px;
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  color: #4b5563;
+  transition: background 0.15s ease;
+}
+
+.atlas-support-detail .atlas-sd-attach-btn:hover {
+  background: #f3f4f6;
+}
+
+.atlas-support-detail .atlas-sd-attach-name {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.atlas-support-detail .atlas-sd-send-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-left: auto;
+  border-radius: 9px;
+  background: var(--atlas-sd-brand);
+  padding: 0.5rem 1.05rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #ffffff;
+  transition: background 0.15s ease;
+}
+
+.atlas-support-detail .atlas-sd-send-btn:hover:not(:disabled) {
+  background: var(--atlas-sd-brand-hover);
+}
+
+.atlas-support-detail .atlas-sd-send-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

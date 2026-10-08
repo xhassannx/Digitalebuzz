@@ -1,0 +1,19 @@
+# Shopify app manifest for App Store / Partners submission.
+# Set client_id from Partners → App → Client credentials.
+# Redirect URL must match: {BASE_URL}/api/integrations/shopify/oauth/callback
+
+name = "Helicoptic WhatsApp Commerce"
+client_id = "YOUR_SHOPIFY_API_KEY"
+application_url = "https://your-panel.example.com/integrations"
+embedded = false
+
+[access_scopes]
+scopes = "read_products,write_products,read_orders,read_draft_orders,write_draft_orders,read_customers"
+
+[auth]
+redirect_urls = [
+  "https://your-panel.example.com/api/integrations/shopify/oauth/callback"
+]
+
+[webhooks]
+api_version = "2024-01"

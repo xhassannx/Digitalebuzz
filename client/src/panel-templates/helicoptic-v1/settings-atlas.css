@@ -1,0 +1,256 @@
+/**
+ * Atlas Settings - Rh Emerald "Refined Aesthetic"
+ * Scoped to helicoptic-v1 so Nova Settings chrome stays unchanged.
+ */
+
+html[data-panel-template="helicoptic-v1"] .rh-settings-atlas {
+  color: #111c2d;
+}
+
+html[data-panel-template="helicoptic-v1"] .rh-settings-atlas h1,
+html[data-panel-template="helicoptic-v1"] .ratehonk-settings[data-ratehonk-page="Settings"] h1 {
+  color: #111c2d;
+  letter-spacing: -0.02em;
+}
+
+/* Underline tabs (Figma Profile / Team / Organisation...) */
+html[data-panel-template="helicoptic-v1"] .rh-settings-atlas-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+html[data-panel-template="helicoptic-v1"] .rh-settings-atlas-tab {
+  position: relative;
+  padding: 0.625rem 0.125rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #6b7280;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+html[data-panel-template="helicoptic-v1"] .rh-settings-atlas-tab:hover {
+  color: #111827;
+}
+
+html[data-panel-template="helicoptic-v1"] .rh-settings-atlas-tab.is-active {
+  color: var(--rh-brand, #047857);
+}
+
+html[data-panel-template="helicoptic-v1"] .rh-settings-atlas-tab.is-active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: var(--rh-brand, #047857);
+  border-radius: 2px 2px 0 0;
+}
+
+/* Soft cards */
+html[data-panel-template="helicoptic-v1"] .rh-settings-atlas .rh-settings-card,
+html[data-panel-template="helicoptic-v1"] .rh-settings-atlas .rounded-lg.border.bg-card,
+html[data-panel-template="helicoptic-v1"] .rh-settings-atlas .rounded-lg.border {
+  border-color: #e5e7eb !important;
+  border-radius: 1rem !important;
+  background: #ffffff !important;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+}
+
+html[data-panel-template="helicoptic-v1"] .rh-settings-atlas input:not([type="checkbox"]):not([type="radio"]),
+html[data-panel-template="helicoptic-v1"] .rh-settings-atlas textarea,
+html[data-panel-template="helicoptic-v1"] .rh-settings-atlas [role="combobox"] {
+  border-color: #e5e7eb !important;
+  border-radius: 0.75rem !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+}
+
+html[data-panel-template="helicoptic-v1"] .rh-settings-atlas input:focus-visible,
+html[data-panel-template="helicoptic-v1"] .rh-settings-atlas textarea:focus-visible,
+html[data-panel-template="helicoptic-v1"] .rh-settings-atlas [role="combobox"]:focus-visible {
+  border-color: color-mix(in srgb, var(--rh-brand, #047857) 55%, #e5e7eb) !important;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--rh-brand, #047857) 14%, transparent) !important;
+}
+
+html[data-panel-template="helicoptic-v1"] .rh-settings-atlas button.bg-primary,
+html[data-panel-template="helicoptic-v1"] .rh-settings-atlas .rh-settings-primary-btn {
+  border-color: var(--rh-brand, #047857) !important;
+  background: var(--rh-brand, #047857) !important;
+  color: #ffffff !important;
+  border-radius: 0.75rem !important;
+}
+
+html[data-panel-template="helicoptic-v1"] .rh-settings-atlas button.bg-primary:hover,
+html[data-panel-template="helicoptic-v1"] .rh-settings-atlas .rh-settings-primary-btn:hover {
+  background: var(--rh-brand-hover, #065f46) !important;
+}
+
+html[data-panel-template="helicoptic-v1"] .rh-settings-atlas button[class*="border"]:not(.bg-primary) {
+  border-color: #e5e7eb !important;
+  border-radius: 0.75rem !important;
+}
+
+html[data-panel-template="helicoptic-v1"] .rh-settings-profile-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(16rem, 0.9fr);
+  gap: 1.25rem;
+  align-items: start;
+}
+
+@media (max-width: 1024px) {
+  html[data-panel-template="helicoptic-v1"] .rh-settings-profile-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+html[data-panel-template="helicoptic-v1"] .rh-settings-avatar-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+html[data-panel-template="helicoptic-v1"] .rh-settings-password-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #414754;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+html[data-panel-template="helicoptic-v1"] .rh-settings-password-link:hover {
+  color: var(--rh-brand, #047857);
+}
+
+html[data-panel-template="helicoptic-v1"] .rh-settings-notify-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.625rem;
+  border-radius: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+html[data-panel-template="helicoptic-v1"] .rh-settings-notify-status.is-blocked {
+  background: #fef2f2;
+  color: #b91c1c;
+}
+
+html[data-panel-template="helicoptic-v1"] .rh-settings-notify-status.is-allowed {
+  background: #ecfdf5;
+  color: #047857;
+}
+
+html[data-panel-template="helicoptic-v1"] .rh-settings-notify-status.is-default {
+  background: #f3f4f6;
+  color: #4b5563;
+}
+
+html[data-panel-template="helicoptic-v1"] .rh-settings-plan-card {
+  display: block;
+  padding: 1.25rem;
+  border-radius: 1rem;
+  background: linear-gradient(135deg, #0f766e 0%, #0891b2 100%);
+  color: #ffffff;
+  text-decoration: none;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+}
+
+html[data-panel-template="helicoptic-v1"] .rh-settings-plan-card:hover {
+  opacity: 0.95;
+}
+
+html[data-panel-template="helicoptic-v1"] .rh-settings-plan-eyebrow {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.9;
+}
+
+html[data-panel-template="helicoptic-v1"] .rh-settings-plan-title {
+  margin-top: 0.35rem;
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+
+html[data-panel-template="helicoptic-v1"] .rh-settings-plan-desc {
+  margin-top: 0.35rem;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  opacity: 0.9;
+}
+
+/* Other settings tabs (Team / Organisation / API Keys / SMTP / Billing) */
+html[data-panel-template="helicoptic-v1"] .rh-settings-atlas .settings-tab-panel > div > h2 {
+  color: #111c2d;
+  letter-spacing: -0.02em;
+}
+
+html[data-panel-template="helicoptic-v1"] .rh-settings-atlas .settings-tab-panel button[data-state="checked"],
+html[data-panel-template="helicoptic-v1"] .rh-settings-atlas [data-state="checked"].bg-primary,
+html[data-panel-template="helicoptic-v1"] .rh-settings-atlas button[role="switch"][data-state="checked"] {
+  background: var(--rh-brand, #047857) !important;
+}
+
+html[data-panel-template="helicoptic-v1"] .rh-settings-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 3.5rem 1.5rem;
+}
+
+html[data-panel-template="helicoptic-v1"] .rh-settings-empty-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.75rem;
+  height: 3.75rem;
+  margin-bottom: 1.25rem;
+  border-radius: 0.875rem;
+  background: var(--rh-brand-soft, #ecfdf5);
+  color: var(--rh-brand, #047857);
+}
+
+html[data-panel-template="helicoptic-v1"] .rh-settings-empty-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+html[data-panel-template="helicoptic-v1"] .rh-settings-empty-desc {
+  max-width: 28rem;
+  margin-top: 0.5rem;
+  margin-bottom: 1.25rem;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: #6b7280;
+}
+
+html[data-panel-template="helicoptic-v1"] .rh-settings-atlas code {
+  background: #ffffff !important;
+  border: 1px solid #d1fae5;
+  color: #065f46;
+  border-radius: 0.375rem;
+}
+
+html[data-panel-template="helicoptic-v1"] .rh-settings-atlas .border-green-500\/50,
+html[data-panel-template="helicoptic-v1"] .rh-settings-atlas .bg-green-500\/5 {
+  border-color: #a7f3d0 !important;
+  background: var(--rh-brand-soft, #ecfdf5) !important;
+}

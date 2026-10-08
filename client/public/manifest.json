@@ -1,0 +1,50 @@
+{
+  "id": "/",
+  "name": "Business Inbox",
+  "short_name": "Inbox",
+  "description": "WhatsApp inbox, chatbots, and automation for your business",
+  "start_url": "/chat?utm_source=homescreen",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "background_color": "#f9f9ff",
+  "theme_color": "#0059bb",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "/logo-main.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/logo-main.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/logo-main.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "categories": ["business", "productivity", "communication"],
+  "shortcuts": [
+    {
+      "name": "Inbox",
+      "short_name": "Inbox",
+      "description": "Open inbox",
+      "url": "/chat?utm_source=shortcut",
+      "icons": [{ "src": "/logo-main.png", "sizes": "192x192", "type": "image/png" }]
+    },
+    {
+      "name": "Connect",
+      "short_name": "Connect",
+      "description": "Manage WhatsApp numbers",
+      "url": "/connect?utm_source=shortcut",
+      "icons": [{ "src": "/logo-main.png", "sizes": "192x192", "type": "image/png" }]
+    }
+  ]
+}

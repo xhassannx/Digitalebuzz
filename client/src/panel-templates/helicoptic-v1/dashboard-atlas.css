@@ -1,0 +1,735 @@
+/* Atlas Emerald dashboard — Figma Rh-whatsapp Emerald Green */
+
+[data-rh-shell] .rh-dashboard-atlas,
+html[data-panel-template="helicoptic-v1"] .rh-dashboard-atlas {
+  --atlas-page-bg: #f5f5f5;
+  --atlas-card: #ffffff;
+  --atlas-border: #e5e7eb;
+  background-color: var(--atlas-page-bg) !important;
+  max-width: 100%;
+  color: #111827;
+}
+
+.rh-dashboard-atlas .atlas-welcome {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  overflow: hidden;
+  border-radius: 1rem;
+  border: 1px solid var(
+    --rh-page-hero-border,
+    color-mix(in srgb, var(--rh-brand, #047857) 16%, #e5e7eb)
+  );
+  background-color: var(--rh-brand-soft, #ecfdf5);
+  background-image: var(
+    --rh-page-hero-bg,
+    linear-gradient(
+      105deg,
+      var(--rh-brand-soft, #ecfdf5) 0%,
+      color-mix(in srgb, var(--rh-brand-light, #d1fae5) 40%, #ffffff) 42%,
+      #ffffff 100%
+    )
+  );
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04), 0 8px 24px rgba(16, 24, 40, 0.04);
+  padding: 1.05rem 1.25rem;
+}
+
+.rh-dashboard-atlas .atlas-welcome::before {
+  content: "";
+  position: absolute;
+  right: -2.5rem;
+  top: -3rem;
+  width: 12rem;
+  height: 12rem;
+  border-radius: 9999px;
+  background: var(
+    --rh-page-hero-glow,
+    radial-gradient(
+      circle,
+      color-mix(in srgb, var(--rh-brand, #047857) 22%, transparent) 0%,
+      transparent 70%
+    )
+  );
+  pointer-events: none;
+}
+
+.rh-dashboard-atlas .atlas-welcome > * {
+  position: relative;
+  z-index: 1;
+}
+
+@media (min-width: 640px) {
+  .rh-dashboard-atlas .atlas-welcome {
+    padding: 1.2rem 1.5rem;
+  }
+}
+
+.rh-dashboard-atlas .atlas-welcome-title {
+  font-size: 1.75rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: #0f172a;
+  line-height: 1.2;
+}
+
+@media (min-width: 640px) {
+  .rh-dashboard-atlas .atlas-welcome-title {
+    font-size: 1.875rem;
+  }
+}
+
+.rh-dashboard-atlas .atlas-welcome-sub {
+  margin-top: 0.4rem;
+  max-width: 42rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: #6b7280;
+}
+
+.rh-dashboard-atlas .atlas-welcome-accent-blue {
+  font-weight: 600;
+  color: #2563eb;
+}
+
+.rh-dashboard-atlas .atlas-welcome-accent-olive {
+  font-weight: 600;
+  color: #4d7c0f;
+}
+
+.rh-dashboard-atlas .atlas-btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+  background: #fff;
+  padding: 0.55rem 1.15rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #111827;
+  transition: background 0.15s ease;
+}
+
+.rh-dashboard-atlas .atlas-btn-outline:hover {
+  background: #f9fafb;
+}
+
+.rh-dashboard-atlas .atlas-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: var(--rh-brand, #047857);
+  padding: 0.55rem 1.15rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #fff;
+  transition: background 0.15s ease;
+}
+
+.rh-dashboard-atlas .atlas-btn-primary:hover {
+  background: var(--rh-brand-hover, #065f46);
+}
+
+.rh-dashboard-atlas .atlas-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+@media (min-width: 1024px) {
+  .rh-dashboard-atlas .atlas-kpi-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.rh-dashboard-atlas .atlas-metric-card {
+  display: flex;
+  min-height: 132px;
+  flex-direction: column;
+  border-radius: 14px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  padding: 1rem 1.1rem 1.15rem;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.18s ease,
+    background-color 0.18s ease;
+}
+
+.rh-dashboard-atlas .atlas-metric-card:hover {
+  border-color: #a7f3d0;
+  background-color: #ffffff;
+  box-shadow:
+    0 8px 20px rgba(4, 120, 87, 0.1),
+    0 2px 6px rgba(16, 24, 40, 0.06);
+  transform: translateY(-2px);
+}
+
+.rh-dashboard-atlas .atlas-metric-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.rh-dashboard-atlas .atlas-metric-icon {
+  display: inline-flex;
+  height: 2.25rem;
+  width: 2.25rem;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: #ecfdf5;
+  color: var(--rh-brand, #047857);
+}
+
+.rh-dashboard-atlas .atlas-growth-pill {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9999px;
+  padding: 0.2rem 0.55rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.rh-dashboard-atlas .atlas-growth-pill--up {
+  background: #ecfdf5;
+  color: #047857;
+}
+
+.rh-dashboard-atlas .atlas-growth-pill--down {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+.rh-dashboard-atlas .atlas-metric-title {
+  margin-top: 0.85rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: #6b7280;
+  line-height: 1.35;
+}
+
+.rh-dashboard-atlas .atlas-metric-value {
+  margin-top: 0.35rem;
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: #0f172a;
+  line-height: 1.1;
+}
+
+.rh-dashboard-atlas .atlas-card {
+  border-radius: 14px;
+  border: 1px solid var(--atlas-border);
+  background: var(--atlas-card);
+  padding: 1.15rem 1.25rem;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+}
+
+.rh-dashboard-atlas .atlas-card-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.rh-dashboard-atlas .atlas-mid-row {
+  display: grid;
+  gap: 0.75rem;
+}
+
+@media (min-width: 1024px) {
+  .rh-dashboard-atlas .atlas-mid-row {
+    grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  }
+}
+
+.rh-dashboard-atlas .atlas-leads-card {
+  padding: 1.25rem 1.35rem;
+}
+
+.rh-dashboard-atlas .atlas-leads-link {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--rh-brand, #047857);
+  text-decoration: none;
+}
+
+.rh-dashboard-atlas .atlas-leads-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.rh-dashboard-atlas .atlas-leads-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.85rem;
+}
+
+.rh-dashboard-atlas .atlas-lead-stat {
+  display: flex;
+  min-height: 118px;
+  flex-direction: column;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  padding: 0.9rem 1rem 1rem;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.03);
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.18s ease,
+    background-color 0.18s ease;
+}
+
+.rh-dashboard-atlas .atlas-lead-stat:hover {
+  border-color: #a7f3d0;
+  background-color: #ffffff;
+  box-shadow:
+    0 8px 20px rgba(4, 120, 87, 0.1),
+    0 2px 6px rgba(16, 24, 40, 0.06);
+  transform: translateY(-2px);
+}
+
+.rh-dashboard-atlas .atlas-lead-stat-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.rh-dashboard-atlas .atlas-lead-stat-icon {
+  display: inline-flex;
+  height: 1.75rem;
+  width: 1.75rem;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: var(--rh-brand, #047857);
+  color: #ffffff;
+}
+
+.rh-dashboard-atlas .atlas-lead-stat-label {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #9ca3af;
+  text-align: right;
+  line-height: 1.2;
+}
+
+.rh-dashboard-atlas .atlas-lead-stat-value {
+  margin-top: 0.65rem;
+  font-size: 1.625rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: #0f172a;
+}
+
+.rh-dashboard-atlas .atlas-lead-stat-bar {
+  margin-top: auto;
+  height: 6px;
+  overflow: hidden;
+  border-radius: 9999px;
+  background: #ecfdf5;
+}
+
+.rh-dashboard-atlas .atlas-lead-stat-bar-fill {
+  height: 100%;
+  border-radius: 9999px;
+  background: var(--rh-brand, #047857);
+  transition: width 0.25s ease;
+}
+
+.rh-dashboard-atlas .atlas-stat-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #6b7280;
+}
+
+.rh-dashboard-atlas .atlas-stat-value {
+  margin-top: 0.25rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #111827;
+}
+
+.rh-dashboard-atlas .atlas-source-card {
+  padding: 1.25rem 1.35rem;
+}
+
+.rh-dashboard-atlas .atlas-source-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+}
+
+.rh-dashboard-atlas .atlas-source-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.rh-dashboard-atlas .atlas-source-row-top {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.rh-dashboard-atlas .atlas-source-icon {
+  display: inline-flex;
+  height: 2rem;
+  width: 2rem;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: #ecfdf5;
+  color: var(--rh-brand, #047857);
+}
+
+.rh-dashboard-atlas .atlas-source-icon--lavender {
+  background: #f3f0f6;
+  color: #8b7f99;
+}
+
+.rh-dashboard-atlas .atlas-source-name {
+  flex: 1;
+  min-width: 0;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #1f2937;
+}
+
+.rh-dashboard-atlas .atlas-source-value {
+  font-size: 0.875rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: #0f172a;
+}
+
+.rh-dashboard-atlas .atlas-source-bar {
+  height: 8px;
+  overflow: hidden;
+  border-radius: 9999px;
+  background: #ecfdf5;
+}
+
+.rh-dashboard-atlas .atlas-source-bar-fill {
+  height: 100%;
+  border-radius: 9999px;
+  background: var(--rh-brand, #047857);
+  transition: width 0.25s ease;
+}
+
+.rh-dashboard-atlas .atlas-source-bar-fill--lavender {
+  background: #c4b5d0;
+}
+
+.rh-dashboard-atlas .atlas-activity-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.35rem;
+}
+
+.rh-dashboard-atlas .atlas-activity-sub {
+  margin-top: 0.2rem;
+  font-size: 0.8125rem;
+  color: #9ca3af;
+}
+
+.rh-dashboard-atlas .atlas-activity-legend {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.rh-dashboard-atlas .atlas-activity-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #6b7280;
+}
+
+.rh-dashboard-atlas .atlas-activity-legend-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 9999px;
+  flex-shrink: 0;
+}
+
+.rh-dashboard-atlas .atlas-activity-chart {
+  margin-top: 0.25rem;
+  width: 100%;
+}
+
+.rh-dashboard-atlas .atlas-activity-chart .recharts-cartesian-grid-horizontal line {
+  stroke: #eef1f4;
+}
+
+.rh-dashboard-atlas .atlas-bottom-row {
+  display: grid;
+  gap: 0.75rem;
+}
+
+@media (min-width: 1024px) {
+  .rh-dashboard-atlas .atlas-bottom-row {
+    grid-template-columns: minmax(0, 1.4fr) minmax(220px, 0.85fr) minmax(200px, 0.7fr);
+    align-items: stretch;
+  }
+}
+
+.rh-dashboard-atlas .atlas-go-mobile {
+  border-radius: 14px;
+  padding: 1.25rem;
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.25);
+}
+
+.rh-dashboard-atlas .atlas-go-mobile-soon {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #1e3a8a;
+  background: rgba(255, 255, 255, 0.92);
+}
+
+.rh-dashboard-atlas .atlas-store-badges {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.rh-dashboard-atlas .atlas-store-badge-slot {
+  display: flex;
+  height: 40px;
+  width: 135px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: flex-start;
+  overflow: hidden;
+}
+
+.rh-dashboard-atlas .atlas-store-badge {
+  display: block;
+  height: 40px;
+  width: 135px;
+  object-fit: contain;
+  object-position: left center;
+}
+
+/* Official Play badge PNG has transparent padding — scale to fill the same slot */
+.rh-dashboard-atlas .atlas-store-badge--play {
+  height: 58px;
+  width: 154px;
+  max-width: none;
+  margin-left: -10px;
+  object-fit: contain;
+}
+
+.rh-dashboard-atlas .atlas-distribution-card {
+  display: flex;
+  flex-direction: column;
+  padding: 1.15rem 1.25rem 1.25rem;
+}
+
+.rh-dashboard-atlas .atlas-dist-square {
+  margin: 1.1rem auto 0;
+  display: flex;
+  height: 132px;
+  width: 132px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 10px solid #d1fae5;
+  border-radius: 18px;
+  background: #ffffff;
+  box-sizing: border-box;
+}
+
+.rh-dashboard-atlas .atlas-dist-square-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #9ca3af;
+  line-height: 1.2;
+}
+
+.rh-dashboard-atlas .atlas-dist-square-value {
+  margin-top: 0.15rem;
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: #0f172a;
+  line-height: 1.1;
+}
+
+.rh-dashboard-atlas .atlas-dist-footer {
+  margin-top: 1.15rem;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.rh-dashboard-atlas .atlas-dist-footer-right {
+  text-align: right;
+}
+
+.rh-dashboard-atlas .atlas-dist-footer-label {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #9ca3af;
+}
+
+.rh-dashboard-atlas .atlas-dist-footer-value {
+  margin-top: 0.2rem;
+  font-size: 1.125rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: #0f172a;
+  line-height: 1.2;
+}
+
+.rh-dashboard-atlas .atlas-resources-section {
+  border-radius: 14px;
+  border: 1px solid #d1fae5;
+  background: #f0faf4;
+  padding: 1.15rem 1.25rem 1.25rem;
+}
+
+.rh-dashboard-atlas .atlas-resources-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  color: #065f46;
+}
+
+.rh-dashboard-atlas .atlas-resources-header h2 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #065f46;
+  letter-spacing: -0.01em;
+}
+
+.rh-dashboard-atlas .atlas-resources-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+}
+
+@media (min-width: 768px) {
+  .rh-dashboard-atlas .atlas-resources-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.rh-dashboard-atlas .atlas-resource-tile {
+  display: flex;
+  min-height: 118px;
+  flex-direction: column;
+  border-radius: 12px;
+  border: 1px solid #bbf7d0;
+  background: #f7fcf9;
+  padding: 0.9rem 1rem 1rem;
+  text-decoration: none;
+  transition:
+    background-color 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.18s ease;
+}
+
+.rh-dashboard-atlas .atlas-resource-tile:hover {
+  background: #ffffff;
+  border-color: #a7f3d0;
+  box-shadow:
+    0 8px 20px rgba(4, 120, 87, 0.1),
+    0 2px 6px rgba(16, 24, 40, 0.06);
+  transform: translateY(-2px);
+}
+
+.rh-dashboard-atlas .atlas-resource-tile-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.rh-dashboard-atlas .atlas-resource-tile-icon {
+  display: inline-flex;
+  height: 1.75rem;
+  width: 1.75rem;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  border: 1px solid #a7f3d0;
+  color: #047857;
+  background: transparent;
+}
+
+.rh-dashboard-atlas .atlas-resource-tile-label {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #6b8f7e;
+  text-align: right;
+}
+
+.rh-dashboard-atlas .atlas-resource-tile-value {
+  margin-top: 0.65rem;
+  font-size: 1.625rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: #065f46;
+}
+
+.rh-dashboard-atlas .atlas-resource-tile-bar {
+  margin-top: auto;
+  height: 6px;
+  overflow: hidden;
+  border-radius: 9999px;
+  background: #d1fae5;
+}
+
+.rh-dashboard-atlas .atlas-resource-tile-bar-fill {
+  height: 100%;
+  border-radius: 9999px;
+  background: #047857;
+  transition: width 0.25s ease;
+}
+
+@media (max-width: 639px) {
+  .rh-dashboard-atlas .atlas-leads-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .rh-dashboard-atlas .atlas-kpi-grid {
+    grid-template-columns: 1fr;
+  }
+}

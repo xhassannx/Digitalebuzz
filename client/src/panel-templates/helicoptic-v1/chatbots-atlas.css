@@ -1,0 +1,58 @@
+/**
+ * Atlas Chatbots — Rh Emerald “Refined Aesthetic”
+ * https://www.figma.com/design/eIqluq3HmiuRPO5SGha5Hq/Rh-whatsapp (Chatbots)
+ *
+ * Scoped to helicoptic-v1 so Nova Chatbots chrome stays unchanged.
+ */
+
+html[data-panel-template="helicoptic-v1"] .rh-chatbots-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 4rem 1.5rem;
+  background: #ffffff;
+  border: 1px solid #eef2f1;
+  border-radius: 1rem;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+}
+
+html[data-panel-template="helicoptic-v1"] .rh-chatbots-empty-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 4rem;
+  height: 4rem;
+  margin-bottom: 1.25rem;
+  border-radius: 9999px;
+  background: var(--rh-brand-soft, #ecfdf5);
+  color: var(--rh-brand, #047857);
+}
+
+html[data-panel-template="helicoptic-v1"] .rh-chatbots-empty-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+html[data-panel-template="helicoptic-v1"] .rh-chatbots-empty-desc {
+  max-width: 26rem;
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: #6b7280;
+}
+
+html[data-panel-template="helicoptic-v1"] .rh-chatbots-empty-cta {
+  margin-top: 1.5rem;
+}
+
+/*
+ * Chatbot builder nodes: On Message and every action/message node.
+ * Only visual backgrounds change; node behavior and canvas interactions remain intact.
+ */
+html[data-panel-template="helicoptic-v1"] .rh-chatbot-builder .rh-chatbot-node-card,
+html[data-panel-template="helicoptic-v1"] .rh-chatbot-builder .rh-chatbot-node-header {
+  background-color: #ffffff !important;
+}

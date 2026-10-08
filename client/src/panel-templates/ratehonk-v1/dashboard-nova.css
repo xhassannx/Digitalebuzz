@@ -1,0 +1,709 @@
+/* Nova dashboard — Figma node 307:10931 */
+
+[data-rh-shell] .rh-dashboard-nova {
+  --nova-page-bg: #f3f4f6;
+  --nova-card: #ffffff;
+  --nova-border: #e8eaef;
+  --nova-blue: #2563eb;
+  --nova-navy: #1e3a8a;
+  --nova-cyan: #38bdf8;
+  background-color: var(--nova-page-bg) !important;
+  max-width: 100%;
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-dashboard-greeting h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #0f172a;
+}
+
+@media (min-width: 640px) {
+  [data-rh-shell] .rh-dashboard-nova .nova-dashboard-greeting h1 {
+    font-size: 2rem;
+  }
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-dashboard-greeting p {
+  margin-top: 0.35rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--nova-blue);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--nova-blue);
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  [data-rh-shell] .rh-dashboard-nova .nova-kpi-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-top-row {
+  display: grid;
+  gap: 0.75rem;
+}
+
+@media (min-width: 1024px) {
+  [data-rh-shell] .rh-dashboard-nova .nova-top-row {
+    grid-template-columns: minmax(0, 40%) minmax(0, 60%);
+    align-items: stretch;
+  }
+}
+
+@media (min-width: 1280px) {
+  [data-rh-shell] .rh-dashboard-nova .nova-kpi-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-panel-card {
+  border-radius: 14px;
+  border: 1px solid var(--nova-border);
+  background: var(--nova-card);
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.05);
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-bottom-row {
+  display: grid;
+  gap: 0.75rem;
+}
+
+@media (min-width: 1024px) {
+  [data-rh-shell] .rh-dashboard-nova .nova-bottom-row {
+    grid-template-columns: minmax(0, 1.65fr) minmax(260px, 1fr);
+  }
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-side-charts {
+  display: flex;
+  flex-direction: column;
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-side-chart-block {
+  flex: 1;
+  padding: 1rem 1.25rem;
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-side-chart-block + .nova-side-chart-block {
+  border-top: 1px solid var(--nova-border);
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-chart-title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-chart-title-row h3 {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 13px;
+  font-weight: 600;
+  color: #6b7280;
+}
+
+[data-rh-shell] .rh-dashboard-nova .recharts-cartesian-grid-horizontal line {
+  stroke: #f1f5f9;
+}
+
+/* AI Assistant Performance — Figma arcs + legend */
+[data-rh-shell] .rh-dashboard-nova .nova-ai-performance {
+  padding: 1.125rem 1.25rem 1.25rem;
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-ai-performance__title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1f2937;
+  letter-spacing: -0.01em;
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-ai-performance__body {
+  margin-top: 0.75rem;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 0;
+  box-sizing: border-box;
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-ai-performance__content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: min(100%, 520px);
+  margin-left: auto;
+  margin-right: auto;
+  gap: 2rem;
+  padding-left: 0.5rem;
+  padding-right: 1.25rem;
+  box-sizing: border-box;
+}
+
+@media (min-width: 1024px) {
+  [data-rh-shell] .rh-dashboard-nova .nova-ai-performance__content {
+    width: min(100%, 100%);
+    max-width: none;
+    padding-left: 0.75rem;
+    padding-right: 1.75rem;
+  }
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-ai-performance__chart {
+  position: relative;
+  flex: 0 0 184px;
+  width: 184px;
+  height: 184px;
+  margin-left: 0;
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-ai-performance__center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  text-align: center;
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-ai-performance__rate {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1;
+  color: #1f2937;
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-ai-performance__pct {
+  font-size: 1.35rem;
+  font-weight: 700;
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-ai-performance__rate-label {
+  margin-top: 0.25rem;
+  font-size: 11px;
+  font-weight: 500;
+  color: #6b7280;
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-ai-performance__legend {
+  flex: 0 0 auto;
+  width: max-content;
+  min-width: 168px;
+  max-width: 220px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-ai-performance__legend li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.625rem 0;
+  font-size: 12px;
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-ai-performance__legend-row {
+  border-bottom: 1px solid #eceef2;
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-ai-performance__legend-label {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 0.5rem;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-ai-performance__dot {
+  width: 8px;
+  height: 8px;
+  flex-shrink: 0;
+  border-radius: 9999px;
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-ai-performance__legend-value {
+  flex-shrink: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: #374151;
+}
+
+@media (max-width: 639px) {
+  [data-rh-shell] .rh-dashboard-nova .nova-ai-performance__body {
+    padding: 0 0.75rem;
+  }
+
+  [data-rh-shell] .rh-dashboard-nova .nova-ai-performance__content {
+    flex-direction: column;
+    gap: 1.25rem;
+    max-width: 100%;
+  }
+
+  [data-rh-shell] .rh-dashboard-nova .nova-ai-performance__chart {
+    margin: 0 auto;
+  }
+
+  [data-rh-shell] .rh-dashboard-nova .nova-ai-performance__legend {
+    margin: 0 auto;
+    max-width: none;
+  }
+}
+
+/* Third row — Users by country + Recent transactions */
+[data-rh-shell] .rh-dashboard-nova .nova-third-row {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+@media (min-width: 1024px) {
+  [data-rh-shell] .rh-dashboard-nova .nova-third-row {
+    grid-template-columns: minmax(0, 1.65fr) minmax(280px, 1fr);
+    align-items: stretch;
+  }
+}
+
+/* Users by country */
+[data-rh-shell] .rh-dashboard-nova .nova-users-country__layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(140px, 42%);
+  gap: 1rem;
+  height: 100%;
+  align-items: center;
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-users-country__title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-users-country__metric-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-users-country__metric {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #0f172a;
+  letter-spacing: -0.02em;
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-users-country__list {
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-users-country__row {
+  display: grid;
+  grid-template-columns: minmax(88px, 1fr) minmax(0, 2fr) auto;
+  align-items: center;
+  gap: 0.625rem;
+  font-size: 12px;
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-users-country__name {
+  color: #374151;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-users-country__bar-wrap {
+  height: 6px;
+  border-radius: 9999px;
+  background: #eef2f7;
+  overflow: hidden;
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-users-country__bar {
+  height: 100%;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, #1e40af, #3b82f6);
+  min-width: 4px;
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-users-country__pct {
+  font-size: 12px;
+  font-weight: 600;
+  color: #6b7280;
+  min-width: 2rem;
+  text-align: right;
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-users-country__map {
+  min-height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Recent transactions */
+[data-rh-shell] .rh-dashboard-nova .nova-recent-txn__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-recent-txn__title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-recent-txn__filter {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  background: #fff;
+  padding: 0.25rem 0.5rem;
+  font-size: 11px;
+  font-weight: 500;
+  color: #374151;
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-recent-txn__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  flex: 1;
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-recent-txn__row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto auto auto;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #f1f5f9;
+  font-size: 11px;
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-recent-txn__row:last-child {
+  border-bottom: none;
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-recent-txn__checkbox {
+  height: 14px;
+  width: 14px;
+  accent-color: #2563eb;
+  cursor: pointer;
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-recent-txn__id {
+  color: #9ca3af;
+  font-family: ui-monospace, monospace;
+  font-size: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-recent-txn__amount {
+  font-weight: 600;
+  color: #374151;
+  white-space: nowrap;
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-recent-txn__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  border-radius: 9999px;
+  padding: 0.125rem 0.5rem;
+  font-size: 10px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-recent-txn__status-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 9999px;
+  background: currentColor;
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-recent-txn__status--paid {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-recent-txn__status--pending {
+  background: #fef9c3;
+  color: #ca8a04;
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-recent-txn__status--failed {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-recent-txn__time {
+  color: #9ca3af;
+  font-size: 10px;
+  white-space: nowrap;
+  text-align: right;
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-recent-txn__loading,
+[data-rh-shell] .rh-dashboard-nova .nova-recent-txn__empty {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 0;
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-recent-txn__footer {
+  margin-top: auto;
+  padding-top: 0.75rem;
+  text-align: right;
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-recent-txn__view-all {
+  font-size: 11px;
+  font-weight: 600;
+  color: #2563eb;
+  text-decoration: none;
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-recent-txn__view-all:hover {
+  text-decoration: underline;
+}
+
+/* Fourth row — WhatsApp / payments / integrations */
+[data-rh-shell] .rh-dashboard-nova .nova-fourth-row {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+@media (min-width: 1024px) {
+  [data-rh-shell] .rh-dashboard-nova .nova-fourth-row {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: stretch;
+  }
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-connections-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-connections-card__title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-connections-card__manage {
+  font-size: 11px;
+  font-weight: 600;
+  color: #2563eb;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-connections-card__manage:hover {
+  text-decoration: underline;
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-connections-card__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-connections-card__row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-connections-card__row:last-child {
+  border-bottom: none;
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-connections-card__icon {
+  height: 28px;
+  width: 28px;
+  border-radius: 9999px;
+  object-fit: contain;
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  padding: 2px;
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-connections-card__icon-shell {
+  display: flex;
+  height: 28px;
+  width: 28px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  border: 1px solid #e5e7eb;
+  background: #fff;
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-connections-card__icon-shell--whatsapp {
+  color: #25d366;
+  background: #ecfdf3;
+  border-color: #bbf7d0;
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-connections-card__icon-shell--payment {
+  color: #414754;
+  background: #f9f9ff;
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-connections-card__icon-fallback {
+  display: flex;
+  height: 28px;
+  width: 28px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background: #eef2ff;
+  font-size: 12px;
+  font-weight: 700;
+  color: #2563eb;
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-connections-card__text {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-connections-card__name {
+  font-size: 12px;
+  font-weight: 600;
+  color: #374151;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-connections-card__sub {
+  font-size: 10px;
+  color: #9ca3af;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-connections-card__badge {
+  border-radius: 9999px;
+  padding: 0.125rem 0.5rem;
+  font-size: 10px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-connections-card__badge--success {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-connections-card__badge--muted {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-connections-card__badge--warning {
+  background: #fef9c3;
+  color: #ca8a04;
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-connections-card__badge--error {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+[data-rh-shell] .rh-dashboard-nova .nova-connections-card__loading,
+[data-rh-shell] .rh-dashboard-nova .nova-connections-card__empty {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 0;
+  font-size: 12px;
+  color: #9ca3af;
+  text-align: center;
+}
+
+@media (max-width: 1023px) {
+  [data-rh-shell] .rh-dashboard-nova .nova-fourth-row {
+    grid-template-columns: 1fr;
+  }
+
+  [data-rh-shell] .rh-dashboard-nova .nova-users-country__layout {
+    grid-template-columns: 1fr;
+  }
+
+  [data-rh-shell] .rh-dashboard-nova .nova-users-country__map {
+    min-height: 120px;
+  }
+
+  [data-rh-shell] .rh-dashboard-nova .nova-recent-txn__row {
+    grid-template-columns: auto 1fr auto;
+    grid-template-rows: auto auto;
+  }
+
+  [data-rh-shell] .rh-dashboard-nova .nova-recent-txn__amount {
+    grid-column: 2;
+  }
+
+  [data-rh-shell] .rh-dashboard-nova .nova-recent-txn__status {
+    grid-column: 3;
+    grid-row: 1 / span 2;
+  }
+
+  [data-rh-shell] .rh-dashboard-nova .nova-recent-txn__time {
+    grid-column: 2;
+  }
+}

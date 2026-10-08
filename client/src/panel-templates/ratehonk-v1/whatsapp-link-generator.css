@@ -1,0 +1,72 @@
+.ratehonk-wa-link-generator-content .wa-link-rh-card {
+  border-color: #e5e7eb;
+  background: #ffffff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  border-radius: 14px;
+}
+
+.ratehonk-wa-link-generator-content .wa-link-rh-card [class*="CardTitle"] {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #111c2d;
+  letter-spacing: -0.01em;
+}
+
+.ratehonk-wa-link-generator-content .wa-link-rh-card [class*="CardDescription"],
+.ratehonk-wa-link-generator-content .wa-link-rh-card .text-muted-foreground {
+  color: #717786;
+}
+
+.ratehonk-wa-link-generator-content .wa-link-hero-banner {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  border-color: var(
+    --rh-page-hero-border,
+    color-mix(in srgb, var(--rh-brand, #047857) 22%, #e5e7eb)
+  );
+  background-color: var(--rh-brand-soft, #ecfdf5);
+  background-image: var(
+    --rh-page-hero-bg,
+    linear-gradient(
+      180deg,
+      var(--rh-brand-soft, #ecfdf5) 0%,
+      color-mix(in srgb, var(--rh-brand-soft, #ecfdf5) 70%, #ffffff) 100%
+    )
+  );
+  box-shadow: 0 1px 2px color-mix(in srgb, var(--rh-brand, #047857) 8%, transparent),
+    0 8px 24px rgba(16, 24, 40, 0.04);
+}
+
+.ratehonk-wa-link-generator-content .wa-link-hero-banner .wa-link-hero-accent {
+  color: var(--rh-brand, #047857);
+}
+
+.ratehonk-wa-link-generator-content .wa-link-page-title {
+  color: #111c2d;
+  letter-spacing: -0.02em;
+}
+
+html[data-panel-template="helicoptic-v1"] .ratehonk-wa-link-generator-content .wa-link-preview-header {
+  background: #075e54;
+}
+
+.ratehonk-wa-link-generator-content {
+  max-width: 72rem;
+  margin-inline: auto;
+  width: 100%;
+}
+
+.ratehonk-wa-link-generator-content input:not([type="checkbox"]):not([type="radio"]),
+.ratehonk-wa-link-generator-content textarea,
+.ratehonk-wa-link-generator-content [data-slot="select-trigger"] {
+  border-color: #e5e7eb;
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.ratehonk-wa-link-generator-content textarea {
+  min-height: 120px;
+  resize: vertical;
+}

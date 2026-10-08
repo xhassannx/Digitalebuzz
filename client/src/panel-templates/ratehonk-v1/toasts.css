@@ -1,0 +1,128 @@
+/**
+ * RateHonk / Nova — toast notifications (portaled to document.body).
+ * Must not rely on panel-shell inheritance: html/body default to Castoro.
+ */
+
+/* Viewport — keep fully on-screen with theme inset */
+html[data-rh-shell] .app-toast-viewport,
+html[data-rh-shell] li[class*="app-toast-viewport"],
+html[data-rh-shell] [class*="app-toast-viewport"] {
+  font-family: "Inter", system-ui, -apple-system, sans-serif !important;
+  top: auto !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  left: auto !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.75rem;
+  width: min(420px, calc(100vw - 2rem)) !important;
+  max-width: min(420px, calc(100vw - 2rem)) !important;
+  max-height: min(100vh, 100dvh) !important;
+  padding: 1rem !important;
+  margin: 0 !important;
+  list-style: none !important;
+  z-index: 300 !important;
+  outline: none;
+  pointer-events: none;
+}
+
+html[data-rh-shell] .app-toast-viewport > * {
+  pointer-events: auto;
+}
+
+/* Base toast card — beat Tailwind border/bg utilities + Castoro */
+html[data-rh-shell] .app-toast,
+html[data-rh-shell] [data-radix-toast-root].app-toast,
+html[data-rh-shell] li.app-toast {
+  font-family: "Inter", system-ui, -apple-system, sans-serif !important;
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 0.75rem !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 1rem 2.5rem 1rem 1rem !important;
+  border-radius: 12px !important;
+  border: 1px solid #e5e7eb !important;
+  background-color: #ffffff !important;
+  color: #111c2d !important;
+  box-shadow: 0 12px 40px rgb(17 28 45 / 0.14) !important;
+  overflow: hidden;
+  word-break: break-word;
+}
+
+/* Default / success-style surface */
+html[data-rh-shell] .app-toast:not(.destructive) {
+  border-left: 4px solid var(--rh-brand, #0059bb) !important;
+}
+
+/* Error / destructive — readable long messages, theme-aligned */
+html[data-rh-shell] .app-toast.destructive,
+html[data-rh-shell] [data-radix-toast-root].app-toast.destructive {
+  background-color: #fff7f7 !important;
+  border: 1px solid #fecaca !important;
+  border-left: 4px solid #dc2626 !important;
+  color: #111c2d !important;
+}
+
+html[data-rh-shell] .app-toast .font-semibold,
+html[data-rh-shell] .app-toast [class*="font-semibold"] {
+  font-family: "Inter", system-ui, -apple-system, sans-serif !important;
+  font-size: 0.875rem !important;
+  font-weight: 600 !important;
+  line-height: 1.35 !important;
+  color: #111c2d !important;
+}
+
+html[data-rh-shell] .app-toast.destructive .font-semibold,
+html[data-rh-shell] .app-toast.destructive [class*="font-semibold"] {
+  color: #b91c1c !important;
+}
+
+html[data-rh-shell] .app-toast .opacity-90,
+html[data-rh-shell] .app-toast [class*="opacity-90"] {
+  font-family: "Inter", system-ui, -apple-system, sans-serif !important;
+  font-size: 0.8125rem !important;
+  font-weight: 400 !important;
+  line-height: 1.45 !important;
+  opacity: 1 !important;
+  color: #4b5563 !important;
+}
+
+html[data-rh-shell] .app-toast.destructive .opacity-90,
+html[data-rh-shell] .app-toast.destructive [class*="opacity-90"] {
+  color: #7f1d1d !important;
+}
+
+/* Close button */
+html[data-rh-shell] .app-toast > button[toast-close],
+html[data-rh-shell] .app-toast > button.absolute {
+  top: 0.625rem !important;
+  right: 0.625rem !important;
+  opacity: 0.65 !important;
+  color: #6b7280 !important;
+  border-radius: 6px;
+  border: none !important;
+  background: transparent !important;
+}
+
+html[data-rh-shell] .app-toast > button[toast-close]:hover,
+html[data-rh-shell] .app-toast > button.absolute:hover {
+  opacity: 1 !important;
+  color: #111c2d !important;
+  background-color: rgb(17 28 45 / 0.06) !important;
+}
+
+html[data-rh-shell] .app-toast.destructive > button[toast-close],
+html[data-rh-shell] .app-toast.destructive > button.absolute {
+  color: #b91c1c !important;
+}
+
+@media (max-width: 640px) {
+  html[data-rh-shell] .app-toast-viewport {
+    left: 0.75rem !important;
+    right: 0.75rem !important;
+    width: auto !important;
+    max-width: none !important;
+    padding: 0.75rem 0 !important;
+  }
+}

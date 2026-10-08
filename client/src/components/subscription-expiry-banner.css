@@ -1,0 +1,11 @@
+/**
+ * Fixed desktop sidebar uses inset-y-0 / h-svh, so without an offset the logo
+ * sits under the full-width subscription expiry banner. Shift it down when the
+ * banner is visible (height set by SubscriptionExpiryBanner).
+ */
+html[data-subscription-expiry-banner="1"] [data-slot="sidebar-container"] {
+  top: var(--subscription-expiry-banner-h, 0px) !important;
+  bottom: 0 !important;
+  height: auto !important;
+  max-height: none !important;
+}

@@ -1,0 +1,270 @@
+/**
+ * Atlas Inbox — Figma RATEHONK Emerald “Refined Aesthetic”
+ * Flat list rows, timestamps, right accent rail, mint/white bubbles.
+ * Scoped so Nova blue inbox chrome stays unchanged.
+ */
+
+html[data-panel-template="helicoptic-v1"] .nova-inbox,
+html[data-panel-template="helicoptic-v1"][data-rh-shell] .nova-inbox,
+[data-panel-template="helicoptic-v1"] .nova-inbox,
+[data-panel-template="helicoptic-v1"][data-rh-shell] .nova-inbox {
+  --nova-list-bg: #ffffff;
+  --nova-row-active-bg: #ecfdf5;
+  --nova-row-active-border: transparent;
+  --nova-row-active-shadow: none;
+  --nova-chat-row-width: 100%;
+  --nova-summarize-width: 0;
+  --nova-blue: var(--rh-brand, #047857);
+  --nova-blue-soft: var(--rh-brand-light, #d1fae5);
+  background: #ffffff !important;
+}
+
+html[data-panel-template="helicoptic-v1"] .nova-inbox [data-testid="page-chat"],
+html[data-panel-template="helicoptic-v1"] .nova-inbox [data-testid="page-chat"] > .flex.flex-1 > .border-r,
+html[data-panel-template="helicoptic-v1"] .nova-inbox [data-radix-scroll-area-viewport],
+html[data-panel-template="helicoptic-v1"] .nova-inbox .nova-chat-list,
+html[data-panel-template="helicoptic-v1"] .nova-inbox .divide-y,
+[data-panel-template="helicoptic-v1"] .nova-inbox [data-testid="page-chat"],
+[data-panel-template="helicoptic-v1"] .nova-inbox [data-testid="page-chat"] > .flex.flex-1 > .border-r,
+[data-panel-template="helicoptic-v1"] .nova-inbox [data-radix-scroll-area-viewport],
+[data-panel-template="helicoptic-v1"] .nova-inbox .nova-chat-list,
+[data-panel-template="helicoptic-v1"] .nova-inbox .divide-y {
+  background: #ffffff !important;
+}
+
+html[data-panel-template="helicoptic-v1"] .nova-inbox [data-testid="inbox-list-toolbar"],
+[data-panel-template="helicoptic-v1"] .nova-inbox [data-testid="inbox-list-toolbar"] {
+  background: #ffffff !important;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+/* Flat list rows (not Nova cards) */
+html[data-panel-template="helicoptic-v1"] .nova-inbox .nova-chat-row,
+html[data-panel-template="helicoptic-v1"] .nova-inbox .nova-chat-row.nova-chat-row--active,
+[data-panel-template="helicoptic-v1"] .nova-inbox .nova-chat-row,
+[data-panel-template="helicoptic-v1"] .nova-inbox .nova-chat-row.nova-chat-row--active {
+  position: relative;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-height: 4.5rem;
+  margin: 0 !important;
+  border: none !important;
+  border-bottom: 1px solid #f1f5f4 !important;
+  border-radius: 0 !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+  overflow: hidden;
+}
+
+html[data-panel-template="helicoptic-v1"] .nova-inbox .nova-chat-row:hover,
+[data-panel-template="helicoptic-v1"] .nova-inbox .nova-chat-row:hover {
+  background: #f8faf9 !important;
+}
+
+html[data-panel-template="helicoptic-v1"] .nova-inbox .nova-chat-row.nova-chat-row--active,
+[data-panel-template="helicoptic-v1"] .nova-inbox .nova-chat-row.nova-chat-row--active {
+  background: var(--nova-row-active-bg, #ecfdf5) !important;
+}
+
+/* Thin emerald rail on selected row (Figma) */
+html[data-panel-template="helicoptic-v1"] .nova-inbox .nova-chat-row.nova-chat-row--active::after,
+[data-panel-template="helicoptic-v1"] .nova-inbox .nova-chat-row.nova-chat-row--active::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--rh-brand, #047857);
+  border-radius: 2px 0 0 2px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* Hide Nova summarize strip — not in Atlas Figma */
+html[data-panel-template="helicoptic-v1"] .nova-inbox .nova-summarize-btn,
+html[data-panel-template="helicoptic-v1"] .nova-inbox .nova-chat-row.nova-chat-row--active .nova-summarize-btn,
+[data-panel-template="helicoptic-v1"] .nova-inbox .nova-summarize-btn,
+[data-panel-template="helicoptic-v1"] .nova-inbox .nova-chat-row.nova-chat-row--active .nova-summarize-btn {
+  display: none !important;
+  width: 0 !important;
+  min-width: 0 !important;
+  max-width: 0 !important;
+  flex: 0 0 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  border: none !important;
+}
+
+html[data-panel-template="helicoptic-v1"] .nova-inbox .nova-chat-row-body,
+[data-panel-template="helicoptic-v1"] .nova-inbox .nova-chat-row-body {
+  max-width: 100% !important;
+  width: 100% !important;
+  padding: 0.875rem 1rem !important;
+}
+
+html[data-panel-template="helicoptic-v1"] .nova-inbox .nova-contact-name,
+[data-panel-template="helicoptic-v1"] .nova-inbox .nova-contact-name {
+  color: #111827 !important;
+  font-weight: 600 !important;
+}
+
+html[data-panel-template="helicoptic-v1"] .nova-inbox .nova-chat-time,
+[data-panel-template="helicoptic-v1"] .nova-inbox .nova-chat-time {
+  flex-shrink: 0;
+  margin-left: auto;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  color: #9ca3af;
+  white-space: nowrap;
+  line-height: 1.25rem;
+}
+
+html[data-panel-template="helicoptic-v1"] .nova-inbox .nova-unread-badge,
+[data-panel-template="helicoptic-v1"] .nova-inbox .nova-unread-badge {
+  background-color: var(--rh-brand, #047857) !important;
+}
+
+html[data-panel-template="helicoptic-v1"] .nova-inbox .nova-chat-list,
+html[data-panel-template="helicoptic-v1"] .nova-inbox .divide-y,
+[data-panel-template="helicoptic-v1"] .nova-inbox .nova-chat-list,
+[data-panel-template="helicoptic-v1"] .nova-inbox .divide-y {
+  padding: 0 !important;
+}
+
+/* Conversation header */
+html[data-panel-template="helicoptic-v1"] .nova-inbox [data-testid="header-conversation"],
+[data-panel-template="helicoptic-v1"] .nova-inbox [data-testid="header-conversation"] {
+  background: #ffffff !important;
+  border-bottom: 1px solid #e5e7eb !important;
+}
+
+html[data-panel-template="helicoptic-v1"] .nova-inbox [data-testid="scroll-messages"],
+[data-panel-template="helicoptic-v1"] .nova-inbox [data-testid="scroll-messages"] {
+  background: #f7f8f7 !important;
+}
+
+/* Outgoing bubbles — white bordered (Figma) */
+html[data-panel-template="helicoptic-v1"] .nova-inbox .group\/bubble > div.bg-sky-100,
+[data-panel-template="helicoptic-v1"] .nova-inbox .group\/bubble > div.bg-sky-100 {
+  background-color: #ffffff !important;
+  color: #1f2937 !important;
+  border: 1px solid #e5e7eb !important;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04) !important;
+}
+
+/* Incoming bubbles — soft emerald (beats inline pastel via !important) */
+html[data-panel-template="helicoptic-v1"] .nova-inbox .group\/bubble > div:not(.bg-sky-100):not(.wa-media-card),
+[data-panel-template="helicoptic-v1"] .nova-inbox .group\/bubble > div:not(.bg-sky-100):not(.wa-media-card) {
+  background-color: #d1fae5 !important;
+  color: #064e3b !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+
+/* Timestamps / meta — never use avatar white text on mint bubbles */
+html[data-panel-template="helicoptic-v1"] .nova-inbox .group\/bubble .msg-bubble-meta,
+[data-panel-template="helicoptic-v1"] .nova-inbox .group\/bubble .msg-bubble-meta {
+  color: #047857 !important;
+  opacity: 1 !important;
+}
+
+/* Clickable links inside bubbles */
+html[data-panel-template="helicoptic-v1"] .nova-inbox .group\/bubble .msg-bubble-link,
+[data-panel-template="helicoptic-v1"] .nova-inbox .group\/bubble .msg-bubble-link {
+  color: #0369a1 !important;
+  text-decoration: underline !important;
+  text-underline-offset: 2px;
+}
+
+html[data-panel-template="helicoptic-v1"] .nova-inbox .group\/bubble > div.bg-sky-100 .msg-bubble-meta,
+[data-panel-template="helicoptic-v1"] .nova-inbox .group\/bubble > div.bg-sky-100 .msg-bubble-meta {
+  color: #54656f !important;
+}
+
+html[data-panel-template="helicoptic-v1"] .nova-inbox .group\/bubble > div.bg-sky-100 .msg-bubble-link,
+[data-panel-template="helicoptic-v1"] .nova-inbox .group\/bubble > div.bg-sky-100 .msg-bubble-link {
+  color: #0369a1 !important;
+}
+
+html[data-panel-template="helicoptic-v1"] .nova-inbox .group\/bubble p.text-\[\#25d366\],
+[data-panel-template="helicoptic-v1"] .nova-inbox .group\/bubble p.text-\[\#25d366\] {
+  color: var(--rh-brand, #047857) !important;
+}
+
+/* Composer + send */
+html[data-panel-template="helicoptic-v1"] .nova-inbox .chat-composer-shell,
+html[data-panel-template="helicoptic-v1"] .nova-inbox .wa-message-composer,
+[data-panel-template="helicoptic-v1"] .nova-inbox .chat-composer-shell,
+[data-panel-template="helicoptic-v1"] .nova-inbox .wa-message-composer {
+  background: #ffffff !important;
+  border-top: 1px solid #e5e7eb !important;
+}
+
+html[data-panel-template="helicoptic-v1"] .nova-inbox [data-testid="button-send-template"],
+[data-panel-template="helicoptic-v1"] .nova-inbox [data-testid="button-send-template"] {
+  background-color: var(--rh-brand, #047857) !important;
+  color: #ffffff !important;
+  border-color: var(--rh-brand, #047857) !important;
+}
+
+html[data-panel-template="helicoptic-v1"] .nova-inbox [data-testid="button-send-template"]:hover,
+[data-panel-template="helicoptic-v1"] .nova-inbox [data-testid="button-send-template"]:hover {
+  background-color: var(--rh-brand-hover, #065f46) !important;
+  border-color: var(--rh-brand-hover, #065f46) !important;
+  color: #ffffff !important;
+}
+
+html[data-panel-template="helicoptic-v1"] .nova-inbox .wa-send-mic-btn,
+[data-panel-template="helicoptic-v1"] .nova-inbox .wa-send-mic-btn {
+  background: var(--rh-brand, #047857) !important;
+}
+
+html[data-panel-template="helicoptic-v1"] .nova-inbox .wa-send-mic-btn:hover,
+[data-panel-template="helicoptic-v1"] .nova-inbox .wa-send-mic-btn:hover {
+  background: var(--rh-brand-hover, #065f46) !important;
+}
+
+/* Empty / welcome feature cards — softer Atlas look */
+html[data-panel-template="helicoptic-v1"] .nova-inbox [data-testid="page-chat"] .bg-\[\#202c33\],
+[data-panel-template="helicoptic-v1"] .nova-inbox [data-testid="page-chat"] .bg-\[\#202c33\] {
+  background-color: #ecfdf5 !important;
+  border-color: #a7f3d0 !important;
+}
+
+html[data-panel-template="helicoptic-v1"] .nova-inbox [data-testid="page-chat"] .bg-\[\#202c33\] p.text-white,
+[data-panel-template="helicoptic-v1"] .nova-inbox [data-testid="page-chat"] .bg-\[\#202c33\] p.text-white {
+  color: #065f46 !important;
+}
+
+@media (min-width: 1024px) {
+  html[data-panel-template="helicoptic-v1"] .nova-inbox [data-testid="page-chat"] > .flex.flex-1 > .border-r + div,
+  [data-panel-template="helicoptic-v1"] .nova-inbox [data-testid="page-chat"] > .flex.flex-1 > .border-r + div {
+    padding-right: 0 !important;
+  }
+}
+
+/**
+ * Atlas chat meet/booking dialog is rendered in a portal on <body>,
+ * so scope by the panel-template attribute + dialog test id.
+ * Recolor the sky/blue CTA to the emerald brand.
+ */
+html[data-panel-template="helicoptic-v1"] [data-testid="dialog-chat-meet-link"] .text-sky-600 {
+  color: var(--rh-brand, #047857) !important;
+}
+
+html[data-panel-template="helicoptic-v1"] [data-testid="dialog-chat-meet-link"] button.bg-sky-600 {
+  background-color: var(--rh-brand, #047857) !important;
+  border-color: var(--rh-brand, #047857) !important;
+  color: #ffffff !important;
+}
+
+html[data-panel-template="helicoptic-v1"] [data-testid="dialog-chat-meet-link"] button.bg-sky-600:hover {
+  background-color: var(--rh-brand-hover, #065f46) !important;
+}
+
+html[data-panel-template="helicoptic-v1"] [data-testid="dialog-chat-meet-link"] input:focus-visible {
+  border-color: color-mix(in srgb, var(--rh-brand, #047857) 55%, #e5e7eb) !important;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--rh-brand, #047857) 14%, transparent) !important;
+}

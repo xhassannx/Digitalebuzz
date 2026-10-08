@@ -1,0 +1,158 @@
+/**
+ * Nova inbox / chat — Figma Ho7aZJvanQlVi88TwsSZjx node 371:9851
+ * https://www.figma.com/design/Ho7aZJvanQlVi88TwsSZjx/Untitled?node-id=371-9851
+ */
+
+[data-rh-shell] .ratehonk-inbox {
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  min-width: 0;
+  overflow: hidden;
+}
+
+[data-rh-shell] .ratehonk-inbox [data-testid="page-chat"] {
+  background-color: #f5f5f5;
+  min-width: 0;
+  overflow: hidden;
+}
+
+/* Conversation list rail — white card on gray canvas */
+[data-rh-shell] .ratehonk-inbox [data-testid="page-chat"] > .flex.flex-1 > .border-r {
+  background-color: #ffffff;
+  border-color: #e5e7eb;
+  box-shadow: 1px 0 0 rgba(17, 28, 45, 0.04);
+}
+
+[data-rh-shell] .ratehonk-inbox [data-testid="page-chat"] .border-r,
+[data-rh-shell] .ratehonk-inbox [data-testid="page-chat"] .border-b {
+  border-color: #e5e7eb;
+}
+
+[data-rh-shell] .ratehonk-inbox .bg-card {
+  background-color: #ffffff;
+}
+
+[data-rh-shell] .ratehonk-inbox input.pl-9 {
+  background: #ffffff;
+}
+
+[data-rh-shell] .ratehonk-inbox .border-border {
+  border-color: #e5e7eb;
+}
+
+[data-rh-shell] .ratehonk-inbox .bg-muted\/50 {
+  background-color: #f5f5f5;
+}
+
+/* Message thread + composer column */
+[data-rh-shell] .ratehonk-inbox [data-testid="page-chat"] .flex-1.flex.flex-col.min-h-0 {
+  background-color: #f5f5f5;
+}
+
+[data-rh-shell] .ratehonk-inbox .chat-composer-shell {
+  background-color: #ffffff;
+  border-top: 1px solid #e5e7eb;
+}
+
+[data-rh-shell] .ratehonk-inbox .wa-message-composer {
+  background-color: #ffffff;
+}
+
+[data-rh-shell] .ratehonk-inbox .wa-message-composer textarea,
+[data-rh-shell] .ratehonk-inbox .wa-message-composer input {
+  background-color: #f5f5f5;
+  border-color: #e5e7eb;
+  border-radius: 1.25rem;
+}
+
+[data-rh-shell] .ratehonk-inbox .wa-send-mic-btn {
+  background-color: var(--rh-brand, #0059bb) !important;
+}
+
+[data-rh-shell] .ratehonk-inbox .wa-send-mic-btn:hover {
+  background-color: var(--rh-brand-hover, #004a9a) !important;
+}
+
+/* List toolbar */
+[data-rh-shell] .ratehonk-inbox [data-testid="page-chat"] h1,
+[data-rh-shell] .ratehonk-inbox [data-testid="page-chat"] h2 {
+  color: #374151;
+  font-weight: 600;
+}
+
+@media (max-width: 1023px) {
+  [data-rh-shell] .ratehonk-inbox,
+  [data-rh-shell] .ratehonk-inbox [data-testid="page-chat"] {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  [data-rh-shell] .ratehonk-inbox [data-testid="page-chat"] > .flex.flex-1 {
+    width: 100%;
+    min-width: 0;
+  }
+
+  [data-rh-shell] .ratehonk-inbox [data-testid="page-chat"] .overflow-x-auto {
+    max-width: 100%;
+  }
+
+  [data-rh-shell] .ratehonk-inbox [data-testid="header-conversation"] {
+    max-width: 100%;
+  }
+
+  [data-rh-shell] .ratehonk-inbox [data-testid="header-conversation"] [data-testid="text-contact-name"] {
+    word-break: break-word;
+  }
+
+  [data-rh-shell] .ratehonk-inbox .wa-message-composer [data-testid="button-emoji-picker"] {
+    height: 2.25rem;
+    width: 2.25rem;
+  }
+
+  [data-rh-shell] .ratehonk-inbox .chat-composer-shell {
+    position: relative;
+    z-index: 20;
+  }
+
+  [data-rh-shell] .ratehonk-inbox .wa-message-composer .wa-send-mic-btn {
+    height: 2.5rem !important;
+    width: 2.5rem !important;
+    min-height: 2.5rem !important;
+    min-width: 2.5rem !important;
+    max-height: 2.5rem !important;
+    max-width: 2.5rem !important;
+    flex: 0 0 2.5rem !important;
+    padding: 0 !important;
+    border-radius: 9999px !important;
+  }
+
+  [data-rh-shell] .ratehonk-inbox [data-testid="page-chat"] .wa-message-composer [data-testid="button-emoji-picker"] {
+    height: 2.25rem !important;
+    width: 2.25rem !important;
+    min-height: 2.25rem !important;
+    min-width: 2.25rem !important;
+  }
+}
+
+/* Mobile inbox composer — all panel templates */
+@media (max-width: 1023px) {
+  [data-testid="page-chat"] .chat-composer-shell {
+    position: relative;
+    z-index: 20;
+  }
+
+  [data-testid="page-chat"] .wa-message-composer .grid {
+    width: 100%;
+  }
+
+  [data-testid="page-chat"] .wa-send-mic-btn {
+    height: 2.5rem !important;
+    width: 2.5rem !important;
+    min-height: 2.5rem !important;
+    min-width: 2.5rem !important;
+    max-height: 2.5rem !important;
+    max-width: 2.5rem !important;
+    flex: 0 0 2.5rem !important;
+    padding: 0 !important;
+    border-radius: 9999px !important;
+  }
+}

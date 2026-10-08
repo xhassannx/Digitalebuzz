@@ -1,0 +1,340 @@
+/**
+ * Domain-wide RateHonk v1 overrides when active (html[data-rh-shell]).
+ * Applies to panel shell, portaled dialogs, and dropdowns — not public marketing pages.
+ */
+
+@import "./toasts.css";
+
+html[data-rh-shell] {
+  --panel-brand: var(--rh-brand, #0059bb);
+  --panel-brand-hover: var(--rh-brand-hover, #004a9a);
+  --primary: 211 100% 37%;
+  --primary-foreground: 0 0% 100%;
+  --ring: 211 100% 37%;
+  --accent: 224 100% 94%;
+  --accent-foreground: 211 100% 37%;
+  --background: 0 0% 96%;
+  --foreground: 220 47% 11%;
+  --muted: 220 14% 96%;
+  --muted-foreground: 220 9% 46%;
+  --border: 220 13% 91%;
+  --input: 220 9% 80%;
+  --destructive: 0 72% 51%;
+  --destructive-foreground: 0 0% 100%;
+  --destructive-border: hsl(0 72% 45%);
+  --radius: 0.75rem;
+  --sidebar-gradient: none;
+  /* Portaled UI (toasts, menus) inherits from html — override Castoro from index.css */
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+}
+
+/* Switches / toggles — clear off & disabled states on light backgrounds */
+html[data-rh-shell] button[role="switch"][data-state="unchecked"]:not(:disabled) {
+  background-color: #e5e7eb !important;
+  border-color: #9ca3af !important;
+}
+
+html[data-rh-shell] button[role="switch"][data-state="unchecked"]:disabled {
+  background-color: #f3f4f6 !important;
+  border-color: #d1d5db !important;
+  opacity: 1 !important;
+}
+
+html[data-rh-shell] button[role="switch"] > span {
+  background-color: #ffffff !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  outline: 1px solid rgba(107, 114, 128, 0.45);
+}
+
+/* On state — RateHonk brand blue (overrides org orange primary & legacy orange utilities) */
+html[data-rh-shell] button[role="switch"][data-state="checked"],
+html[data-rh-shell] [data-rh-shell] button[role="switch"][data-state="checked"] {
+  background-color: var(--panel-brand, var(--rh-brand, #0059bb)) !important;
+  border-color: transparent !important;
+}
+
+html[data-rh-shell] button[role="switch"][data-state="checked"] > span {
+  outline-color: rgba(0, 89, 187, 0.35);
+}
+
+html[data-rh-shell] body {
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  background-color: #f5f5f5;
+  color: #374151;
+}
+
+/* Primary CTAs that still use legacy orange utility classes */
+html[data-rh-shell] .panel-main button.bg-orange-500,
+html[data-rh-shell] .panel-main a.bg-orange-500,
+html[data-rh-shell] [role="dialog"] button.bg-orange-500,
+html[data-rh-shell] [role="menu"] button.bg-orange-500 {
+  background-color: var(--rh-brand, #0059bb) !important;
+  color: #ffffff !important;
+  border-color: var(--rh-brand, #0059bb) !important;
+}
+
+html[data-rh-shell] .panel-main button.hover\:bg-orange-600:hover,
+html[data-rh-shell] .panel-main a.hover\:bg-orange-600:hover,
+html[data-rh-shell] [role="dialog"] button.hover\:bg-orange-600:hover {
+  background-color: var(--rh-brand-hover, #004a9a) !important;
+}
+
+html[data-rh-shell] .panel-main button.bg-orange-600,
+html[data-rh-shell] [role="dialog"] button.bg-orange-600 {
+  background-color: var(--rh-brand, #0059bb) !important;
+  color: #ffffff !important;
+}
+
+/* Soft orange highlights → brand tint */
+html[data-rh-shell] .panel-main .bg-orange-50,
+html[data-rh-shell] .panel-main .bg-orange-100,
+html[data-rh-shell] [role="dialog"] .bg-orange-50,
+html[data-rh-shell] [role="dialog"] .bg-orange-100 {
+  background-color: var(--rh-brand-light, #dfe8ff) !important;
+  color: var(--rh-brand, #0059bb) !important;
+}
+
+html[data-rh-shell] .panel-main .text-orange-600,
+html[data-rh-shell] .panel-main .text-orange-500,
+html[data-rh-shell] .panel-main a.text-orange-600,
+html[data-rh-shell] [role="dialog"] .text-orange-600 {
+  color: var(--rh-brand, #0059bb) !important;
+}
+
+html[data-rh-shell] .panel-main .border-orange-500,
+html[data-rh-shell] .panel-main .border-orange-600,
+html[data-rh-shell] .panel-main .ring-orange-500 {
+  border-color: var(--rh-brand, #0059bb) !important;
+  --tw-ring-color: var(--rh-brand, #0059bb) !important;
+}
+
+/* Legacy green primary buttons in panel pages */
+html[data-rh-shell] .panel-main button.bg-green-600,
+html[data-rh-shell] .panel-main button.bg-green-500,
+html[data-rh-shell] [role="dialog"] button.bg-green-600 {
+  background-color: var(--rh-brand, #0059bb) !important;
+  color: #ffffff !important;
+}
+
+html[data-rh-shell] .panel-main button.hover\:bg-green-700:hover,
+html[data-rh-shell] [role="dialog"] button.hover\:bg-green-700:hover {
+  background-color: var(--rh-brand-hover, #004a9a) !important;
+}
+
+html[data-rh-shell] .panel-main .text-green-600,
+html[data-rh-shell] .panel-main a.text-green-600 {
+  color: var(--rh-brand, #0059bb) !important;
+}
+
+/* shadcn primary buttons — brand fill + visible label (do not match border-primary-border) */
+html[data-rh-shell] .panel-main button.bg-primary,
+html[data-rh-shell] [role="dialog"] button.bg-primary,
+html[data-rh-shell] .panel-main button.bg-\[\#0059bb\],
+html[data-rh-shell] [role="dialog"] button.bg-\[\#0059bb\],
+html[data-rh-shell] .panel-main button.bg-\[var\(--rh-brand\)\],
+html[data-rh-shell] [role="dialog"] button.bg-\[var\(--rh-brand\)\] {
+  background-color: var(--rh-brand, #0059bb) !important;
+  border-color: var(--rh-brand, #0059bb) !important;
+  color: #ffffff !important;
+}
+
+html[data-rh-shell] .panel-main button.bg-primary:hover,
+html[data-rh-shell] [role="dialog"] button.bg-primary:hover,
+html[data-rh-shell] .panel-main button.hover\:bg-\[\#004a9a\]:hover,
+html[data-rh-shell] [role="dialog"] button.hover\:bg-\[\#004a9a\]:hover,
+html[data-rh-shell] .panel-main button.hover\:bg-\[var\(--rh-brand-hover\)\]:hover,
+html[data-rh-shell] [role="dialog"] button.hover\:bg-\[var\(--rh-brand-hover\)\]:hover {
+  background-color: var(--rh-brand-hover, #004a9a) !important;
+}
+
+html[data-rh-shell] .panel-main button.bg-primary svg,
+html[data-rh-shell] [role="dialog"] button.bg-primary svg,
+html[data-rh-shell] .panel-main button.bg-\[\#0059bb\] svg,
+html[data-rh-shell] [role="dialog"] button.bg-\[\#0059bb\] svg,
+html[data-rh-shell] .panel-main button.bg-\[var\(--rh-brand\)\] svg,
+html[data-rh-shell] [role="dialog"] button.bg-\[var\(--rh-brand\)\] svg {
+  color: #ffffff;
+}
+
+/* Brand text on links/labels only — not on filled primary buttons */
+html[data-rh-shell] .panel-main a.text-primary,
+html[data-rh-shell] .panel-main span.text-primary,
+html[data-rh-shell] [role="dialog"] a.text-primary {
+  color: var(--rh-brand, #0059bb) !important;
+}
+
+html[data-rh-shell] .panel-main .border-primary,
+html[data-rh-shell] [role="dialog"] .border-primary {
+  border-color: var(--rh-brand, #0059bb) !important;
+}
+
+html[data-rh-shell] .panel-main *:focus-visible,
+html[data-rh-shell] [role="dialog"] *:focus-visible {
+  --tw-ring-color: var(--rh-brand, #0059bb);
+}
+
+/* Tables & data surfaces — soft brand header (matches Reminders) */
+html[data-rh-shell] .ratehonk-page-skin table thead tr,
+html[data-rh-shell] .ratehonk-page-skin table thead th,
+html[data-rh-shell] .panel-main table thead tr,
+html[data-rh-shell] .panel-main table thead th {
+  background-color: var(--rh-brand-soft, #ecfdf5) !important;
+}
+
+html[data-rh-shell] .ratehonk-page-skin table th,
+html[data-rh-shell] .panel-main table th {
+  color: #414754;
+  font-weight: 600;
+}
+
+html[data-rh-shell] .ratehonk-page-skin table tbody tr:hover {
+  background-color: color-mix(in srgb, var(--rh-brand, #047857) 5%, #ffffff);
+}
+
+/* Shared page header panel — crystal emerald wash (Atlas) / brand soft wash fallback */
+html[data-rh-shell] .rh-page-hero {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  overflow: hidden;
+  border-radius: 1rem;
+  border: 1px solid var(
+    --rh-page-hero-border,
+    color-mix(in srgb, var(--rh-brand, #047857) 16%, #e5e7eb)
+  );
+  background-color: var(--rh-brand-soft, #ecfdf5);
+  background-image: var(
+    --rh-page-hero-bg,
+    linear-gradient(
+      105deg,
+      var(--rh-brand-soft, #ecfdf5) 0%,
+      color-mix(in srgb, var(--rh-brand-light, #d1fae5) 40%, #ffffff) 42%,
+      #ffffff 100%
+    )
+  );
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04), 0 8px 24px rgba(16, 24, 40, 0.04);
+  padding: 1.05rem 1.25rem;
+}
+
+html[data-rh-shell] .rh-page-hero::before {
+  content: "";
+  position: absolute;
+  right: -2.5rem;
+  top: -3rem;
+  width: 12rem;
+  height: 12rem;
+  border-radius: 9999px;
+  background: var(
+    --rh-page-hero-glow,
+    radial-gradient(
+      circle,
+      color-mix(in srgb, var(--rh-brand, #047857) 22%, transparent) 0%,
+      transparent 70%
+    )
+  );
+  pointer-events: none;
+}
+
+html[data-rh-shell] .rh-page-hero > * {
+  position: relative;
+  z-index: 1;
+}
+
+@media (min-width: 640px) {
+  html[data-rh-shell] .rh-page-hero {
+    padding: 1.2rem 1.5rem;
+  }
+}
+
+/* Sticky heading banners across panel pages */
+html[data-rh-shell] .atlas-welcome,
+html[data-rh-shell] .atlas-rem-page-hero,
+html[data-rh-shell] .wa-link-hero-banner,
+html[data-rh-shell] .widget-hero-banner {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background-color: var(--rh-brand-soft, #ecfdf5);
+}
+
+/* Secondary brand buttons (e.g. integrations “Manage”) */
+html[data-rh-shell] .ratehonk-page-skin button.bg-\[\#dfe8ff\],
+html[data-rh-shell] .panel-main button.bg-\[\#dfe8ff\],
+html[data-rh-shell] .ratehonk-page-skin button.bg-\[var\(--rh-brand-light\)\],
+html[data-rh-shell] .panel-main button.bg-\[var\(--rh-brand-light\)\] {
+  background-color: var(--rh-brand-light, #dfe8ff) !important;
+  color: var(--rh-brand, #0059bb) !important;
+}
+
+html[data-rh-shell] .ratehonk-page-skin button.bg-\[\#dfe8ff\]:hover,
+html[data-rh-shell] .ratehonk-page-skin button.bg-\[var\(--rh-brand-light\)\]:hover,
+html[data-rh-shell] .panel-main button.hover\:bg-\[\#cddaff\]:hover {
+  background-color: var(--rh-brand-soft, #e8f0fe) !important;
+}
+
+/* ── Spinners / loaders → panel brand (Nova blue / Atlas emerald via --rh-brand) ── */
+html[data-rh-shell] .panel-main svg.animate-spin,
+html[data-rh-shell] [role="dialog"] svg.animate-spin,
+html[data-rh-shell] [role="alertdialog"] svg.animate-spin,
+html[data-rh-shell] [data-radix-popper-content-wrapper] svg.animate-spin {
+  color: var(--rh-brand, #0059bb) !important;
+}
+
+/* Keep spinners white on filled brand CTAs */
+html[data-rh-shell] .panel-main button.bg-primary svg.animate-spin,
+html[data-rh-shell] .panel-main button.bg-\[var\(--rh-brand\)\] svg.animate-spin,
+html[data-rh-shell] .panel-main button.bg-\[\#0059bb\] svg.animate-spin,
+html[data-rh-shell] .panel-main button.bg-orange-500 svg.animate-spin,
+html[data-rh-shell] .panel-main button.bg-orange-600 svg.animate-spin,
+html[data-rh-shell] .panel-main button.bg-green-500 svg.animate-spin,
+html[data-rh-shell] .panel-main button.bg-green-600 svg.animate-spin,
+html[data-rh-shell] [role="dialog"] button.bg-primary svg.animate-spin,
+html[data-rh-shell] [role="dialog"] button.bg-\[var\(--rh-brand\)\] svg.animate-spin,
+html[data-rh-shell] [role="dialog"] button.bg-\[\#0059bb\] svg.animate-spin {
+  color: #ffffff !important;
+}
+
+/* CSS border-ring spinners (div/span) */
+html[data-rh-shell] .panel-main .animate-spin.rounded-full,
+html[data-rh-shell] [role="dialog"] .animate-spin.rounded-full,
+html[data-rh-shell] [role="alertdialog"] .animate-spin.rounded-full {
+  border-color: var(--rh-brand, #0059bb);
+  border-top-color: transparent !important;
+}
+
+html[data-rh-shell] .panel-main .animate-spin.border-white,
+html[data-rh-shell] [role="dialog"] .animate-spin.border-white {
+  border-color: #ffffff !important;
+  border-top-color: transparent !important;
+}
+
+/* border-b / border-l style spinners */
+html[data-rh-shell] .panel-main .animate-spin.border-b-2,
+html[data-rh-shell] .panel-main .animate-spin[class*="border-b-"],
+html[data-rh-shell] [role="dialog"] .animate-spin.border-b-2 {
+  border-bottom-color: var(--rh-brand, #0059bb) !important;
+}
+
+html[data-rh-shell] .panel-main .animate-spin.border-l-2,
+html[data-rh-shell] .panel-main .animate-spin[class*="border-l-"] {
+  border-left-color: var(--rh-brand, #0059bb) !important;
+}
+
+/* Full-screen / route loaders outside .panel-main while RH shell is active */
+html[data-rh-shell] body > #root .animate-spin.rounded-full.border-primary,
+html[data-rh-shell] body .flex.h-screen .animate-spin.rounded-full {
+  border-color: var(--rh-brand, #0059bb);
+  border-top-color: transparent !important;
+}
+
+/* Atlas — re-assert emerald shadcn tokens after Nova defaults above */
+html[data-panel-template="helicoptic-v1"][data-rh-shell],
+html[data-panel-template="helicoptic-v1"] {
+  --primary: 160 94% 24%;
+  --primary-foreground: 0 0% 100%;
+  --ring: 160 94% 24%;
+  --accent: 152 81% 90%;
+  --accent-foreground: 160 94% 24%;
+  --panel-brand: #047857;
+  --panel-brand-hover: #065f46;
+}

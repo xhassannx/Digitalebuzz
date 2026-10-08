@@ -1,0 +1,33 @@
+.ratehonk-commerce-content .commerce-page-chrome {
+  display: none;
+}
+
+.ratehonk-commerce-content {
+  max-width: 56rem;
+}
+
+.ratehonk-commerce-content .commerce-rh-card {
+  border-color: #e5e7eb;
+  background: #ffffff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  border-radius: 12px;
+}
+
+.ratehonk-commerce-content .commerce-rh-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 89, 187, 0.08);
+}
+
+.ratehonk-commerce-content .commerce-rh-inset {
+  border-color: #e5e7eb;
+  background: #f9fafb;
+  border-radius: 10px;
+}
+
+.ratehonk-commerce-content .commerce-rh-inset a {
+  color: var(--rh-brand, #0059bb);
+}
+
+.ratehonk-commerce-content [data-slot="select-trigger"] {
+  background: #ffffff;
+  border-color: #e5e7eb;
+}

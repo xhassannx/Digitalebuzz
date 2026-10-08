@@ -1,0 +1,638 @@
+{
+	"info": {
+		"_postman_id": "tbo-flight-api-collection",
+		"name": "TBO Flight API",
+		"description": "Complete TBO Flight API collection for flight booking flow: Authenticate → Search → FareRule → FareQuote → SSR (Optional) → Book → Ticket → Get Booking Details",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"auth": {
+		"type": "noauth"
+	},
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "https://api.tektravels.com",
+			"type": "string"
+		},
+		{
+			"key": "api_version",
+			"value": "v1",
+			"type": "string"
+		},
+		{
+			"key": "username",
+			"value": "Faredown.com",
+			"type": "string"
+		},
+		{
+			"key": "api_password",
+			"value": "Fare@1234",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "session_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "trace_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "booking_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "result_index",
+			"value": "1",
+			"type": "string"
+		}
+	],
+	"item": [
+		{
+			"name": "1. Authentication",
+			"item": [
+				{
+					"name": "Validate Agency (Authenticate)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var jsonData = pm.response.json();",
+									"    if (jsonData.TokenId) {",
+									"        pm.collectionVariables.set('token', jsonData.TokenId);",
+									"    }",
+									"    if (jsonData.SessionId) {",
+									"        pm.collectionVariables.set('session_id', jsonData.SessionId);",
+									"    }",
+									"    if (jsonData.TraceId) {",
+									"        pm.collectionVariables.set('trace_id', jsonData.TraceId);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"ClientId\": \"{{username}}\",\n    \"UserName\": \"{{username}}\",\n    \"Password\": \"{{api_password}}\",\n    \"EndUserIp\": \"192.168.1.1\",\n    \"TokenId\": \"\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/{{api_version}}/Authenticate/ValidateAgency",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{api_version}}",
+								"Authenticate",
+								"ValidateAgency"
+							]
+						},
+						"description": "Authenticate and get TokenId, SessionId for subsequent API calls"
+					},
+					"response": []
+				}
+			],
+			"description": "Authentication endpoint to get TokenId and SessionId"
+		},
+		{
+			"name": "2. Search",
+			"item": [
+				{
+					"name": "One-Way Search",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var jsonData = pm.response.json();",
+									"    if (jsonData.SessionId) {",
+									"        pm.collectionVariables.set('session_id', jsonData.SessionId);",
+									"    }",
+									"    if (jsonData.TraceId) {",
+									"        pm.collectionVariables.set('trace_id', jsonData.TraceId);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "TokenId",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"EndUserIp\": \"192.168.1.1\",\n    \"TokenId\": \"{{token}}\",\n    \"AdultCount\": 1,\n    \"ChildCount\": 0,\n    \"InfantCount\": 0,\n    \"JourneyType\": 1,\n    \"Segments\": [\n        {\n            \"Origin\": \"DEL\",\n            \"Destination\": \"BOM\",\n            \"FlightCabinClass\": 1,\n            \"PreferredDepartureTime\": \"2024-12-20T00:00:00\",\n            \"PreferredArrivalTime\": \"2024-12-20T23:59:59\"\n        }\n    ],\n    \"Sources\": []\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/{{api_version}}/Search/Search",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{api_version}}",
+								"Search",
+								"Search"
+							]
+						},
+						"description": "One-way flight search (JourneyType: 1). Single segment from Origin to Destination. Example: DEL to BOM."
+					},
+					"response": []
+				},
+				{
+					"name": "Round Trip Search",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var jsonData = pm.response.json();",
+									"    if (jsonData.SessionId) {",
+									"        pm.collectionVariables.set('session_id', jsonData.SessionId);",
+									"    }",
+									"    if (jsonData.TraceId) {",
+									"        pm.collectionVariables.set('trace_id', jsonData.TraceId);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "TokenId",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"EndUserIp\": \"192.168.1.1\",\n    \"TokenId\": \"{{token}}\",\n    \"AdultCount\": 2,\n    \"ChildCount\": 1,\n    \"InfantCount\": 1,\n    \"JourneyType\": 2,\n    \"Segments\": [\n        {\n            \"Origin\": \"DEL\",\n            \"Destination\": \"BOM\",\n            \"FlightCabinClass\": 1,\n            \"PreferredDepartureTime\": \"2024-12-20T00:00:00\",\n            \"PreferredArrivalTime\": \"2024-12-20T23:59:59\"\n        },\n        {\n            \"Origin\": \"BOM\",\n            \"Destination\": \"DEL\",\n            \"FlightCabinClass\": 1,\n            \"PreferredDepartureTime\": \"2024-12-27T00:00:00\",\n            \"PreferredArrivalTime\": \"2024-12-27T23:59:59\"\n        }\n    ],\n    \"Sources\": []\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/{{api_version}}/Search/Search",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{api_version}}",
+								"Search",
+								"Search"
+							]
+						},
+						"description": "Round trip flight search (JourneyType: 2). Two segments - outbound and return. Sample Test Case: DEL-BOM (2 Adult + 1 Child + 1 Infant) return sector."
+					},
+					"response": []
+				},
+				{
+					"name": "Multi-City Search",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var jsonData = pm.response.json();",
+									"    if (jsonData.SessionId) {",
+									"        pm.collectionVariables.set('session_id', jsonData.SessionId);",
+									"    }",
+									"    if (jsonData.TraceId) {",
+									"        pm.collectionVariables.set('trace_id', jsonData.TraceId);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "TokenId",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"EndUserIp\": \"192.168.1.1\",\n    \"TokenId\": \"{{token}}\",\n    \"AdultCount\": 1,\n    \"ChildCount\": 0,\n    \"InfantCount\": 0,\n    \"JourneyType\": 3,\n    \"Segments\": [\n        {\n            \"Origin\": \"DEL\",\n            \"Destination\": \"BOM\",\n            \"FlightCabinClass\": 1,\n            \"PreferredDepartureTime\": \"2024-12-20T00:00:00\",\n            \"PreferredArrivalTime\": \"2024-12-20T23:59:59\"\n        },\n        {\n            \"Origin\": \"BOM\",\n            \"Destination\": \"BLR\",\n            \"FlightCabinClass\": 1,\n            \"PreferredDepartureTime\": \"2024-12-25T00:00:00\",\n            \"PreferredArrivalTime\": \"2024-12-25T23:59:59\"\n        },\n        {\n            \"Origin\": \"BLR\",\n            \"Destination\": \"DEL\",\n            \"FlightCabinClass\": 1,\n            \"PreferredDepartureTime\": \"2024-12-30T00:00:00\",\n            \"PreferredArrivalTime\": \"2024-12-30T23:59:59\"\n        }\n    ],\n    \"Sources\": []\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/{{api_version}}/Search/Search",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{api_version}}",
+								"Search",
+								"Search"
+							]
+						},
+						"description": "Multi-city flight search (JourneyType: 3). Multiple segments connecting different cities. Example: DEL → BOM → BLR → DEL. Note: Multi-city support depends on TBO API availability."
+					},
+					"response": []
+				},
+				{
+					"name": "Search Flights (Async)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var jsonData = pm.response.json();",
+									"    if (jsonData.SessionId) {",
+									"        pm.collectionVariables.set('session_id', jsonData.SessionId);",
+									"    }",
+									"    if (jsonData.TraceId) {",
+									"        pm.collectionVariables.set('trace_id', jsonData.TraceId);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "TokenId",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"EndUserIp\": \"192.168.1.1\",\n    \"TokenId\": \"{{token}}\",\n    \"AdultCount\": 2,\n    \"ChildCount\": 1,\n    \"InfantCount\": 1,\n    \"JourneyType\": 2,\n    \"Segments\": [\n        {\n            \"Origin\": \"DEL\",\n            \"Destination\": \"BOM\",\n            \"FlightCabinClass\": 1,\n            \"PreferredDepartureTime\": \"2024-12-20T00:00:00\",\n            \"PreferredArrivalTime\": \"2024-12-20T23:59:59\"\n        },\n        {\n            \"Origin\": \"BOM\",\n            \"Destination\": \"DEL\",\n            \"FlightCabinClass\": 1,\n            \"PreferredDepartureTime\": \"2024-12-27T00:00:00\",\n            \"PreferredArrivalTime\": \"2024-12-27T23:59:59\"\n        }\n    ],\n    \"Sources\": []\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/{{api_version}}/Search/SearchAsync",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{api_version}}",
+								"Search",
+								"SearchAsync"
+							]
+						},
+						"description": "Asynchronous flight search. Use this for longer search operations. Supports all journey types (One-way, Round Trip, Multi-city)."
+					},
+					"response": []
+				}
+			],
+			"description": "Flight search endpoints - One-way, Round Trip, Multi-city, and Async search options"
+		},
+		{
+			"name": "3. Fare Rule",
+			"item": [
+				{
+					"name": "Get Fare Rule",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "TokenId",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"EndUserIp\": \"192.168.1.1\",\n    \"TokenId\": \"{{token}}\",\n    \"TraceId\": \"{{trace_id}}\",\n    \"ResultIndex\": \"{{result_index}}\",\n    \"FareSourceCode\": \"\",\n    \"FlightId\": \"\",\n    \"Segments\": []\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/{{api_version}}/Detail/FareRule",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{api_version}}",
+								"Detail",
+								"FareRule"
+							]
+						},
+						"description": "Get fare rules for selected flight. Use ResultIndex from Search response"
+					},
+					"response": []
+				}
+			],
+			"description": "Get fare rules for selected flight"
+		},
+		{
+			"name": "4. Fare Quote",
+			"item": [
+				{
+					"name": "Get Fare Quote",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "TokenId",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"EndUserIp\": \"192.168.1.1\",\n    \"TokenId\": \"{{token}}\",\n    \"TraceId\": \"{{trace_id}}\",\n    \"ResultIndex\": \"{{result_index}}\",\n    \"FareSourceCode\": \"\",\n    \"FlightId\": \"\",\n    \"Segments\": []\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/{{api_version}}/Detail/FareQuote",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{api_version}}",
+								"Detail",
+								"FareQuote"
+							]
+						},
+						"description": "Get fare quote for selected flight. Use ResultIndex from Search response"
+					},
+					"response": []
+				}
+			],
+			"description": "Get fare quote for selected flight"
+		},
+		{
+			"name": "5. SSR (Optional)",
+			"item": [
+				{
+					"name": "Get SSR",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "TokenId",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"EndUserIp\": \"192.168.1.1\",\n    \"TokenId\": \"{{token}}\",\n    \"TraceId\": \"{{trace_id}}\",\n    \"ResultIndex\": \"{{result_index}}\",\n    \"FareSourceCode\": \"\",\n    \"FlightId\": \"\",\n    \"Segments\": []\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/{{api_version}}/Detail/GetSSR",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{api_version}}",
+								"Detail",
+								"GetSSR"
+							]
+						},
+						"description": "Get Special Service Requests (SSR) - Optional step"
+					},
+					"response": []
+				}
+			],
+			"description": "Get Special Service Requests (SSR) - Optional step"
+		},
+		{
+			"name": "6. Book",
+			"item": [
+				{
+					"name": "Book Flight",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var jsonData = pm.response.json();",
+									"    if (jsonData.BookingId) {",
+									"        pm.collectionVariables.set('booking_id', jsonData.BookingId);",
+									"    }",
+									"    if (jsonData.TraceId) {",
+									"        pm.collectionVariables.set('trace_id', jsonData.TraceId);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "TokenId",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"EndUserIp\": \"192.168.1.1\",\n    \"TokenId\": \"{{token}}\",\n    \"TraceId\": \"{{trace_id}}\",\n    \"ResultIndex\": \"{{result_index}}\",\n    \"FareSourceCode\": \"\",\n    \"FlightId\": \"\",\n    \"Segments\": [],\n    \"Passengers\": [\n        {\n            \"Title\": \"Mr\",\n            \"FirstName\": \"John\",\n            \"LastName\": \"Doe\",\n            \"PaxType\": 1,\n            \"DateOfBirth\": \"1990-01-01\",\n            \"Gender\": 1,\n            \"PassportNo\": \"\",\n            \"PassportExpiry\": \"\",\n            \"PassportIssuingCountry\": \"\",\n            \"Nationality\": \"IN\",\n            \"AddressLine1\": \"\",\n            \"AddressLine2\": \"\",\n            \"City\": \"\",\n            \"State\": \"\",\n            \"Country\": \"IN\",\n            \"PostalCode\": \"\",\n            \"EmailID\": \"john.doe@example.com\",\n            \"MobileNo\": \"+919876543210\",\n            \"Fare\": {\n                \"BaseFare\": 0,\n                \"Tax\": 0,\n                \"YQTax\": 0,\n                \"AdditionalTxnFeeOfrd\": 0,\n                \"AdditionalTxnFeePub\": 0,\n                \"ServiceCharge\": 0\n            },\n            \"Meal\": [],\n            \"Seat\": [],\n            \"SpecialService\": []\n        }\n    ],\n    \"GSTDetails\": {\n        \"GSTNumber\": \"\",\n        \"GSTCompanyName\": \"\",\n        \"GSTCompanyAddress\": \"\",\n        \"GSTEmail\": \"\",\n        \"GSTPhone\": \"\"\n    }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/{{api_version}}/Booking/Book",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{api_version}}",
+								"Booking",
+								"Book"
+							]
+						},
+						"description": "Book the selected flight. Use ResultIndex, TraceId from previous responses"
+					},
+					"response": []
+				}
+			],
+			"description": "Book flight endpoint"
+		},
+		{
+			"name": "7. Ticket",
+			"item": [
+				{
+					"name": "Ticket Flight",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "TokenId",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"EndUserIp\": \"192.168.1.1\",\n    \"TokenId\": \"{{token}}\",\n    \"BookingId\": \"{{booking_id}}\",\n    \"TraceId\": \"{{trace_id}}\",\n    \"PaymentDetails\": {\n        \"PaymentMode\": 1,\n        \"PaymentId\": \"\",\n        \"PaymentGatewayName\": \"\",\n        \"PGReferenceNumber\": \"\",\n        \"TransactionId\": \"\",\n        \"TransactionAmount\": 0,\n        \"TransactionStatus\": \"\",\n        \"TransactionDate\": \"\",\n        \"Remarks\": \"\"\n    }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/{{api_version}}/Booking/Ticket",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{api_version}}",
+								"Booking",
+								"Ticket"
+							]
+						},
+						"description": "Issue ticket for booked flight. Use BookingId from Book response"
+					},
+					"response": []
+				}
+			],
+			"description": "Issue ticket for booked flight"
+		},
+		{
+			"name": "8. Get Booking Details",
+			"item": [
+				{
+					"name": "Get Booking Details",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "TokenId",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"EndUserIp\": \"192.168.1.1\",\n    \"TokenId\": \"{{token}}\",\n    \"BookingId\": \"{{booking_id}}\",\n    \"TraceId\": \"{{trace_id}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/{{api_version}}/Booking/GetBookingDetails",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{api_version}}",
+								"Booking",
+								"GetBookingDetails"
+							]
+						},
+						"description": "Get booking details using BookingId"
+					},
+					"response": []
+				}
+			],
+			"description": "Get booking details endpoint"
+		}
+	]
+}

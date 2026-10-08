@@ -1,0 +1,228 @@
+/**
+ * Atlas Manage pages - shared Rh Emerald "Refined Aesthetic".
+ *
+ * Covers:
+ * - Transactions
+ * - WhatsApp Forms / Flows
+ * - Canned Messages
+ * - Tags
+ * - Columns
+ * - Opts Management
+ * - Webhook Events
+ * - Billing & Subscription
+ *
+ * Scoped to helicoptic-v1 and `.atlas-manage-page` so Nova / Standard are unchanged.
+ * Visual-only CSS; no behavior changes.
+ */
+
+html[data-panel-template="helicoptic-v1"] .atlas-manage-page {
+  color: #111c2d;
+}
+
+html[data-panel-template="helicoptic-v1"] .atlas-manage-page h1 {
+  color: #111c2d;
+  letter-spacing: -0.02em;
+}
+
+html[data-panel-template="helicoptic-v1"] .atlas-manage-page h2,
+html[data-panel-template="helicoptic-v1"] .atlas-manage-page h3,
+html[data-panel-template="helicoptic-v1"] .atlas-manage-page [class*="CardTitle"] {
+  color: #111c2d;
+}
+
+html[data-panel-template="helicoptic-v1"] .atlas-manage-page .text-muted-foreground {
+  color: #717786 !important;
+}
+
+/* Cards and bordered panels — do NOT target bare .rounded-md.border (matches every Button/Badge) */
+html[data-panel-template="helicoptic-v1"] .atlas-manage-page .shadcn-card,
+html[data-panel-template="helicoptic-v1"] .atlas-manage-page .rounded-xl.border.bg-card,
+html[data-panel-template="helicoptic-v1"] .atlas-manage-page .rounded-lg.border.bg-card,
+html[data-panel-template="helicoptic-v1"] .atlas-manage-page .rounded-lg.border.shadow-sm,
+html[data-panel-template="helicoptic-v1"] .atlas-manage-page .rounded-lg.border.bg-muted\/50,
+html[data-panel-template="helicoptic-v1"] .atlas-manage-page .border.bg-card {
+  border-color: #e5e7eb !important;
+  border-radius: 1rem !important;
+  background: #ffffff !important;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+}
+
+html[data-panel-template="helicoptic-v1"] .atlas-manage-page .border-primary\/20,
+html[data-panel-template="helicoptic-v1"] .atlas-manage-page .bg-primary\/5 {
+  border-color: #a7f3d0 !important;
+  background: var(--rh-brand-soft, #ecfdf5) !important;
+}
+
+/* Inputs / selects */
+html[data-panel-template="helicoptic-v1"] .atlas-manage-page input:not([type="checkbox"]):not([type="radio"]),
+html[data-panel-template="helicoptic-v1"] .atlas-manage-page textarea,
+html[data-panel-template="helicoptic-v1"] .atlas-manage-page [role="combobox"] {
+  border-color: #e5e7eb !important;
+  border-radius: 0.75rem !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+}
+
+html[data-panel-template="helicoptic-v1"] .atlas-manage-page input:focus-visible,
+html[data-panel-template="helicoptic-v1"] .atlas-manage-page textarea:focus-visible,
+html[data-panel-template="helicoptic-v1"] .atlas-manage-page [role="combobox"]:focus-visible {
+  border-color: color-mix(in srgb, var(--rh-brand, #047857) 55%, #e5e7eb) !important;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--rh-brand, #047857) 14%, transparent) !important;
+}
+
+/* Buttons */
+html[data-panel-template="helicoptic-v1"] .atlas-manage-page button.bg-primary,
+html[data-panel-template="helicoptic-v1"] .atlas-manage-page button.bg-green-600,
+html[data-panel-template="helicoptic-v1"] .atlas-manage-page button.bg-emerald-600,
+html[data-panel-template="helicoptic-v1"] .atlas-manage-page button[class*="bg-green-600"],
+html[data-panel-template="helicoptic-v1"] .atlas-manage-page button[class*="bg-emerald-600"] {
+  border-color: var(--rh-brand, #047857) !important;
+  background: var(--rh-brand, #047857) !important;
+  color: #ffffff !important;
+}
+
+html[data-panel-template="helicoptic-v1"] .atlas-manage-page button.bg-primary:hover,
+html[data-panel-template="helicoptic-v1"] .atlas-manage-page button.bg-green-600:hover,
+html[data-panel-template="helicoptic-v1"] .atlas-manage-page button.bg-emerald-600:hover,
+html[data-panel-template="helicoptic-v1"] .atlas-manage-page button[class*="bg-green-600"]:hover,
+html[data-panel-template="helicoptic-v1"] .atlas-manage-page button[class*="bg-emerald-600"]:hover {
+  background: var(--rh-brand-hover, #065f46) !important;
+}
+
+/* Outline-style controls only — every Button includes a border class, so exclude filled CTAs */
+html[data-panel-template="helicoptic-v1"] .atlas-manage-page button[class*="border"]:not(.bg-primary):not([class*="bg-destructive"]):not([class*="bg-green-"]):not([class*="bg-emerald-"]),
+html[data-panel-template="helicoptic-v1"] .atlas-manage-page a[class*="border"]:not(.bg-primary) {
+  border-radius: 0.75rem;
+}
+
+html[data-panel-template="helicoptic-v1"] .atlas-manage-page button.border-transparent,
+html[data-panel-template="helicoptic-v1"] .atlas-manage-page button[class*="border-transparent"] {
+  border-color: transparent !important;
+}
+
+html[data-panel-template="helicoptic-v1"] .atlas-manage-page button[class*="border"]:not(.bg-primary):not([class*="bg-destructive"]):not([class*="bg-green-"]):not([class*="bg-emerald-"]):not(.border-transparent):hover,
+html[data-panel-template="helicoptic-v1"] .atlas-manage-page a[class*="border"]:not(.bg-primary):hover {
+  border-color: color-mix(in srgb, var(--rh-brand, #047857) 40%, #e5e7eb) !important;
+}
+
+/* Tag / custom color swatches — preserve inline colors against card overrides */
+html[data-panel-template="helicoptic-v1"] .atlas-manage-page .tag-color-badge {
+  background-color: var(--tag-color) !important;
+  color: #ffffff !important;
+  border-color: transparent !important;
+}
+
+html[data-panel-template="helicoptic-v1"] .atlas-manage-page .tag-color-swatch {
+  background-color: var(--tag-color) !important;
+  border-color: color-mix(in srgb, var(--tag-color) 35%, #111c2d) !important;
+}
+
+/* Tables */
+html[data-panel-template="helicoptic-v1"] .atlas-manage-page table thead tr,
+html[data-panel-template="helicoptic-v1"] .atlas-manage-page table thead th {
+  background: var(--rh-brand-soft, #ecfdf5) !important;
+}
+
+html[data-panel-template="helicoptic-v1"] .atlas-manage-page table th {
+  color: #414754 !important;
+  font-weight: 600 !important;
+}
+
+html[data-panel-template="helicoptic-v1"] .atlas-manage-page table tbody tr:hover {
+  background: color-mix(in srgb, var(--rh-brand, #047857) 5%, #ffffff) !important;
+}
+
+html[data-panel-template="helicoptic-v1"] .atlas-manage-page table td {
+  border-color: #eef2f1 !important;
+}
+
+/* Badges / brand text */
+html[data-panel-template="helicoptic-v1"] .atlas-manage-page .text-primary,
+html[data-panel-template="helicoptic-v1"] .atlas-manage-page a.text-primary {
+  color: var(--rh-brand, #047857) !important;
+}
+
+html[data-panel-template="helicoptic-v1"] .atlas-manage-page .bg-green-500,
+html[data-panel-template="helicoptic-v1"] .atlas-manage-page .bg-emerald-600 {
+  background-color: var(--rh-brand, #047857) !important;
+}
+
+/* Empty states */
+html[data-panel-template="helicoptic-v1"] .atlas-manage-page .py-12.text-center,
+html[data-panel-template="helicoptic-v1"] .atlas-manage-page .flex.flex-col.items-center.justify-center.py-12 {
+  border-radius: 1rem;
+  background: #ffffff;
+}
+
+html[data-panel-template="helicoptic-v1"] .atlas-manage-page svg.text-muted-foreground {
+  color: var(--rh-brand, #047857) !important;
+}
+
+/* Columns page cards */
+html[data-panel-template="helicoptic-v1"] .atlas-columns-page .bg-muted\/50 {
+  background: #ffffff !important;
+  border-color: #e5e7eb !important;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+}
+
+/* Webhook guide card */
+html[data-panel-template="helicoptic-v1"] .atlas-webhooks-page code {
+  background: #ffffff !important;
+  border: 1px solid #d1fae5;
+  color: #065f46;
+}
+
+/* Opt keyword cards */
+html[data-panel-template="helicoptic-v1"] .atlas-opts-page .grid > .rounded-lg.border.bg-card {
+  min-height: 15rem;
+}
+
+/* Billing page */
+html[data-panel-template="helicoptic-v1"] .atlas-billing-page .text-primary {
+  color: var(--rh-brand, #047857) !important;
+}
+
+html[data-panel-template="helicoptic-v1"] .atlas-billing-page [data-testid^="card-plan-"],
+html[data-panel-template="helicoptic-v1"] .atlas-billing-page [data-testid="card-current-plan"],
+html[data-panel-template="helicoptic-v1"] .atlas-billing-page [data-testid="card-payment-history"] {
+  border-color: #e5e7eb !important;
+  border-radius: 1rem !important;
+  background: #ffffff !important;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+}
+
+html[data-panel-template="helicoptic-v1"] .atlas-billing-page [data-testid^="card-plan-"] .text-3xl {
+  color: #111c2d;
+  letter-spacing: -0.02em;
+}
+
+html[data-panel-template="helicoptic-v1"] .atlas-billing-page [data-testid="text-plan-name"] {
+  color: #111c2d;
+}
+
+html[data-panel-template="helicoptic-v1"] .atlas-billing-page button.w-full {
+  border-radius: 0.75rem !important;
+}
+
+html[data-panel-template="helicoptic-v1"] .atlas-billing-page button.bg-primary,
+html[data-panel-template="helicoptic-v1"] .atlas-billing-page button[data-testid^="button-select-"]:not([disabled]) {
+  background: var(--rh-brand, #047857) !important;
+  border-color: var(--rh-brand, #047857) !important;
+  color: #ffffff !important;
+}
+
+html[data-panel-template="helicoptic-v1"] .atlas-billing-page button.bg-primary:hover,
+html[data-panel-template="helicoptic-v1"] .atlas-billing-page button[data-testid^="button-select-"]:not([disabled]):hover {
+  background: var(--rh-brand-hover, #065f46) !important;
+}
+
+html[data-panel-template="helicoptic-v1"] .atlas-billing-page .border-4.border-primary {
+  border-color: var(--rh-brand, #047857) !important;
+}
+
+@media (max-width: 768px) {
+  html[data-panel-template="helicoptic-v1"] .atlas-manage-page {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}

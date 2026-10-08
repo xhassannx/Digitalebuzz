@@ -1,0 +1,39 @@
+/**
+ * Atlas (Emerald Green) overrides — brand tokens are primarily set via
+ * CSS variables on [data-panel-template="helicoptic-v1"] in ratehonk theme.css
+ * and inline on the Atlas Layout root.
+ * Use html[...] so these beat html[data-rh-shell] primary tokens from ratehonk-global.
+ */
+html[data-panel-template="helicoptic-v1"],
+[data-panel-template="helicoptic-v1"] {
+  --rh-brand: #047857;
+  --rh-brand-hover: #065f46;
+  --rh-brand-light: #d1fae5;
+  --rh-brand-soft: #ecfdf5;
+  /* Shared page header banner — crystal emerald wash */
+  --rh-page-hero-border: color-mix(in srgb, #2d8a56 30%, #e5e7eb);
+  --rh-page-hero-bg: linear-gradient(
+    118deg,
+    color-mix(in srgb, #2d8a56 26%, #ecfdf5) 0%,
+    color-mix(in srgb, #50c878 32%, #ffffff) 36%,
+    color-mix(in srgb, #7ed9a7 22%, #ffffff) 68%,
+    color-mix(in srgb, #fefae0 40%, #ffffff) 100%
+  );
+  --rh-page-hero-glow: radial-gradient(
+    circle,
+    color-mix(in srgb, #50c878 42%, transparent) 0%,
+    color-mix(in srgb, #2d8a56 16%, transparent) 48%,
+    transparent 72%
+  );
+  --rh-nav-active-bg: #d1fae5;
+  --rh-nav-active-fg: #047857;
+  --sidebar-accent: 160 84% 90%;
+  --sidebar-accent-foreground: 160 84% 25%;
+  --primary: 160 94% 24%;
+  --primary-foreground: 0 0% 100%;
+  --ring: 160 94% 24%;
+  --accent: 152 81% 90%;
+  --accent-foreground: 160 94% 24%;
+  --panel-brand: #047857;
+  --panel-brand-hover: #065f46;
+}

@@ -1,0 +1,32 @@
+/**
+ * Admin Panel templates page — polish for RateHonk shells.
+ * Atlas (Emerald) gets mint/emerald accents; Nova uses blue via --rh-brand.
+ */
+
+html[data-panel-template="helicoptic-v1"] .admin-panel-templates-page--atlas,
+html[data-panel-template="helicoptic-v1"] .admin-panel-templates-page--rh {
+  --admin-pt-card-radius: 1rem;
+}
+
+html[data-rh-shell] .admin-panel-templates-page--rh .admin-panel-template-card {
+  border-radius: 1rem;
+}
+
+html[data-panel-template="helicoptic-v1"] .admin-panel-templates-page--atlas .admin-panel-template-card {
+  border-color: #e5e7eb;
+  background: #ffffff;
+}
+
+html[data-panel-template="helicoptic-v1"]
+  .admin-panel-templates-page--atlas
+  .admin-panel-template-card:hover:not(:has(button:disabled)) {
+  border-color: color-mix(in srgb, var(--rh-brand, #047857) 40%, #e5e7eb);
+}
+
+/* Soft mint wash behind preview when Atlas is the live shell */
+html[data-panel-template="helicoptic-v1"]
+  .admin-panel-templates-page--atlas
+  .admin-panel-template-card
+  > .relative {
+  background: linear-gradient(180deg, #f8faf9 0%, #f3f7f5 100%);
+}

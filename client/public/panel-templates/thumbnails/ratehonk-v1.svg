@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="400" viewBox="0 0 640 400" fill="none">
+  <!-- Page -->
+  <rect width="640" height="400" fill="#f5f5f5"/>
+
+  <!-- White sidebar (Nova blue) -->
+  <rect width="148" height="400" fill="#ffffff"/>
+  <rect x="148" y="0" width="1" height="400" fill="#e5e7eb"/>
+  <rect x="20" y="22" width="72" height="14" rx="3" fill="#0059bb"/>
+  <rect x="20" y="44" width="52" height="8" rx="2" fill="#94a3b8"/>
+  <!-- Active nav (soft blue) -->
+  <rect x="16" y="78" width="116" height="28" rx="8" fill="#dfe8ff"/>
+  <rect x="28" y="88" width="56" height="8" rx="2" fill="#0059bb"/>
+  <rect x="28" y="122" width="64" height="8" rx="2" fill="#6b7280"/>
+  <rect x="28" y="146" width="72" height="8" rx="2" fill="#6b7280"/>
+  <rect x="28" y="170" width="52" height="8" rx="2" fill="#6b7280"/>
+  <rect x="28" y="194" width="68" height="8" rx="2" fill="#6b7280"/>
+  <!-- Create button -->
+  <rect x="20" y="340" width="108" height="32" rx="8" fill="#0059bb"/>
+  <rect x="40" y="352" width="68" height="8" rx="2" fill="#ffffff"/>
+
+  <!-- Header -->
+  <rect x="148" y="0" width="492" height="52" fill="#ffffff"/>
+  <rect x="168" y="16" width="220" height="20" rx="10" fill="#f8fafc" stroke="#e5e7eb"/>
+  <circle cx="600" cy="26" r="12" fill="#0059bb"/>
+  <rect x="148" y="52" width="492" height="1" fill="#e5e7eb"/>
+
+  <!-- Welcome -->
+  <rect x="172" y="72" width="220" height="14" rx="3" fill="#111c2d"/>
+  <rect x="172" y="92" width="160" height="8" rx="2" fill="#9ca3af"/>
+
+  <!-- KPI row (6 cards Nova style) -->
+  <rect x="168" y="116" width="68" height="64" rx="10" fill="#ffffff" stroke="#e5e7eb"/>
+  <rect x="180" y="128" width="32" height="6" rx="2" fill="#6b7280"/>
+  <rect x="180" y="144" width="36" height="12" rx="2" fill="#111c2d"/>
+  <rect x="180" y="162" width="24" height="5" rx="2" fill="#16a34a"/>
+
+  <rect x="246" y="116" width="68" height="64" rx="10" fill="#ffffff" stroke="#e5e7eb"/>
+  <rect x="258" y="128" width="36" height="6" rx="2" fill="#6b7280"/>
+  <rect x="258" y="144" width="32" height="12" rx="2" fill="#111c2d"/>
+  <rect x="258" y="162" width="24" height="5" rx="2" fill="#0059bb"/>
+
+  <rect x="324" y="116" width="68" height="64" rx="10" fill="#ffffff" stroke="#e5e7eb"/>
+  <rect x="336" y="128" width="34" height="6" rx="2" fill="#6b7280"/>
+  <rect x="336" y="144" width="34" height="12" rx="2" fill="#111c2d"/>
+  <rect x="336" y="162" width="24" height="5" rx="2" fill="#f59e0b"/>
+
+  <rect x="402" y="116" width="68" height="64" rx="10" fill="#ffffff" stroke="#e5e7eb"/>
+  <rect x="414" y="128" width="30" height="6" rx="2" fill="#6b7280"/>
+  <rect x="414" y="144" width="30" height="12" rx="2" fill="#111c2d"/>
+  <rect x="414" y="162" width="24" height="5" rx="2" fill="#8b5cf6"/>
+
+  <rect x="480" y="116" width="68" height="64" rx="10" fill="#ffffff" stroke="#e5e7eb"/>
+  <rect x="492" y="128" width="34" height="6" rx="2" fill="#6b7280"/>
+  <rect x="492" y="144" width="28" height="12" rx="2" fill="#111c2d"/>
+  <rect x="492" y="162" width="24" height="5" rx="2" fill="#06b6d4"/>
+
+  <rect x="558" y="116" width="58" height="64" rx="10" fill="#ffffff" stroke="#e5e7eb"/>
+  <rect x="568" y="128" width="28" height="6" rx="2" fill="#6b7280"/>
+  <rect x="568" y="144" width="28" height="12" rx="2" fill="#111c2d"/>
+  <rect x="568" y="162" width="22" height="5" rx="2" fill="#0059bb"/>
+
+  <!-- Chart card -->
+  <rect x="168" y="196" width="288" height="176" rx="12" fill="#ffffff" stroke="#e5e7eb"/>
+  <rect x="184" y="212" width="120" height="10" rx="2" fill="#111c2d"/>
+  <rect x="200" y="300" width="18" height="48" rx="3" fill="#93c5fd"/>
+  <rect x="200" y="324" width="18" height="24" rx="3" fill="#0059bb"/>
+  <rect x="232" y="276" width="18" height="72" rx="3" fill="#93c5fd"/>
+  <rect x="232" y="316" width="18" height="32" rx="3" fill="#0059bb"/>
+  <rect x="264" y="288" width="18" height="60" rx="3" fill="#93c5fd"/>
+  <rect x="264" y="320" width="18" height="28" rx="3" fill="#0059bb"/>
+  <rect x="296" y="256" width="18" height="92" rx="3" fill="#93c5fd"/>
+  <rect x="296" y="308" width="18" height="40" rx="3" fill="#0059bb"/>
+  <rect x="328" y="272" width="18" height="76" rx="3" fill="#93c5fd"/>
+  <rect x="328" y="316" width="18" height="32" rx="3" fill="#0059bb"/>
+  <rect x="360" y="264" width="18" height="84" rx="3" fill="#93c5fd"/>
+  <rect x="360" y="312" width="18" height="36" rx="3" fill="#0059bb"/>
+  <rect x="392" y="292" width="18" height="56" rx="3" fill="#93c5fd"/>
+  <rect x="392" y="324" width="18" height="24" rx="3" fill="#0059bb"/>
+
+  <!-- Right cards -->
+  <rect x="472" y="196" width="144" height="82" rx="12" fill="#ffffff" stroke="#e5e7eb"/>
+  <rect x="488" y="212" width="72" height="8" rx="2" fill="#111c2d"/>
+  <rect x="488" y="232" width="100" height="6" rx="2" fill="#dfe8ff"/>
+  <rect x="488" y="232" width="64" height="6" rx="2" fill="#0059bb"/>
+  <rect x="488" y="248" width="88" height="6" rx="2" fill="#e5e7eb"/>
+  <rect x="488" y="248" width="40" height="6" rx="2" fill="#60a5fa"/>
+
+  <rect x="472" y="290" width="144" height="82" rx="12" fill="#ffffff" stroke="#e5e7eb"/>
+  <rect x="488" y="306" width="80" height="8" rx="2" fill="#111c2d"/>
+  <rect x="488" y="328" width="96" height="6" rx="2" fill="#e5e7eb"/>
+  <rect x="488" y="344" width="72" height="6" rx="2" fill="#e5e7eb"/>
+</svg>

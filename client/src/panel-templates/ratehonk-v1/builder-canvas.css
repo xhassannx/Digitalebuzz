@@ -1,0 +1,120 @@
+/**
+ * Flow & chatbot canvas builders — mobile layout.
+ * Pages add .rh-flow-builder / .rh-chatbot-builder on the root shell.
+ */
+
+@media (max-width: 1023px) {
+  .rh-flow-builder .rh-flow-builder-breadcrumb,
+  .rh-flow-builder .rh-flow-builder-subtitle {
+    display: none;
+  }
+
+  .rh-flow-builder .rh-flow-builder-header {
+    padding: 0.75rem 1rem;
+  }
+
+  .rh-flow-builder .rh-flow-builder-header-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .rh-flow-builder .rh-flow-builder-title h1 {
+    font-size: 1.125rem;
+    line-height: 1.5rem;
+  }
+
+  .rh-flow-builder .rh-flow-builder-actions {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .rh-flow-builder .rh-flow-builder-actions > button {
+    flex: 1 1 calc(50% - 0.25rem);
+    min-width: 0;
+  }
+
+  .rh-flow-builder .rh-flow-builder-actions > button.rh-flow-publish-btn {
+    flex: 1 1 100%;
+  }
+
+  .rh-flow-builder .rh-flow-builder-desktop-panel {
+    display: none !important;
+  }
+
+  .rh-chatbot-builder .rh-chatbot-builder-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+  }
+
+  .rh-chatbot-builder .rh-chatbot-builder-header-top {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-width: 0;
+  }
+
+  .rh-chatbot-builder .rh-chatbot-builder-header-top .rh-chatbot-name-input {
+    flex: 1;
+    min-width: 0;
+    width: auto !important;
+  }
+
+  .rh-chatbot-builder .rh-chatbot-builder-header-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .rh-chatbot-builder .rh-chatbot-builder-desktop-sidebar {
+    display: none !important;
+  }
+
+  .rh-flow-builder .flow-canvas .react-flow__minimap,
+  .rh-chatbot-builder .chatbot-flow-canvas .react-flow__minimap {
+    width: 120px !important;
+    height: 90px !important;
+  }
+
+  .rh-flow-builder .flow-canvas .react-flow__controls,
+  .rh-chatbot-builder .chatbot-flow-canvas .react-flow__controls {
+    bottom: 4.5rem;
+  }
+
+  .rh-builder-mobile-fab {
+    position: absolute;
+    z-index: 20;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 1rem;
+    display: flex;
+    gap: 0.5rem;
+    max-width: calc(100% - 2rem);
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .rh-builder-sheet-content {
+    padding: 0;
+    height: min(88vh, 100%);
+    max-height: 88vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .rh-builder-sheet-body {
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+  }
+}
+
+@media (min-width: 1024px) {
+  .rh-builder-mobile-fab {
+    display: none !important;
+  }
+}

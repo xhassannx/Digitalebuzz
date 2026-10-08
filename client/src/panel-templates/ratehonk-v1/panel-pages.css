@@ -1,0 +1,350 @@
+.ratehonk-groups-content .groups-page-chrome,
+.ratehonk-campaigns-content .campaigns-page-chrome,
+.ratehonk-faq-bot-content .faq-bot-page-chrome,
+.ratehonk-chatbots-content .chatbots-page-chrome,
+.ratehonk-ai-assistants-content .ai-assistants-page-chrome {
+  display: none;
+}
+
+/* Contacts keeps its own title row (with action buttons) so chrome stays visible */
+
+.ratehonk-contacts-content > div {
+  padding: 0;
+  height: 100%;
+  min-height: 0;
+}
+
+.ratehonk-contacts-content .contacts-page-chrome h1 {
+  font-size: 1.625rem;
+  line-height: 2.125rem;
+  letter-spacing: -0.02em;
+  color: #111c2d;
+}
+
+@media (min-width: 640px) {
+  .ratehonk-contacts-content .contacts-page-chrome h1 {
+    font-size: 1.875rem;
+    line-height: 2.375rem;
+  }
+}
+
+.ratehonk-contacts-content .contacts-page-chrome p {
+  margin-top: 0.375rem;
+  font-size: 0.875rem;
+  line-height: 1.375rem;
+  color: #414754;
+}
+
+.ratehonk-contacts-content .contacts-page-chrome .contacts-page-meta {
+  display: none;
+}
+
+/* Sticky column headers while contacts table body scrolls */
+.ratehonk-contacts-content .rh-contacts-table-scroll .rh-table-root {
+  overflow: visible !important;
+}
+
+.ratehonk-contacts-content .rh-contacts-table-scroll thead th {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: var(--rh-brand-soft, #ecfdf5) !important;
+  box-shadow: 0 1px 0 0 #e5e7eb;
+}
+
+.ratehonk-reminders-content > div {
+  padding: 0;
+  height: 100%;
+  min-height: 0;
+}
+
+.ratehonk-reminders-content .rh-reminders-table-scroll .rh-table-root {
+  overflow: visible !important;
+}
+
+.ratehonk-reminders-content .rh-reminders-table-scroll thead th {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: var(--rh-brand-soft, #ecfdf5) !important;
+  color: #414754;
+  font-weight: 600;
+}
+
+.rh-reminders-tasks .rh-reminders-table-scroll thead th {
+  background: var(--rh-brand-soft, #ecfdf5) !important;
+}
+
+/* Reminders page hero — shared crystal emerald page hero tokens */
+.rh-reminders-tasks .atlas-rem-page-hero {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  overflow: hidden;
+  border-radius: 1rem;
+  border: 1px solid var(
+    --rh-page-hero-border,
+    color-mix(in srgb, #2d8a56 30%, #e5e7eb)
+  );
+  background-color: var(--rh-brand-soft, #ecfdf5);
+  background-image: var(
+    --rh-page-hero-bg,
+    linear-gradient(
+      118deg,
+      color-mix(in srgb, #2d8a56 26%, #ecfdf5) 0%,
+      color-mix(in srgb, #50c878 32%, #ffffff) 36%,
+      color-mix(in srgb, #7ed9a7 22%, #ffffff) 68%,
+      color-mix(in srgb, #fefae0 40%, #ffffff) 100%
+    )
+  );
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04), 0 8px 24px rgba(16, 24, 40, 0.04);
+}
+
+.rh-reminders-tasks .atlas-rem-page-hero-glow {
+  position: absolute;
+  right: -2.5rem;
+  top: -3rem;
+  width: 12rem;
+  height: 12rem;
+  border-radius: 9999px;
+  background: var(
+    --rh-page-hero-glow,
+    radial-gradient(
+      circle,
+      color-mix(in srgb, #50c878 42%, transparent) 0%,
+      color-mix(in srgb, #2d8a56 16%, transparent) 48%,
+      transparent 72%
+    )
+  );
+  pointer-events: none;
+}
+
+.rh-reminders-tasks .atlas-rem-page-hero-inner {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.875rem 1.25rem;
+  padding: 1.05rem 1.25rem;
+}
+
+@media (min-width: 640px) {
+  .rh-reminders-tasks .atlas-rem-page-hero-inner {
+    padding: 1.2rem 1.5rem;
+  }
+}
+
+.rh-reminders-tasks .atlas-rem-page-hero-eyebrow {
+  margin: 0;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--rh-brand, #047857);
+}
+
+.rh-reminders-tasks .atlas-rem-page-hero-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  color: #0f172a;
+}
+
+@media (min-width: 640px) {
+  .rh-reminders-tasks .atlas-rem-page-hero-title {
+    font-size: 1.75rem;
+  }
+}
+
+.rh-reminders-tasks .atlas-rem-page-hero-badge {
+  border-radius: 9999px !important;
+  border: 1px solid color-mix(in srgb, var(--rh-brand, #047857) 25%, transparent) !important;
+  background: #ffffff !important;
+  color: var(--rh-brand, #047857) !important;
+  padding: 0.15rem 0.7rem !important;
+  font-size: 0.75rem !important;
+  font-weight: 600 !important;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+}
+
+.rh-reminders-tasks .atlas-rem-page-hero-desc {
+  margin-top: 0.45rem;
+  max-width: 36rem;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: #4b5563;
+}
+
+.rh-reminders-tasks .atlas-rem-page-hero-cta {
+  margin-left: auto;
+}
+
+.ratehonk-templates-content > div {
+  padding: 0;
+  height: 100%;
+  min-height: 0;
+}
+
+/* Sticky column headers while table body scrolls */
+.ratehonk-templates-content .rh-templates-table-scroll .rh-table-root {
+  overflow: visible !important;
+}
+
+.ratehonk-templates-content .rh-templates-table-scroll thead th {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: var(--rh-brand-soft, #ecfdf5) !important;
+  box-shadow: 0 1px 0 0 #e5e7eb;
+}
+
+.ratehonk-campaigns-content > div {
+  padding: 0;
+}
+
+.ratehonk-campaigns-content .campaigns-stat-card {
+  border-radius: 14px;
+  border-color: #e5e7eb;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.18s ease;
+}
+
+.ratehonk-campaigns-content .campaigns-stat-card:hover {
+  border-color: color-mix(in srgb, var(--rh-brand, #047857) 35%, #e5e7eb);
+  box-shadow:
+    0 8px 20px color-mix(in srgb, var(--rh-brand, #047857) 12%, transparent),
+    0 2px 6px rgba(16, 24, 40, 0.06);
+  transform: translateY(-2px);
+}
+
+.ratehonk-campaigns-content .campaigns-stat-card .campaigns-stat-icon {
+  color: var(--rh-brand, #047857);
+}
+
+.ratehonk-meetings-content > div {
+  padding: 0;
+  height: 100%;
+  min-height: 0;
+}
+
+.ratehonk-meetings-content .meetings-stat-card {
+  border-radius: 14px;
+  border-color: #e5e7eb;
+  background: #ffffff;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.18s ease;
+}
+
+.ratehonk-meetings-content .meetings-stat-card:hover {
+  border-color: color-mix(in srgb, var(--rh-brand, #047857) 35%, #e5e7eb);
+  box-shadow:
+    0 8px 20px color-mix(in srgb, var(--rh-brand, #047857) 12%, transparent),
+    0 2px 6px rgba(16, 24, 40, 0.06);
+  transform: translateY(-2px);
+}
+
+.ratehonk-meetings-content .meetings-calendar-shell {
+  background: #ffffff;
+  border-color: #e5e7eb;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+}
+
+.ratehonk-campaigns-content .campaigns-table-card {
+  border-radius: 14px;
+  border-color: #e5e7eb;
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+}
+
+.ratehonk-campaigns-content a.text-primary {
+  color: var(--rh-brand, #047857) !important;
+}
+
+.ratehonk-groups-content .rh-panel-card,
+.ratehonk-faq-bot-content .rh-panel-card,
+.ratehonk-chatbots-content .rh-table-card,
+.ratehonk-ai-assistants-content .rh-table-card {
+  border-color: #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.ratehonk-groups-content .rh-panel-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 89, 187, 0.08);
+}
+
+.ratehonk-chatbots-content > div,
+.ratehonk-ai-assistants-content > div {
+  padding: 0;
+}
+
+.ratehonk-chatbots-content .rh-table-card {
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.ratehonk-ai-assistants-content .rh-table-card {
+  background: #ffffff;
+  overflow: hidden;
+}
+
+/* Soft brand page headers for chrome wrappers (matches Reminders) */
+html[data-rh-shell] .settings-page-chrome,
+html[data-rh-shell] .integrations-page-chrome,
+html[data-rh-shell] .commerce-page-chrome,
+html[data-rh-shell] .invoice-page-chrome,
+html[data-rh-shell] .invoice-list-page-chrome,
+html[data-rh-shell] .widget-page-chrome,
+html[data-rh-shell] .campaigns-page-chrome,
+html[data-rh-shell] .groups-page-chrome,
+html[data-rh-shell] .faq-bot-page-chrome,
+html[data-rh-shell] .chatbots-page-chrome,
+html[data-rh-shell] .ai-assistants-page-chrome,
+html[data-rh-shell] .flows-page-chrome {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1rem;
+  border: 1px solid color-mix(in srgb, var(--rh-brand, #047857) 16%, #e5e7eb);
+  background:
+    linear-gradient(
+      105deg,
+      var(--rh-brand-soft, #ecfdf5) 0%,
+      color-mix(in srgb, var(--rh-brand-light, #d1fae5) 40%, #ffffff) 42%,
+      #ffffff 100%
+    );
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+  padding: 1.05rem 1.25rem;
+}
+
+@media (min-width: 640px) {
+  html[data-rh-shell] .settings-page-chrome,
+  html[data-rh-shell] .integrations-page-chrome,
+  html[data-rh-shell] .commerce-page-chrome,
+  html[data-rh-shell] .invoice-page-chrome,
+  html[data-rh-shell] .invoice-list-page-chrome,
+  html[data-rh-shell] .widget-page-chrome,
+  html[data-rh-shell] .campaigns-page-chrome,
+  html[data-rh-shell] .groups-page-chrome,
+  html[data-rh-shell] .faq-bot-page-chrome,
+  html[data-rh-shell] .chatbots-page-chrome,
+  html[data-rh-shell] .ai-assistants-page-chrome,
+  html[data-rh-shell] .flows-page-chrome {
+    padding: 1.2rem 1.5rem;
+  }
+}
+
+/* Avoid double panels when chrome sits inside rh-page-hero */
+html[data-rh-shell] .rh-page-hero .gallery-page-chrome,
+html[data-rh-shell] .rh-page-hero .invoice-list-page-chrome {
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}

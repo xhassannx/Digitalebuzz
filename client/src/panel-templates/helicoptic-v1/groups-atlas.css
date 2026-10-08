@@ -1,0 +1,121 @@
+/**
+ * Atlas Groups — Rh Emerald “Refined Aesthetic”
+ * Scoped to helicoptic-v1 so Nova Groups chrome stays unchanged.
+ */
+
+/* Search + sort toolbar */
+html[data-panel-template="helicoptic-v1"] .rh-groups-atlas-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.875rem;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+}
+
+html[data-panel-template="helicoptic-v1"] .rh-groups-atlas-sort {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+html[data-panel-template="helicoptic-v1"] .rh-groups-atlas-sort-label {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: #6b7280;
+  white-space: nowrap;
+}
+
+html[data-panel-template="helicoptic-v1"] .rh-groups-atlas-sort-trigger {
+  border-radius: 0.625rem;
+}
+
+/* Empty state — dashed mint border (Figma) */
+html[data-panel-template="helicoptic-v1"] .rh-groups-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 3.5rem 1.5rem;
+  background: #ffffff;
+  border: 1.5px dashed #a7f3d0;
+  border-radius: 1rem;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.03);
+}
+
+html[data-panel-template="helicoptic-v1"] .rh-groups-empty-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.75rem;
+  height: 3.75rem;
+  margin-bottom: 1.25rem;
+  border-radius: 0.875rem;
+  background: var(--rh-brand-soft, #ecfdf5);
+  color: var(--rh-brand, #047857);
+}
+
+html[data-panel-template="helicoptic-v1"] .rh-groups-empty-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+html[data-panel-template="helicoptic-v1"] .rh-groups-empty-desc {
+  max-width: 28rem;
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: #6b7280;
+}
+
+html[data-panel-template="helicoptic-v1"] .rh-groups-empty-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+/* Group cards */
+html[data-panel-template="helicoptic-v1"] .rh-groups-card {
+  border-radius: 0.875rem !important;
+  border-color: #e5e7eb !important;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+html[data-panel-template="helicoptic-v1"] .rh-groups-card:hover {
+  border-color: color-mix(in srgb, var(--rh-brand, #047857) 35%, #e5e7eb) !important;
+  box-shadow:
+    0 8px 20px color-mix(in srgb, var(--rh-brand, #047857) 10%, transparent),
+    0 2px 6px rgba(16, 24, 40, 0.05);
+}
+
+html[data-panel-template="helicoptic-v1"] .ratehonk-groups-content .rh-panel-card:hover {
+  box-shadow:
+    0 8px 20px color-mix(in srgb, var(--rh-brand, #047857) 10%, transparent),
+    0 2px 6px rgba(16, 24, 40, 0.05);
+}
+
+/* Create / primary buttons on page */
+html[data-panel-template="helicoptic-v1"] [data-testid="page-groups"] button.bg-\[var\(--rh-brand\)\],
+html[data-panel-template="helicoptic-v1"] [data-testid="button-create-group"],
+html[data-panel-template="helicoptic-v1"] [data-testid="button-create-first-group"] {
+  background-color: var(--rh-brand, #047857) !important;
+  color: #ffffff !important;
+}
+
+html[data-panel-template="helicoptic-v1"] [data-testid="page-groups"] button.bg-\[var\(--rh-brand\)\]:hover,
+html[data-panel-template="helicoptic-v1"] [data-testid="button-create-group"]:hover,
+html[data-panel-template="helicoptic-v1"] [data-testid="button-create-first-group"]:hover {
+  background-color: var(--rh-brand-hover, #065f46) !important;
+}

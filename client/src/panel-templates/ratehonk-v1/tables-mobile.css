@@ -1,0 +1,126 @@
+/**
+ * Mobile stacked tables — works with table.rh-data-table + data-label on cells
+ * (set automatically by Table component).
+ */
+
+@media (max-width: 767px) {
+  .rh-table-root:not(.rh-table-scroll-mode) {
+    overflow: visible !important;
+  }
+
+  .rh-table-root:not(.rh-table-scroll-mode) .rh-data-table {
+    display: block;
+    min-width: 0 !important;
+    width: 100%;
+  }
+
+  .rh-table-root:not(.rh-table-scroll-mode) .rh-data-table thead {
+    display: none;
+  }
+
+  .rh-table-root:not(.rh-table-scroll-mode) .rh-data-table tbody {
+    display: block;
+  }
+
+  .rh-table-root:not(.rh-table-scroll-mode) .rh-data-table tbody tr {
+    display: block;
+    margin-bottom: 0.75rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 0.25rem 0.75rem;
+    background: #ffffff;
+    box-shadow: 0 1px 2px rgb(17 28 45 / 0.04);
+  }
+
+  .rh-table-root:not(.rh-table-scroll-mode) .rh-data-table tbody tr:last-child {
+    margin-bottom: 0;
+  }
+
+  .rh-table-root:not(.rh-table-scroll-mode) .rh-data-table tbody td {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem;
+    width: 100%;
+    padding: 0.625rem 0;
+    border: none;
+    border-bottom: 1px solid #f3f4f6;
+    text-align: right;
+  }
+
+  .rh-table-root:not(.rh-table-scroll-mode) .rh-data-table tbody td:last-child {
+    border-bottom: none;
+    padding-bottom: 0.5rem;
+  }
+
+  .rh-table-root:not(.rh-table-scroll-mode) .rh-data-table tbody td:first-child {
+    padding-top: 0.5rem;
+  }
+
+  .rh-table-root:not(.rh-table-scroll-mode) .rh-data-table tbody td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    font-size: 0.75rem;
+    line-height: 1.25rem;
+    color: #717786;
+    text-align: left;
+    flex: 0 0 auto;
+    max-width: 42%;
+    padding-right: 0.5rem;
+  }
+
+  .rh-table-root:not(.rh-table-scroll-mode) .rh-data-table tbody td:not([data-label])::before {
+    display: none;
+  }
+
+  /* Checkbox / selection column */
+  .rh-table-root:not(.rh-table-scroll-mode) .rh-data-table tbody td:has([role="checkbox"]) {
+    justify-content: flex-start;
+    align-items: center;
+  }
+
+  .rh-table-root:not(.rh-table-scroll-mode) .rh-data-table tbody td:has([role="checkbox"])::before {
+    max-width: none;
+  }
+
+  /* Action button groups */
+  .rh-table-root:not(.rh-table-scroll-mode) .rh-data-table tbody td:has(button),
+  .rh-table-root:not(.rh-table-scroll-mode) .rh-data-table tbody td.rh-table-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .rh-table-root:not(.rh-table-scroll-mode) .rh-data-table tbody td:has(button) > *,
+  .rh-table-root:not(.rh-table-scroll-mode) .rh-data-table tbody td.rh-table-actions > * {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .rh-table-root:not(.rh-table-scroll-mode) .rh-data-table tbody td:has(button) .flex,
+  .rh-table-root:not(.rh-table-scroll-mode) .rh-data-table tbody td.rh-table-actions .flex {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+
+  /* Long monospace / IDs */
+  .rh-table-root:not(.rh-table-scroll-mode) .rh-data-table tbody td [class*="font-mono"],
+  .rh-table-root:not(.rh-table-scroll-mode) .rh-data-table tbody td .break-all {
+    word-break: break-all;
+    text-align: left;
+  }
+
+  /* Opt-in: horizontal scroll instead of stack */
+  .rh-table-root.rh-table-scroll-mode {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .rh-table-root.rh-table-scroll-mode .rh-data-table {
+    min-width: 36rem;
+  }
+
+  /* Dialogs */
+  html[data-rh-shell] [role="dialog"] .rh-table-root:not(.rh-table-scroll-mode) .rh-data-table tbody tr {
+    background: #ffffff;
+  }
+}

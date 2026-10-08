@@ -1,0 +1,1518 @@
+{
+  "info": {
+    "name": "Customer integration API (WhatsApp Panel)",
+    "description": "## Authentication (integrators)\nSend **either**:\n- `X-API-Key: <your key>` (collection default), or\n- `Authorization: Bearer <your key>` (same secret).\n\nCreate keys in **Settings → API Keys**.\n\n## Sections\n- **CRM**: browser `GET /crm-login`, server `POST /api/crm/register` (no API key).\n- **Project API v1**: messaging, inbox, contacts, campaigns, templates, media, webhooks (`/api/project/v1/*`).\n- **Supporting routes**: `/api/sessions/*`, `/api/templates`, `/api/media/upload`, `/api/gallery/*` — same API key headers.\n- **Licensor / portal (whitelabel only)**: `/api/updates/*-remote` and `/api/remote/*` require **`PRODUCTION_KEY`** (`X-Production-Key` or `Authorization: Bearer`). Not for tenant API keys.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      { "key": "key", "value": "X-API-Key", "type": "string" },
+      { "key": "value", "value": "{{apiKey}}", "type": "string" },
+      { "key": "in", "value": "header", "type": "string" }
+    ]
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:5002" },
+    { "key": "apiKey", "value": "YOUR_API_KEY" },
+    { "key": "sessionId", "value": "YOUR_SESSION_ID", "description": "WhatsApp session ID from List sessions" },
+    { "key": "chatId", "value": "CHAT_UUID_HERE", "description": "Chat UUID from List chats endpoint" },
+    { "key": "to", "value": "919876543210", "description": "Recipient phone number with country code (no +)" },
+    { "key": "phoneNumberId", "value": "", "description": "WhatsApp Business phone number ID (required when multiple official sessions exist)" },
+    { "key": "organizationId", "value": "", "description": "Organization UUID (optional for List tags / contacts / canned messages)" },
+    { "key": "cannedMessageId", "value": "CANNED_MESSAGE_UUID", "description": "Canned message id from List canned messages" },
+    { "key": "cannedMediaPath", "value": "/uploads/YOUR_ORG_ID/gallery/example.jpg", "description": "URL-encoded path for Get canned message image file" },
+    { "key": "mediaId", "value": "WHATSAPP_GRAPH_MEDIA_ID", "description": "Media id from message.mediaUrl / Graph API (for GET .../media/content)" },
+    { "key": "productionKey", "value": "YOUR_PRODUCTION_KEY", "description": "Same as PRODUCTION_KEY on panel — licensor/portal routes only; never expose publicly" }
+  ],
+  "item": [
+    {
+      "name": "CRM Auto-Login",
+      "item": [
+        {
+          "name": "Auto-login with API Key",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/crm-login?apiKey={{apiKey}}&redirect=/dashboard",
+              "host": ["{{baseUrl}}"],
+              "path": ["crm-login"],
+              "query": [
+                { "key": "apiKey", "value": "{{apiKey}}", "description": "Your API key (required)" },
+                { "key": "redirect", "value": "/dashboard", "description": "Redirect URL after login (optional, defaults to /dashboard)" }
+              ]
+            },
+            "description": "Auto-login endpoint for CRM users. Pass your API key as a query parameter to automatically log in to the panel without entering credentials. After successful authentication, you will be redirected to the dashboard (or custom redirect URL if provided).\n\n**Usage:**\n- Open this URL in a browser: `{{baseUrl}}/crm-login?apiKey=YOUR_API_KEY`\n- Or with custom redirect: `{{baseUrl}}/crm-login?apiKey=YOUR_API_KEY&redirect=/settings`\n\n**Note:** This endpoint creates a session cookie, so it must be accessed via browser (not API client)."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Discovery",
+      "item": [
+        {
+          "name": "API info",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" }],
+            "url": "{{baseUrl}}/api/project/v1",
+            "description": "Returns API name, version, and list of endpoints."
+          }
+        },
+        {
+          "name": "API info (Bearer token)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{apiKey}}", "type": "text" },
+              { "key": "Accept", "value": "application/json", "type": "text" }
+            ],
+            "url": "{{baseUrl}}/api/project/v1",
+            "description": "Same as **API info** — use `Authorization: Bearer` instead of `X-API-Key`."
+          }
+        },
+        {
+          "name": "Subscription status",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" },
+              { "key": "Accept", "value": "application/json", "type": "text" }
+            ],
+            "url": "{{baseUrl}}/api/project/v1/subscription",
+            "description": "Returns subscription/plan snapshot for the API key user (`canSendMessages`, `reason`). Use when debugging 403 **Subscription is not active**."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Sessions & Templates",
+      "item": [
+        {
+          "name": "Create session (unofficial - QR)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" },
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"connectionType\": \"unofficial\"\n}"
+            },
+            "url": "{{baseUrl}}/api/sessions/create",
+            "description": "Creates unofficial session. Returns QR code to scan with WhatsApp."
+          }
+        },
+        {
+          "name": "Create session (official - Business API)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" },
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"connectionType\": \"official\",\n  \"businessApiCredentials\": {\n    \"phoneNumberId\": \"YOUR_PHONE_NUMBER_ID\",\n    \"accessToken\": \"YOUR_META_ACCESS_TOKEN\",\n    \"businessAccountId\": \"YOUR_WABA_ID\"\n  }\n}"
+            },
+            "url": "{{baseUrl}}/api/sessions/create",
+            "description": "Creates official WhatsApp Business API session. Get phoneNumberId and accessToken from Meta Business Manager. Phone must be verified first."
+          }
+        },
+        {
+          "name": "List sessions",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" }],
+            "url": "{{baseUrl}}/api/project/v1/sessions",
+            "description": "Returns all WhatsApp sessions (phone numbers) for the account. Use sessionId in send-text and send-template."
+          }
+        },
+        {
+          "name": "Disconnect session",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" },
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": { "mode": "raw", "raw": "{}" },
+            "url": "{{baseUrl}}/api/sessions/{{sessionId}}/disconnect",
+            "description": "Disconnects the session (logout) without deleting it. Body is optional empty JSON `{}`."
+          }
+        },
+        {
+          "name": "Delete session",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" }],
+            "url": "{{baseUrl}}/api/sessions/{{sessionId}}",
+            "description": "Permanently deletes a WhatsApp session. The session will be disconnected first (if connected), then removed from the database. All associated chats, messages, and contacts will be deleted (cascade delete). Use the sessionId from List sessions endpoint."
+          }
+        },
+        {
+          "name": "List templates",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/project/v1/templates?sessionId=",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "project", "v1", "templates"],
+              "query": [
+                { "key": "sessionId", "value": "", "description": "Filter by session ID (from List sessions)" },
+                { "key": "organizationId", "value": "", "description": "Filter by organization" }
+              ]
+            },
+            "description": "Returns approved message templates. Use name and language in send-template."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Messages",
+      "item": [
+        {
+          "name": "Send - All Types",
+          "item": [
+            {
+              "name": "1. Send Text",
+              "request": {
+                "method": "POST",
+                "header": [
+                  { "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" },
+                  { "key": "Content-Type", "value": "application/json", "type": "text" }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"sessionId\": \"{{sessionId}}\",\n  \"to\": \"{{to}}\",\n  \"type\": \"text\",\n  \"text\": { \"body\": \"Hello from API\" }\n}"
+                },
+                "url": "{{baseUrl}}/api/project/v1/messages"
+              }
+            },
+            {
+              "name": "2. Send Image (by URL)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  { "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" },
+                  { "key": "Content-Type", "value": "application/json", "type": "text" }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"sessionId\": \"{{sessionId}}\",\n  \"to\": \"{{to}}\",\n  \"type\": \"image\",\n  \"image\": {\n    \"link\": \"https://example.com/image.jpg\",\n    \"caption\": \"Check this image\"\n  }\n}"
+                },
+                "url": "{{baseUrl}}/api/project/v1/messages"
+              }
+            },
+            {
+              "name": "3. Send Image (by Media ID)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  { "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" },
+                  { "key": "Content-Type", "value": "application/json", "type": "text" }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"sessionId\": \"{{sessionId}}\",\n  \"to\": \"{{to}}\",\n  \"type\": \"image\",\n  \"image\": {\n    \"id\": \"MEDIA_ID_FROM_WHATSAPP\",\n    \"caption\": \"Optional caption\"\n  }\n}"
+                },
+                "url": "{{baseUrl}}/api/project/v1/messages"
+              }
+            },
+            {
+              "name": "4. Send Video",
+              "request": {
+                "method": "POST",
+                "header": [
+                  { "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" },
+                  { "key": "Content-Type", "value": "application/json", "type": "text" }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"sessionId\": \"{{sessionId}}\",\n  \"to\": \"{{to}}\",\n  \"type\": \"video\",\n  \"video\": {\n    \"link\": \"https://example.com/video.mp4\",\n    \"caption\": \"Watch this video\"\n  }\n}"
+                },
+                "url": "{{baseUrl}}/api/project/v1/messages"
+              }
+            },
+            {
+              "name": "5. Send Audio",
+              "request": {
+                "method": "POST",
+                "header": [
+                  { "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" },
+                  { "key": "Content-Type", "value": "application/json", "type": "text" }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"sessionId\": \"{{sessionId}}\",\n  \"to\": \"{{to}}\",\n  \"type\": \"audio\",\n  \"audio\": {\n    \"link\": \"https://example.com/audio.mp3\"\n  }\n}"
+                },
+                "url": "{{baseUrl}}/api/project/v1/messages"
+              }
+            },
+            {
+              "name": "6. Send Document",
+              "request": {
+                "method": "POST",
+                "header": [
+                  { "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" },
+                  { "key": "Content-Type", "value": "application/json", "type": "text" }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"sessionId\": \"{{sessionId}}\",\n  \"to\": \"{{to}}\",\n  \"type\": \"document\",\n  \"document\": {\n    \"link\": \"https://example.com/document.pdf\",\n    \"filename\": \"report.pdf\",\n    \"caption\": \"Please find the report\"\n  }\n}"
+                },
+                "url": "{{baseUrl}}/api/project/v1/messages"
+              }
+            },
+            {
+              "name": "7. Send Template (simple)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  { "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" },
+                  { "key": "Content-Type", "value": "application/json", "type": "text" }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"sessionId\": \"{{sessionId}}\",\n  \"to\": \"{{to}}\",\n  \"type\": \"template\",\n  \"template\": {\n    \"name\": \"hello_world\",\n    \"language\": { \"code\": \"en\" }\n  }\n}"
+                },
+                "url": "{{baseUrl}}/api/project/v1/messages"
+              }
+            },
+            {
+              "name": "8. Send Template (with variables)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  { "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" },
+                  { "key": "Content-Type", "value": "application/json", "type": "text" }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"sessionId\": \"{{sessionId}}\",\n  \"to\": \"{{to}}\",\n  \"type\": \"template\",\n  \"template\": {\n    \"name\": \"order_confirmation\",\n    \"language\": { \"code\": \"en\" },\n    \"components\": [\n      {\n        \"type\": \"body\",\n        \"parameters\": [\n          { \"type\": \"text\", \"text\": \"John\" },\n          { \"type\": \"text\", \"text\": \"ORD-12345\" }\n        ]\n      }\n    ]\n  }\n}"
+                },
+                "url": "{{baseUrl}}/api/project/v1/messages"
+              }
+            },
+            {
+              "name": "9. Send Template (with header image URL)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  { "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" },
+                  { "key": "Content-Type", "value": "application/json", "type": "text" }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"sessionId\": \"{{sessionId}}\",\n  \"to\": \"{{to}}\",\n  \"type\": \"template\",\n  \"template\": {\n    \"name\": \"promo_with_image\",\n    \"language\": { \"code\": \"en\" },\n    \"components\": [\n      {\n        \"type\": \"body\",\n        \"parameters\": [\n          { \"type\": \"text\", \"text\": \"Summer Sale\" }\n        ]\n      }\n    ]\n  },\n  \"headerImageUrl\": \"{{baseUrl}}/uploads/ORG_ID/gallery/banner.jpg\"\n}"
+                },
+                "url": "{{baseUrl}}/api/project/v1/messages",
+                "description": "Template with IMAGE header using URL. headerImageUrl, headerVideoUrl, or headerDocumentUrl can be used. Server uploads automatically."
+              }
+            },
+            {
+              "name": "10. Send Template (with header video/document URL)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  { "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" },
+                  { "key": "Content-Type", "value": "application/json", "type": "text" }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"sessionId\": \"{{sessionId}}\",\n  \"to\": \"{{to}}\",\n  \"type\": \"template\",\n  \"template\": {\n    \"name\": \"document_template\",\n    \"language\": { \"code\": \"en\" },\n    \"components\": [\n      {\n        \"type\": \"body\",\n        \"parameters\": [\n          { \"type\": \"text\", \"text\": \"Invoice.pdf\" }\n        ]\n      }\n    ]\n  },\n  \"headerDocumentUrl\": \"https://example.com/invoice.pdf\"\n}"
+                },
+                "url": "{{baseUrl}}/api/project/v1/messages",
+                "description": "Template with DOCUMENT or VIDEO header using URL. Use headerVideoUrl for video, headerDocumentUrl for document. Supports gallery URLs, local paths, or http(s):// URLs."
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get message details",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/project/v1/messages/MESSAGE_ID",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "project", "v1", "messages", "MESSAGE_ID"],
+              "query": [
+                { "key": "sessionId", "value": "", "description": "Optional. Scope to session" }
+              ]
+            },
+            "description": "Returns message details by internal ID or WhatsApp message ID (wamid). AiSensy-style response."
+          }
+        },
+        {
+          "name": "Upload media (for template header)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "sessionId", "value": "{{sessionId}}", "type": "text", "description": "WhatsApp Business session ID (same as send-template)" },
+                { "key": "file", "type": "file", "src": [], "description": "Select image/video/document file. Response returns mediaId – use in send-template header.id" }
+              ]
+            },
+            "url": "{{baseUrl}}/api/media/upload",
+            "description": "Upload image/video/document for template header. Use multipart/form-data: sessionId (text) + file (file). Response: { mediaId, url }. Use mediaId in send-template as header: { type: 'image', id: mediaId }."
+          }
+        },
+        {
+          "name": "Send text message",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" },
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sessionId\": \"{{sessionId}}\",\n  \"to\": \"{{to}}\",\n  \"message\": \"Hello from API\"\n}"
+            },
+            "url": "{{baseUrl}}/api/project/v1/messages/send-text",
+            "description": "Sends a free-form text. Recipient must have messaged in last 24h, or use send-template."
+          }
+        },
+        {
+          "name": "Send template (minimal – no params)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" },
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sessionId\": \"{{sessionId}}\",\n  \"to\": \"{{to}}\",\n  \"templateName\": \"hello_world\",\n  \"languageCode\": \"en\"\n}"
+            },
+            "url": "{{baseUrl}}/api/project/v1/messages/send-template",
+            "description": "Sends a template with no parameters (e.g. hello_world). Required: sessionId, to, templateName. Optional: languageCode (default en)."
+          }
+        },
+        {
+          "name": "Send template (body params – positional)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" },
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sessionId\": \"{{sessionId}}\",\n  \"to\": \"{{to}}\",\n  \"templateName\": \"order_confirmation\",\n  \"languageCode\": \"en\",\n  \"templateParams\": [\"John Doe\", \"ORD-12345\"]\n}"
+            },
+            "url": "{{baseUrl}}/api/project/v1/messages/send-template",
+            "description": "Template with body parameters in order. templateParams: array of strings matching template placeholders {{1}}, {{2}}, etc."
+          }
+        },
+        {
+          "name": "Send template (body params – named)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" },
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sessionId\": \"{{sessionId}}\",\n  \"to\": \"{{to}}\",\n  \"templateName\": \"order_update\",\n  \"languageCode\": \"en\",\n  \"templateParams\": [\n    { \"parameter_name\": \"customer_name\", \"text\": \"John\" },\n    { \"parameter_name\": \"order_id\", \"text\": \"ORD-12345\" }\n  ],\n  \"templateBodyText\": \"Hello {{customer_name}}, your order {{order_id}} is shipped.\"\n}"
+            },
+            "url": "{{baseUrl}}/api/project/v1/messages/send-template",
+            "description": "Template with named parameters. Use templateParams as { parameter_name, text }[] and optional templateBodyText for detection."
+          }
+        },
+        {
+          "name": "Send template (with header image - by ID)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" },
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sessionId\": \"{{sessionId}}\",\n  \"to\": \"{{to}}\",\n  \"templateName\": \"promo_with_image\",\n  \"languageCode\": \"en\",\n  \"headerImageId\": \"MEDIA_ID_FROM_WHATSAPP\",\n  \"templateParams\": [\"Summer Sale\", \"20% off\"]\n}"
+            },
+            "url": "{{baseUrl}}/api/project/v1/messages/send-template",
+            "description": "Template with IMAGE header using media ID. Use headerImageId (WhatsApp media ID from upload)."
+          }
+        },
+        {
+          "name": "Send template (with header image - by URL)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" },
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sessionId\": \"{{sessionId}}\",\n  \"to\": \"{{to}}\",\n  \"templateName\": \"promo_with_image\",\n  \"languageCode\": \"en\",\n  \"headerImageUrl\": \"{{baseUrl}}/uploads/ORG_ID/gallery/image.jpg\",\n  \"templateParams\": [\"Summer Sale\", \"20% off\"]\n}"
+            },
+            "url": "{{baseUrl}}/api/project/v1/messages/send-template",
+            "description": "Template with IMAGE header using URL. headerImageUrl can be: gallery URL ({{baseUrl}}/uploads/ORG_ID/gallery/...), local path (/uploads/...), or any http(s):// URL. Server uploads automatically."
+          }
+        },
+        {
+          "name": "Send template (header video - by ID)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" },
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sessionId\": \"{{sessionId}}\",\n  \"to\": \"{{to}}\",\n  \"templateName\": \"video_template\",\n  \"languageCode\": \"en\",\n  \"headerVideoId\": \"WHATSAPP_VIDEO_MEDIA_ID\",\n  \"templateParams\": [\"Product Demo\"]\n}"
+            },
+            "url": "{{baseUrl}}/api/project/v1/messages/send-template",
+            "description": "Template with VIDEO header using media ID. Use headerVideoId (WhatsApp media ID from upload)."
+          }
+        },
+        {
+          "name": "Send template (header video - by URL)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" },
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sessionId\": \"{{sessionId}}\",\n  \"to\": \"{{to}}\",\n  \"templateName\": \"video_template\",\n  \"languageCode\": \"en\",\n  \"headerVideoUrl\": \"https://example.com/video.mp4\",\n  \"templateParams\": [\"Product Demo\"]\n}"
+            },
+            "url": "{{baseUrl}}/api/project/v1/messages/send-template",
+            "description": "Template with VIDEO header using URL. headerVideoUrl can be gallery URL, local path, or http(s):// URL. Server uploads automatically."
+          }
+        },
+        {
+          "name": "Send template (header document - by ID)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" },
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sessionId\": \"{{sessionId}}\",\n  \"to\": \"{{to}}\",\n  \"templateName\": \"document_template\",\n  \"languageCode\": \"en\",\n  \"headerDocumentId\": \"WHATSAPP_DOCUMENT_MEDIA_ID\",\n  \"templateParams\": [\"Invoice.pdf\"]\n}"
+            },
+            "url": "{{baseUrl}}/api/project/v1/messages/send-template",
+            "description": "Template with DOCUMENT header using media ID. Use headerDocumentId (WhatsApp media ID from upload)."
+          }
+        },
+        {
+          "name": "Send template (header document - by URL)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" },
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sessionId\": \"{{sessionId}}\",\n  \"to\": \"{{to}}\",\n  \"templateName\": \"document_template\",\n  \"languageCode\": \"en\",\n  \"headerDocumentUrl\": \"{{baseUrl}}/uploads/ORG_ID/gallery/invoice.pdf\",\n  \"templateParams\": [\"Invoice.pdf\"]\n}"
+            },
+            "url": "{{baseUrl}}/api/project/v1/messages/send-template",
+            "description": "Template with DOCUMENT header using URL. headerDocumentUrl can be gallery URL, local path, or http(s):// URL. Server uploads automatically."
+          }
+        },
+        {
+          "name": "Send template – Examples (your templates)",
+          "item": [
+            {
+              "name": "whatsapp_saas (text header, no params)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  { "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" },
+                  { "key": "Content-Type", "value": "application/json", "type": "text" }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"sessionId\": \"{{sessionId}}\",\n  \"to\": \"{{to}}\",\n  \"templateName\": \"whatsapp_saas\",\n  \"languageCode\": \"en\"\n}"
+                },
+                "url": "{{baseUrl}}/api/project/v1/messages/send-template",
+                "description": "Header: Welcome. Body: Welcome to Vani Technologies Team ! Footer: Thank you !!"
+              }
+            },
+            {
+              "name": "2008 (image header + 1 body param)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  { "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" },
+                  { "key": "Content-Type", "value": "application/json", "type": "text" }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"sessionId\": \"{{sessionId}}\",\n  \"to\": \"{{to}}\",\n  \"templateName\": \"2008\",\n  \"languageCode\": \"en\",\n  \"header\": { \"type\": \"image\", \"id\": \"MEDIA_ID_FROM_UPLOAD\" },\n  \"templateParams\": [\"Name\"]\n}"
+                },
+                "url": "{{baseUrl}}/api/project/v1/messages/send-template",
+                "description": "Header: IMAGE. Body: Hi {{1}} - Congratulations trusted customer. Upload image via POST /api/media/upload, use mediaId in header.id."
+              }
+            },
+            {
+              "name": "32026 (image header + 1 body param)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  { "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" },
+                  { "key": "Content-Type", "value": "application/json", "type": "text" }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"sessionId\": \"{{sessionId}}\",\n  \"to\": \"{{to}}\",\n  \"templateName\": \"32026\",\n  \"languageCode\": \"en\",\n  \"header\": { \"type\": \"image\", \"id\": \"MEDIA_ID_FROM_UPLOAD\" },\n  \"templateParams\": [\"Name\"]\n}"
+                },
+                "url": "{{baseUrl}}/api/project/v1/messages/send-template",
+                "description": "Header: IMAGE. Body: Hello {{1}} - Don't Just Use WhatsApp... Book Demo. Footer + buttons."
+              }
+            },
+            {
+              "name": "test1 (body only, 1 param)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  { "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" },
+                  { "key": "Content-Type", "value": "application/json", "type": "text" }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"sessionId\": \"{{sessionId}}\",\n  \"to\": \"{{to}}\",\n  \"templateName\": \"test1\",\n  \"languageCode\": \"en\",\n  \"templateParams\": [\"Name\"]\n}"
+                },
+                "url": "{{baseUrl}}/api/project/v1/messages/send-template",
+                "description": "Body: Dear Customer {{1}} - follow-up call. Button: Call Now."
+              }
+            },
+            {
+              "name": "follow_up (image header + 1 body param)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  { "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" },
+                  { "key": "Content-Type", "value": "application/json", "type": "text" }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"sessionId\": \"{{sessionId}}\",\n  \"to\": \"{{to}}\",\n  \"templateName\": \"follow_up\",\n  \"languageCode\": \"en\",\n  \"header\": { \"type\": \"image\", \"id\": \"MEDIA_ID_FROM_UPLOAD\" },\n  \"templateParams\": [\"Name\"]\n}"
+                },
+                "url": "{{baseUrl}}/api/project/v1/messages/send-template",
+                "description": "Header: IMAGE. Body: Hello {{1}} - Meta API Reseller follow-up. Footer + buttons (Stop, Book Demo, Call now)."
+              }
+            },
+            {
+              "name": "shashikant_vani (image + 3 body params)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  { "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" },
+                  { "key": "Content-Type", "value": "application/json", "type": "text" }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"sessionId\": \"{{sessionId}}\",\n  \"to\": \"{{to}}\",\n  \"templateName\": \"shashikant_vani\",\n  \"languageCode\": \"en\",\n  \"header\": { \"type\": \"image\", \"id\": \"MEDIA_ID_FROM_UPLOAD\" },\n  \"templateParams\": [\"Name\", \"Saas Product\", \"https://vanitechnologies.in\"]\n}"
+                },
+                "url": "{{baseUrl}}/api/project/v1/messages/send-template",
+                "description": "Header: IMAGE. Body: Hi {{1}}, welcome to {{2}}. Your account... Log in here: {{3}}. Footer + buttons."
+              }
+            },
+            {
+              "name": "reminder (image header + 1 body param)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  { "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" },
+                  { "key": "Content-Type", "value": "application/json", "type": "text" }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"sessionId\": \"{{sessionId}}\",\n  \"to\": \"{{to}}\",\n  \"templateName\": \"reminder\",\n  \"languageCode\": \"en\",\n  \"header\": { \"type\": \"image\", \"id\": \"MEDIA_ID_FROM_UPLOAD\" },\n  \"templateParams\": [\"Name\"]\n}"
+                },
+                "url": "{{baseUrl}}/api/project/v1/messages/send-template",
+                "description": "Header: IMAGE. Body: Hello {{1}} - Meta API Reseller follow-up. Footer + buttons (Stop, Book Demo)."
+              }
+            },
+            {
+              "name": "followup (image header + 1 body param)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  { "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" },
+                  { "key": "Content-Type", "value": "application/json", "type": "text" }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"sessionId\": \"{{sessionId}}\",\n  \"to\": \"{{to}}\",\n  \"templateName\": \"followup\",\n  \"languageCode\": \"en\",\n  \"header\": { \"type\": \"image\", \"id\": \"MEDIA_ID_FROM_UPLOAD\" },\n  \"templateParams\": [\"Name\"]\n}"
+                },
+                "url": "{{baseUrl}}/api/project/v1/messages/send-template",
+                "description": "Header: IMAGE. Body: Dear {{1}} - Missed our call, book 1-on-1 meeting. Footer + Book Demo button."
+              }
+            },
+            {
+              "name": "greetingmessage (image header + 1 body param)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  { "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" },
+                  { "key": "Content-Type", "value": "application/json", "type": "text" }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"sessionId\": \"{{sessionId}}\",\n  \"to\": \"{{to}}\",\n  \"templateName\": \"greetingmessage\",\n  \"languageCode\": \"en\",\n  \"header\": { \"type\": \"image\", \"id\": \"MEDIA_ID_FROM_UPLOAD\" },\n  \"templateParams\": [\"Name\"]\n}"
+                },
+                "url": "{{baseUrl}}/api/project/v1/messages/send-template",
+                "description": "Header: IMAGE. Body: Dear Customer {{1}} - Welcome to Helicoptic Solutions. Footer + Book Demo button."
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Campaigns (Aisensy-style)",
+      "item": [
+        {
+          "name": "List campaigns",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/project/v1/campaigns",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "project", "v1", "campaigns"],
+              "query": [
+                { "key": "organizationId", "value": "" },
+                { "key": "phoneNumberId", "value": "" }
+              ]
+            },
+            "description": "Returns approved templates as campaigns. Use campaignName in campaign/send. Add ?type=broadcast for broadcast campaigns."
+          }
+        },
+        {
+          "name": "Create campaign (with recipients)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" },
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"organizationId\": \"YOUR_ORG_ID\",\n  \"sessionId\": \"{{sessionId}}\",\n  \"name\": \"Welcome Campaign\",\n  \"messageTemplate\": \"hello_world\",\n  \"templateLanguage\": \"en\",\n  \"recipients\": [\n    { \"phoneNumber\": \"{{to}}\", \"name\": \"John Doe\" },\n    { \"phoneNumber\": \"919876543211\", \"name\": \"Jane Smith\" }\n  ]\n}"
+            },
+            "url": "{{baseUrl}}/api/project/v1/campaigns",
+            "description": "Create broadcast campaign with contacts (recipients). Required: organizationId, sessionId, name, messageTemplate. Optional: templateLanguage, recipients (array of { phoneNumber, name }). If scheduledAt is omitted, campaign runs in 2 minutes."
+          }
+        },
+        {
+          "name": "Create campaign (with header image URL)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" },
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"organizationId\": \"YOUR_ORG_ID\",\n  \"sessionId\": \"{{sessionId}}\",\n  \"name\": \"Promo Campaign\",\n  \"messageTemplate\": \"promo_with_image\",\n  \"templateLanguage\": \"en\",\n  \"headerImageUrl\": \"{{baseUrl}}/uploads/YOUR_ORG_ID/gallery/banner.jpg\",\n  \"recipients\": [\n    { \"phoneNumber\": \"{{to}}\", \"name\": \"John Doe\" }\n  ]\n}"
+            },
+            "url": "{{baseUrl}}/api/project/v1/campaigns",
+            "description": "Campaign with IMAGE header using URL. headerImageUrl, headerVideoUrl, or headerDocumentUrl can be gallery URL, local path (/uploads/...), or http(s):// URL. Server uploads once and caches media ID for all recipients."
+          }
+        },
+        {
+          "name": "Create campaign (with header video/document URL)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" },
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"organizationId\": \"YOUR_ORG_ID\",\n  \"sessionId\": \"{{sessionId}}\",\n  \"name\": \"Video Campaign\",\n  \"messageTemplate\": \"video_template\",\n  \"templateLanguage\": \"en\",\n  \"headerVideoUrl\": \"https://example.com/demo.mp4\",\n  \"recipients\": [\n    { \"phoneNumber\": \"{{to}}\", \"name\": \"John Doe\" }\n  ]\n}"
+            },
+            "url": "{{baseUrl}}/api/project/v1/campaigns",
+            "description": "Campaign with VIDEO or DOCUMENT header using URL. Use headerVideoUrl for video templates, headerDocumentUrl for document templates. URLs are uploaded once and cached."
+          }
+        },
+        {
+          "name": "Create campaign (scheduled date/time)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" },
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"organizationId\": \"YOUR_ORG_ID\",\n  \"sessionId\": \"{{sessionId}}\",\n  \"name\": \"Scheduled Promo\",\n  \"messageTemplate\": \"hello_world\",\n  \"templateLanguage\": \"en\",\n  \"scheduledAt\": \"2025-02-15T09:00:00.000Z\",\n  \"recipients\": [\n    { \"phoneNumber\": \"{{to}}\", \"name\": \"John\" },\n    { \"phoneNumber\": \"919876543211\", \"name\": \"Jane\" }\n  ]\n}"
+            },
+            "url": "{{baseUrl}}/api/project/v1/campaigns",
+            "description": "Create campaign with date/time. scheduledAt: ISO 8601 (e.g. 2025-02-15T09:00:00.000Z). Future = scheduled; omit = runs in 2 min."
+          }
+        },
+        {
+          "name": "Get campaign details",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" }],
+            "url": "{{baseUrl}}/api/project/v1/campaigns/CAMPAIGN_ID?organizationId=ORG_ID",
+            "description": "Returns campaign by ID."
+          }
+        },
+        {
+          "name": "Execute campaign",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" },
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"organizationId\": \"ORG_ID\"\n}"
+            },
+            "url": "{{baseUrl}}/api/project/v1/campaigns/CAMPAIGN_ID/send",
+            "description": "Execute/send campaign to all recipients."
+          }
+        },
+        {
+          "name": "Campaign analytics",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" }],
+            "url": "{{baseUrl}}/api/project/v1/campaigns/CAMPAIGN_ID/analytics?organizationId=ORG_ID",
+            "description": "Returns sent/delivered/read/failed counts."
+          }
+        },
+        {
+          "name": "Campaign audience",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" }],
+            "url": "{{baseUrl}}/api/project/v1/campaigns/CAMPAIGN_ID/audience?organizationId=ORG_ID",
+            "description": "Returns recipients list."
+          }
+        },
+        {
+          "name": "Campaign send (single)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" },
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"campaignName\": \"hello_world\",\n  \"destination\": \"+{{to}}\",\n  \"userName\": \"John Doe\",\n  \"templateParams\": [],\n  \"source\": \"Website lead\",\n  \"tags\": [\"lead\"],\n  \"attributes\": { \"email\": \"john@example.com\" }\n}"
+            },
+            "url": "{{baseUrl}}/api/project/v1/campaign/send",
+            "description": "Aisensy-compatible: send template by campaign name, create/update contact, optional tags and attributes."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Inbox & Chats",
+      "item": [
+        {
+          "name": "List chats",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/project/v1/chats?sessionId={{sessionId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "project", "v1", "chats"],
+              "query": [
+                { "key": "sessionId", "value": "{{sessionId}}", "description": "Required. WhatsApp session ID from List sessions." }
+              ]
+            },
+            "description": "Returns list of chats (conversations) for one WhatsApp session.\n\n**Query Parameters:**\n- `sessionId` (required): Same as from **List sessions**.\n\n**Response:** Array of chat objects with:\n- `id`: Chat UUID\n- `sessionId`: WhatsApp session ID\n- `contactId`: Contact UUID\n- `contactName`: Display name\n- `contactNumber`: Phone number\n- `contactProfilePic`: Profile picture URL\n- `lastMessage`: Last message preview\n- `lastMessageTime`: Timestamp of last message\n- `unreadCount`: Number of unread messages\n- `isGroup`: Boolean indicating if it's a group chat\n\n**Use Case:** Build inbox/conversation list page. Use `sessionId` from List sessions endpoint to filter by WhatsApp number."
+          }
+        },
+        {
+          "name": "Get chats and messages by phone",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" },
+              { "key": "Accept", "value": "application/json", "type": "text" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/project/v1/chats/by-phone/{{to}}?limit=200",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "project", "v1", "chats", "by-phone", "{{to}}"],
+              "query": [{ "key": "limit", "value": "200", "description": "Optional; max messages per chat (default 200)" }]
+            },
+            "description": "Returns chat(s) for a phone number (digits with country code, no +) and recent messages. Use when you know the phone but not the `chatId`."
+          }
+        },
+        {
+          "name": "Messaging window (24h, official)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/project/v1/chats/messaging-window?chatId={{chatId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "project", "v1", "chats", "messaging-window"],
+              "query": [
+                { "key": "chatId", "value": "{{chatId}}", "description": "Required. Chat UUID from List chats." }
+              ]
+            },
+            "description": "Same 24-hour customer care window as /chat for **official** sessions: based on latest **inbound** message (`fromMe: false`). `withinWindow: true` means free-form sends are allowed; otherwise use templates. **Unofficial** sessions return `applies: false` and `withinWindow: true`.\n\nAlternatively, derive from `GET /messages?chatId=` by taking the newest inbound `timestamp` vs now (≤ 24h)."
+          }
+        },
+        {
+          "name": "List tags",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/project/v1/tags?organizationId={{organizationId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "project", "v1", "tags"],
+              "query": [
+                { "key": "organizationId", "value": "{{organizationId}}", "description": "Optional. If empty, uses API user's first organization." }
+              ]
+            },
+            "description": "Returns list of contact tags for the authenticated user. Use for inbox/contact filters (e.g. filter chats or contacts by tag).\n\n**Query Parameters:**\n- `organizationId` (optional): Scope to a specific organization. If omitted, returns tags for the user's first organization.\n\n**Response:** Array of tag objects with:\n- `id`: Tag UUID\n- `name`: Tag name\n- `organizationId`: Organization UUID\n- `createdAt`: Creation timestamp\n\n**Use Case:** Populate tag filter dropdown in inbox or contacts page; filter contacts via GET /api/project/v1/contacts?tags=tag1,tag2."
+          }
+        },
+        {
+          "name": "List messages for a chat",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/project/v1/messages?chatId={{chatId}}&limit=200",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "project", "v1", "messages"],
+              "query": [
+                { "key": "chatId", "value": "{{chatId}}", "description": "Required. Chat UUID from List chats endpoint" },
+                { "key": "limit", "value": "200", "description": "Optional. Max messages (default 200, max 500)." }
+              ]
+            },
+            "description": "Returns messages for a chat. Messages are filtered to exclude reaction-only and blank messages.\n\n**Query Parameters:**\n- `chatId` (required): Chat UUID from List chats\n- `limit` (optional): Default 200, max 500\n\n**Response:** Array of message objects with:\n- `id`: Message UUID\n- `chatId`: Chat UUID\n- `sessionId`: WhatsApp session ID\n- `senderNumber`: Sender phone number\n- `senderName`: Sender display name\n- `body`: Message text content\n- `type`: Message type (text, image, video, audio, document, location, contact, reaction)\n- `mediaUrl`: Media file URL (if applicable)\n- `fromMe`: Boolean indicating if message was sent by you\n- `status`: Message status (sent, delivered, read, failed)\n- `timestamp`: Message timestamp\n- `sentAt`, `deliveredAt`, `readAt`: Status timestamps\n- `whatsappMessageId`: WhatsApp message ID (wamid)\n\n**Use Case:** Display conversation thread when user opens a chat. Use `chatId` from List chats response."
+          }
+        },
+        {
+          "name": "Mark chat as read",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/project/v1/chats/read?chatId={{chatId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "project", "v1", "chats", "read"],
+              "query": [
+                { "key": "chatId", "value": "{{chatId}}", "description": "Required (or use JSON body on same URL with Content-Type: application/json)." }
+              ]
+            },
+            "description": "Same as opening a thread in /chat: sets `unreadCount` to 0 and marks inbound messages as read (excludes failed). Pass `chatId` as query `?chatId=...` or PATCH body `{\"chatId\":\"...\"}` to `/api/project/v1/chats/read`.\n\n**Response:** `{ \"success\": true, \"chatId\": \"...\", \"messagesMarkedRead\": N }`"
+          }
+        },
+        {
+          "name": "Mark chat as read (JSON body)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" },
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"chatId\": \"{{chatId}}\"\n}"
+            },
+            "url": "{{baseUrl}}/api/project/v1/chats/read",
+            "description": "Same as **Mark chat as read** but sends `chatId` in the JSON body (no query string)."
+          }
+        },
+        {
+          "name": "Get message details",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/project/v1/messages/MESSAGE_ID_OR_WAMID?sessionId={{sessionId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "project", "v1", "messages", "MESSAGE_ID_OR_WAMID"],
+              "query": [
+                { "key": "sessionId", "value": "{{sessionId}}", "description": "Optional. Scope to session for faster lookup" }
+              ]
+            },
+            "description": "Returns detailed information about a specific message by internal ID or WhatsApp message ID (wamid). AiSensy-style response format."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Contacts",
+      "item": [
+        {
+          "name": "List contacts",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/project/v1/contacts",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "project", "v1", "contacts"],
+              "query": [
+                { "key": "organizationId", "value": "" },
+                { "key": "tags", "value": "", "description": "Filter by tag (repeat for multiple)" }
+              ]
+            },
+            "description": "Returns contacts for the account."
+          }
+        },
+        {
+          "name": "Get contact by id",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" }],
+            "url": "{{baseUrl}}/api/project/v1/contacts/CONTACT_ID",
+            "description": "Returns a single contact by internal id."
+          }
+        },
+        {
+          "name": "Get contact by phone",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" }],
+            "url": "{{baseUrl}}/api/project/v1/contacts/by-phone/{{to}}",
+            "description": "Returns a contact by phone number."
+          }
+        },
+        {
+          "name": "Create or update contact",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" },
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"destination\": \"+{{to}}\",\n  \"userName\": \"John Doe\",\n  \"source\": \"Website\",\n  \"tags\": [\"lead\"],\n  \"attributes\": { \"email\": \"john@example.com\" }\n}"
+            },
+            "url": "{{baseUrl}}/api/project/v1/contacts",
+            "description": "Create or update contact by phone. Tags created if missing."
+          }
+        },
+        {
+          "name": "Update contact",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" },
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userName\": \"John Doe\",\n  \"source\": \"Website\",\n  \"tags\": [\"lead\"],\n  \"attributes\": { \"email\": \"john@example.com\" }\n}"
+            },
+            "url": "{{baseUrl}}/api/project/v1/contacts/CONTACT_ID",
+            "description": "Update contact by id."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Canned messages",
+      "item": [
+        {
+          "name": "List canned messages",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/project/v1/canned-messages",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "project", "v1", "canned-messages"],
+              "query": [
+                { "key": "organizationId", "value": "{{organizationId}}", "description": "Optional. Omit to use the first organization for this API key.", "disabled": true }
+              ]
+            },
+            "description": "Returns canned message templates — same records as the /chat canned picker. Org is inferred from the API key (first org). Enable the organizationId query param only if you need another org.\n\n**Response fields:** id, organizationId, userId, name, type (TEXT | IMAGE), text, imageUrl, fileName, favourite, createdAt."
+          }
+        },
+        {
+          "name": "Create canned message",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" },
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Quick thanks\",\n  \"type\": \"TEXT\",\n  \"text\": \"Thank you for your message!\",\n  \"favourite\": false\n}"
+            },
+            "url": "{{baseUrl}}/api/project/v1/canned-messages",
+            "description": "Create a canned template. Org comes from the API key (first org) unless you add organizationId to the body. For IMAGE type, set type to IMAGE and include imageUrl (e.g. /uploads/ORG_ID/gallery/file.jpg) and optional fileName."
+          }
+        },
+        {
+          "name": "Get canned message by id",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/project/v1/canned-messages/{{cannedMessageId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "project", "v1", "canned-messages", "{{cannedMessageId}}"],
+              "query": [
+                { "key": "organizationId", "value": "{{organizationId}}", "description": "Optional. Omit: server finds the org that owns this id for your key.", "disabled": true }
+              ]
+            },
+            "description": "Fetch one canned message by UUID. No organizationId required — resolved from the API key."
+          }
+        },
+        {
+          "name": "Update canned message",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" },
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"text\": \"Updated text\",\n  \"favourite\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/project/v1/canned-messages/{{cannedMessageId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "project", "v1", "canned-messages", "{{cannedMessageId}}"],
+              "query": [
+                { "key": "organizationId", "value": "{{organizationId}}", "description": "Optional. Omit: org inferred from API key.", "disabled": true }
+              ]
+            },
+            "description": "Partial update: name, type, text, imageUrl, fileName, favourite. Organization inferred from API key unless you enable organizationId."
+          }
+        },
+        {
+          "name": "Delete canned message",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/project/v1/canned-messages/{{cannedMessageId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "project", "v1", "canned-messages", "{{cannedMessageId}}"],
+              "query": [
+                { "key": "organizationId", "value": "{{organizationId}}", "description": "Optional. Omit: org inferred from API key.", "disabled": true }
+              ]
+            },
+            "description": "Deletes the canned message. Organization inferred from API key by default."
+          }
+        },
+        {
+          "name": "Get canned message image file",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/project/v1/canned-messages/media?path={{cannedMediaPath}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "project", "v1", "canned-messages", "media"],
+              "query": [
+                { "key": "path", "value": "{{cannedMediaPath}}", "description": "Required. e.g. /uploads/ORG_ID/gallery/photo.jpg — ORG_ID must be an org this API key can access." },
+                { "key": "organizationId", "value": "{{organizationId}}", "description": "Optional. If set, must match ORG_ID in path.", "disabled": true }
+              ]
+            },
+            "description": "Streams image bytes from panel storage. Org is taken from the first folder in path (/uploads/ORG_ID/...); API key must have access to that org."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Templates",
+      "item": [
+        {
+          "name": "Create Template - TEXT",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" },
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"welcome_message\",\n  \"category\": \"MARKETING\",\n  \"language\": \"en\",\n  \"bodyText\": \"Hello {{1}}, welcome to our service!\",\n  \"templateType\": \"official\",\n  \"sessionId\": \"{{sessionId}}\"\n}"
+            },
+            "url": "{{baseUrl}}/api/templates",
+            "description": "Creates a simple TEXT template. Use sampleValues: {\"1\": \"John\"} for variable examples. Categories: MARKETING, UTILITY, AUTHENTICATION.\n\n⚠️ IMPORTANT: sessionId is REQUIRED when multiple WhatsApp Business numbers are connected. If omitted with multiple numbers, API returns 400 with available sessions list. Use sessionId from List sessions endpoint (same as send-text API)."
+          }
+        },
+        {
+          "name": "Create Template - TEXT with footer",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" },
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"order_update\",\n  \"category\": \"UTILITY\",\n  \"language\": \"en\",\n  \"bodyText\": \"Hi {{1}}, your order {{2}} has been shipped.\",\n  \"footerText\": \"Thank you for shopping with us\",\n  \"templateType\": \"official\",\n  \"sessionId\": \"{{sessionId}}\"\n}"
+            },
+            "url": "{{baseUrl}}/api/templates",
+            "description": "TEXT template with footer. Variables: {{1}}, {{2}}.\n\n⚠️ IMPORTANT: sessionId is REQUIRED when multiple WhatsApp Business numbers are connected. If omitted with multiple numbers, API returns 400 with available sessions list. Use sessionId from List sessions endpoint."
+          }
+        },
+        {
+          "name": "Create Template - Quick Reply buttons",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" },
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"feedback_request\",\n  \"category\": \"MARKETING\",\n  \"language\": \"en\",\n  \"bodyText\": \"How was your experience?\",\n  \"interactiveAction\": \"QUICK_REPLY\",\n  \"quickReplies\": [\"Great!\", \"Good\", \"Needs improvement\"],\n  \"templateType\": \"official\",\n  \"sessionId\": \"{{sessionId}}\"\n}"
+            },
+            "url": "{{baseUrl}}/api/templates",
+            "description": "Template with up to 3 quick reply buttons.\n\n⚠️ IMPORTANT: sessionId is REQUIRED when multiple WhatsApp Business numbers are connected. If omitted with multiple numbers, API returns 400 with available sessions list. Use sessionId from List sessions endpoint."
+          }
+        },
+        {
+          "name": "Create Template - CTA URL button",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" },
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"view_catalog\",\n  \"category\": \"MARKETING\",\n  \"language\": \"en\",\n  \"bodyText\": \"Browse our latest products\",\n  \"interactiveAction\": \"CALL_TO_ACTION\",\n  \"urlButtons\": [{\n    \"text\": \"View Catalog\",\n    \"url\": \"https://example.com/catalog\"\n  }],\n  \"templateType\": \"official\",\n  \"sessionId\": \"{{sessionId}}\"\n}"
+            },
+            "url": "{{baseUrl}}/api/templates",
+            "description": "Template with URL call-to-action button.\n\n⚠️ IMPORTANT: sessionId is REQUIRED when multiple WhatsApp Business numbers are connected. If omitted with multiple numbers, API returns 400 with available sessions list. Use sessionId from List sessions endpoint."
+          }
+        },
+        {
+          "name": "Create Template - IMAGE header",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" },
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"promo_with_image\",\n  \"category\": \"MARKETING\",\n  \"language\": \"en\",\n  \"mediaUrl\": \"https://example.com/promo-banner.jpg\",\n  \"bodyText\": \"Check out our special offer!\",\n  \"templateType\": \"official\",\n  \"sessionId\": \"{{sessionId}}\"\n}"
+            },
+            "url": "{{baseUrl}}/api/templates",
+            "description": "Template with IMAGE header. mediaUrl must be publicly accessible. Alternatively upload media first and use headerImageId.\n\n⚠️ IMPORTANT: sessionId is REQUIRED when multiple WhatsApp Business numbers are connected. If omitted with multiple numbers, API returns 400 with available sessions list. Use sessionId from List sessions endpoint."
+          }
+        },
+        {
+          "name": "Create Template - Multiple Sessions (sessionId required)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" },
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"multi_session_template\",\n  \"category\": \"UTILITY\",\n  \"language\": \"en\",\n  \"bodyText\": \"Hello {{1}}, this is a test message.\",\n  \"templateType\": \"official\",\n  \"sessionId\": \"{{sessionId}}\"\n}"
+            },
+            "url": "{{baseUrl}}/api/templates",
+            "description": "Example showing sessionId parameter. REQUIRED when multiple WhatsApp Business numbers are connected. If omitted, API returns 400 error with 'availableSessions' array listing all connected sessions. Get sessionId from List sessions endpoint (same as send-text API). If only one session is connected, sessionId is optional (first session used automatically)."
+          }
+        },
+        {
+          "name": "Delete template",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" }],
+            "url": "{{baseUrl}}/api/project/v1/templates/TEMPLATE_ID",
+            "description": "Removes template from local sync."
+          }
+        },
+        {
+          "name": "Get template by id",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" }],
+            "url": "{{baseUrl}}/api/project/v1/templates/TEMPLATE_ID",
+            "description": "Returns a single message template by internal id."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Webhooks",
+      "item": [
+        {
+          "name": "List webhooks",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/project/v1/webhooks",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "project", "v1", "webhooks"],
+              "query": [{ "key": "organizationId", "value": "" }]
+            },
+            "description": "Returns webhook configurations for the project."
+          }
+        },
+        {
+          "name": "Get webhook details",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" }],
+            "url": "{{baseUrl}}/api/project/v1/webhooks/WEBHOOK_ID",
+            "description": "Returns a single webhook by id."
+          }
+        },
+        {
+          "name": "Delete webhook",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" }],
+            "url": "{{baseUrl}}/api/project/v1/webhooks/WEBHOOK_ID",
+            "description": "Deletes a webhook subscription."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Media",
+      "item": [
+        {
+          "name": "Stream media content (WhatsApp Graph id)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" },
+              { "key": "Accept", "value": "*/*", "type": "text" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/project/v1/media/content?sessionId={{sessionId}}&mediaId={{mediaId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "project", "v1", "media", "content"],
+              "query": [
+                { "key": "sessionId", "value": "{{sessionId}}", "description": "Required — WhatsApp session id" },
+                { "key": "mediaId", "value": "{{mediaId}}", "description": "Required — Graph media id (same as in message.mediaUrl when hosted on Meta)" }
+              ]
+            },
+            "description": "Returns raw bytes for WhatsApp Cloud API media. Same URL pattern as `mediaUrlAbsolute` on messages when media is stored as a Graph id. Save response to a file in Postman (Send and Download)."
+          }
+        },
+        {
+          "name": "Get media by id",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/project/v1/media/MEDIA_ID?sessionId={{sessionId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "project", "v1", "media", "MEDIA_ID"],
+              "query": [
+                { "key": "sessionId", "value": "{{sessionId}}", "description": "Required" },
+                { "key": "organizationId", "value": "" }
+              ]
+            },
+            "description": "Returns media URL/metadata by media id. sessionId query required."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Gallery",
+      "item": [
+        {
+          "name": "Upload media to gallery",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "file", "type": "file", "src": [], "description": "Image, video, or document file" }
+              ]
+            },
+            "url": "{{baseUrl}}/api/gallery/upload",
+            "description": "Upload media file to organization gallery. Returns { id, url, name, type, size, uploadedAt }. Use url in headerImageUrl, headerVideoUrl, or headerDocumentUrl for templates/campaigns."
+          }
+        },
+        {
+          "name": "List gallery files",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/gallery",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "gallery"],
+              "query": [
+                { "key": "type", "value": "", "description": "Filter by type: image, video, document, audio (optional)" }
+              ]
+            },
+            "description": "List all media files in organization gallery. Returns array of { id, url, name, type, size, uploadedAt }. Use url in template headers."
+          }
+        },
+        {
+          "name": "Get gallery file by id",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/gallery/FILE_ID",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "gallery", "FILE_ID"]
+            },
+            "description": "Get single gallery file details by id. Returns { id, url, name, type, size, uploadedAt }."
+          }
+        },
+        {
+          "name": "Delete gallery file",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "X-API-Key", "value": "{{apiKey}}", "type": "text" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/gallery/FILE_ID",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "gallery", "FILE_ID"]
+            },
+            "description": "Delete a file from gallery by id."
+          }
+        }
+      ]
+    },
+    {
+      "name": "CRM",
+      "item": [
+        {
+          "name": "Register user",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json", "type": "text" },
+              { "key": "Accept", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@example.com\",\n  \"tenant_id\": \"tenant_123\",\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"organizationName\": \"Acme Inc\",\n  \"phone\": \"9876543210\"\n}"
+            },
+            "url": "{{baseUrl}}/api/crm/register",
+            "description": "Register or update a user from external CRM. Returns user, apiKey, and subscription. If email exists: updates user details and returns same API key and subscription (no reassign). Stores tenant_id on user. **tenant_id** is optional; mismatch with an existing user returns **400 TENANT_MISMATCH**. No API key required."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Licensor / portal (PRODUCTION_KEY)",
+      "description": "Whitelabel installs: same value as server env `PRODUCTION_KEY`. **Not** a tenant API key. Use `X-Production-Key` or `Authorization: Bearer {{productionKey}}`.",
+      "item": [
+        {
+          "name": "Deploy — get update status",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "X-Production-Key", "value": "{{productionKey}}", "type": "text" },
+              { "key": "Accept", "value": "application/json", "type": "text" }
+            ],
+            "url": "{{baseUrl}}/api/updates/status-remote",
+            "description": "Panel git/build status for remote portal (same shape as admin **GET /api/updates/status**)."
+          }
+        },
+        {
+          "name": "Deploy — trigger sync",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-Production-Key", "value": "{{productionKey}}", "type": "text" },
+              { "key": "Content-Type", "value": "application/json", "type": "text" },
+              { "key": "Accept", "value": "application/json", "type": "text" }
+            ],
+            "body": { "mode": "raw", "raw": "{}" },
+            "url": "{{baseUrl}}/api/updates/sync-remote",
+            "description": "Runs pull/build/restart (same as admin sync). Empty JSON body `{}` is fine."
+          }
+        },
+        {
+          "name": "Onboarding summary",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "X-Production-Key", "value": "{{productionKey}}", "type": "text" },
+              { "key": "Accept", "value": "application/json", "type": "text" }
+            ],
+            "url": "{{baseUrl}}/api/remote/onboarding-summary",
+            "description": "Outstanding onboarding totals, limits, admin URLs (`admin_onboarding_fees_url`, `licensor_access_url`)."
+          }
+        },
+        {
+          "name": "Onboarding fee lines",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "X-Production-Key", "value": "{{productionKey}}", "type": "text" },
+              { "key": "Accept", "value": "application/json", "type": "text" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/remote/onboarding-fees?limit=200&offset=0&status=pending",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "remote", "onboarding-fees"],
+              "query": [
+                { "key": "limit", "value": "200", "description": "Max 500" },
+                { "key": "offset", "value": "0" },
+                { "key": "status", "value": "pending", "description": "omit or all | pending | paid | failed | waived | cancelled" }
+              ]
+            },
+            "description": "Paginated onboarding charges for the licensor dashboard."
+          }
+        },
+        {
+          "name": "Admin login (session cookie)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-Production-Key", "value": "{{productionKey}}", "type": "text" },
+              { "key": "Content-Type", "value": "application/json", "type": "text" },
+              { "key": "Accept", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"redirect\": \"/admin/onboarding-fees\"\n}"
+            },
+            "url": "{{baseUrl}}/api/remote/admin-login",
+            "description": "Creates a session as SaaS owner. **In Postman:** turn off **automatically follow redirects** and inspect `Set-Cookie`. In the browser, use `/licensor-access` or fetch with `credentials: 'include'` from the **same origin**."
+          }
+        },
+        {
+          "name": "Production key as Bearer (example)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{productionKey}}", "type": "text" },
+              { "key": "Accept", "value": "application/json", "type": "text" }
+            ],
+            "url": "{{baseUrl}}/api/updates/status-remote",
+            "description": "Same as **Deploy — get update status** using `Authorization: Bearer` instead of `X-Production-Key`."
+          }
+        }
+      ]
+    }
+  ]
+}
