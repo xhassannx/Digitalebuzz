@@ -2016,6 +2016,8 @@ export function registerWhatsAppBusinessRoutes(app: Express) {
 
       const phoneData = await phoneResponse.json();
       const verificationStatus = phoneData.code_verification_status || 'UNKNOWN';
+      const isVerified = verificationStatus === 'VERIFIED';
+      const canSendMessages = isVerified;
 
       // Update session if it exists
       const sessions = await storage.getSessionsByUser(userId);
@@ -2034,10 +2036,27 @@ export function registerWhatsAppBusinessRoutes(app: Express) {
           },
         });
         console.log(`[Refresh Status] Updated session ${session.sessionId} with status: ${verificationStatus}`);
-      }
 
-      const isVerified = verificationStatus === 'VERIFIED';
-      const canSendMessages = isVerified;
+        // Also ensure WABA is subscribed to webhooks
+        const wabaId = session.deviceInfo?.wabaId;
+        if (wabaId) {
+          try {
+            await fetch(`${FACEBOOK_GRAPH_API_BASE}/${wabaId}/subscribed_apps`, {
+              method: 'POST',
+              headers: {
+                Authorization: `Bearer ${accessToken}`,
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                subscribed_fields: ['messages', 'message_template_status_update']
+              }),
+            });
+            console.log(`[Refresh Status] Re-subscribed WABA ${wabaId} to webhooks`);
+          } catch (e: any) {
+            console.warn(`[Refresh Status] Webhook subscribe error:`, e.message);
+          }
+        }
+      }
 
       res.json({
         success: true,
@@ -2066,6 +2085,51 @@ export function registerWhatsAppBusinessRoutes(app: Express) {
         message: error.message || "Failed to refresh phone number status",
         error: error.message 
       });
+    }
+  });
+
+  // Resubscribe all user WABAs to Meta Webhook (ensures incoming messages flow to digitalebuzz webhook)
+  app.post("/api/integrations/whatsapp-business/resubscribe-webhooks", isAuthenticated, resolveOrganizationContext, async (req: any, res) => {
+    try {
+      const userId = getUserId(req);
+      const organizationId = req.context?.organizationId;
+      const integration = await storage.getIntegrationByName("whatsapp-business", userId, organizationId);
+      if (!integration || integration.status !== "connected" || !integration.credentials) {
+        return res.status(404).json({ message: "WhatsApp Business integration not connected" });
+      }
+      const credentials = integration.credentials as any;
+      const accessToken = credentials.access_token;
+      const sessions = await storage.getSessionsByUser(userId);
+      const officialSessions = sessions.filter(s => s.connectionType === 'official' && !(s as any).deletedAt);
+
+      const wabaIds = new Set<string>();
+      for (const s of officialSessions) {
+        if (s.deviceInfo?.wabaId) wabaIds.add(String(s.deviceInfo.wabaId));
+      }
+
+      const results = [];
+      for (const wabaId of wabaIds) {
+        try {
+          const subRes = await fetch(`${FACEBOOK_GRAPH_API_BASE}/${wabaId}/subscribed_apps`, {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              subscribed_fields: ['messages', 'message_template_status_update']
+            }),
+          });
+          const subData = await subRes.json().catch(() => ({}));
+          results.push({ wabaId, success: subRes.ok, data: subData });
+        } catch (err: any) {
+          results.push({ wabaId, success: false, error: err.message });
+        }
+      }
+
+      res.json({ success: true, count: results.length, results });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
     }
   });
 

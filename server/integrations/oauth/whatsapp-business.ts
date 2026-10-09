@@ -465,8 +465,7 @@ export function registerWhatsAppBusinessOAuthRoutes(app: Express) {
 
       // After OAuth callback, perform CRITICAL Embedded Signup post-flow steps
       // These steps are MANDATORY to prevent PENDING status
-      try {
-        console.log(`[WhatsApp OAuth] ðŸ”„ Performing Embedded Signup post-flow steps (sync=v3)...`);
+      console.log(`[WhatsApp OAuth] 🔄 Performing Embedded Signup post-flow steps (sync=v3)...`);
         
         // Fetch all available phone numbers and WABAs
         const FACEBOOK_GRAPH_API_VERSION = "v23.0";
@@ -772,6 +771,150 @@ export function registerWhatsAppBusinessOAuthRoutes(app: Express) {
         for (const wabaId of wabaIdsFromToken) {
           uniqueWabaIds.add(wabaId);
         }
+
+        // =====================================================================
+        // OPTION 1: FAST-PATH SYNCHRONOUS COMPLETION (under 2-3 seconds)
+        // Immediately save sessions, immediately subscribe WABA to webhook, and send success response.
+        // All slower registration, validation, and post-onboarding audits run in background via setImmediate.
+        // =====================================================================
+
+        if (deferMultiLinePicker) {
+          postOAuthPhonePickIntegrationId = newIntegration.id;
+          const pending = {
+            phones: eligiblePhones.map(summarizePhoneForPending),
+            createdAt: Date.now(),
+          };
+          await storage.updateIntegration(newIntegration.id, oauthState.userId, {
+            config: mergePendingPhoneSelectionIntoConfig(
+              { userId: userInfo.id, name: userInfo.name },
+              pending
+            ),
+          });
+          console.log(
+            `[WhatsApp OAuth] ⚡ Fast: ${eligiblePhones.length} phone lines — pending phone pick saved.`
+          );
+        } else if (phonesForAutoSession.length > 0) {
+          console.log(
+            `[WhatsApp OAuth] ⚡ Fast: Automatically adding ${phonesForAutoSession.length} phone number(s) to official session...`
+          );
+          await createOfficialSessionsForOAuthPhones({
+            userId: oauthState.userId,
+            integrationId: newIntegration.id,
+            accessToken,
+            phones: phonesForAutoSession,
+          });
+          console.log(
+            `[WhatsApp OAuth] ✅ Fast: Sessions created/updated for ${phonesForAutoSession.length} phone(s)!`
+          );
+        }
+
+        // Fast parallel subscribe to WABAs so webhooks start receiving incoming messages immediately
+        const tokenForFastSubscription = accessToken;
+        if (uniqueWabaIds.size > 0 && !skipMetaGraphSignupForCreditLine) {
+          console.log(`[WhatsApp OAuth] ⚡ Fast: Subscribing app to ${uniqueWabaIds.size} WABA(s)...`);
+          await Promise.allSettled(
+            Array.from(uniqueWabaIds).map(async (wabaId) => {
+              try {
+                await fetch(
+                  `${FACEBOOK_GRAPH_API_BASE}/${wabaId}/subscribed_apps`,
+                  {
+                    method: 'POST',
+                    headers: {
+                      'Authorization': `Bearer ${tokenForFastSubscription}`,
+                      'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                      subscribed_fields: ['messages', 'message_template_status_update']
+                    }),
+                  }
+                );
+                if (WEBHOOK_URL) {
+                  const webhookVerifyToken = webhookVerifyTokenForMetaOverride();
+                  await fetch(
+                    `${FACEBOOK_GRAPH_API_BASE}/${wabaId}/subscribed_apps`,
+                    {
+                      method: 'POST',
+                      headers: {
+                        'Authorization': `Bearer ${tokenForFastSubscription}`,
+                        'Content-Type': 'application/json',
+                      },
+                      body: JSON.stringify({
+                        override_callback_uri: WEBHOOK_URL,
+                        verify_token: webhookVerifyToken
+                      }),
+                    }
+                  );
+                }
+              } catch (subErr: any) {
+                console.warn(`[WhatsApp OAuth] Fast subscribe error for WABA ${wabaId}:`, subErr.message);
+              }
+            })
+          );
+          console.log(`[WhatsApp OAuth] ✅ Fast: App subscribed to WABAs for webhook reception!`);
+        }
+
+        // Clean up OAuth state after delay
+        setTimeout(() => {
+          storage.deleteOAuthState(state as string).catch(() => {});
+        }, 15 * 60 * 1000);
+
+        const flushEmbeddedSignupScript = `
+              (function() {
+                try {
+                  var key = 'wa_embedded_signup_pending';
+                  var raw = localStorage.getItem(key);
+                  if (!raw) return;
+                  localStorage.removeItem(key);
+                  fetch('/api/integrations/whatsapp-business/oauth/embedded-signup-session', {
+                    method: 'POST',
+                    credentials: 'include',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: raw
+                  }).then(function() {
+                    return fetch('/api/whatsapp/complete-onboarding', {
+                      method: 'POST',
+                      credentials: 'include',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: raw
+                    });
+                  }).catch(function(){});
+                } catch (e) {}
+              })();
+        `;
+        const phonePickPayload = postOAuthPhonePickIntegrationId
+          ? `window.opener.postMessage({ type: 'WHATSAPP_BUSINESS_PHONE_PICK_REQUIRED', integrationId: ${JSON.stringify(postOAuthPhonePickIntegrationId)} }, '*');`
+          : `window.opener.postMessage({ type: 'WHATSAPP_BUSINESS_OAUTH_SUCCESS', integration: 'whatsapp-business' }, '*');`;
+        const successHtml = `
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <title>WhatsApp Business OAuth Success</title>
+          </head>
+          <body>
+            <script>
+              ${flushEmbeddedSignupScript}
+              if (window.opener) {
+                ${phonePickPayload}
+                setTimeout(() => {
+                  window.close();
+                  window.opener.location.href = '${BASE_URL}/integrations';
+                }, 500);
+              } else {
+                window.location.href = '${BASE_URL}/integrations';
+              }
+            </script>
+            <p>Connection successful! Redirecting…</p>
+          </body>
+          </html>
+        `;
+
+        // Send fast success response right now to avoid 504 Gateway Time-out
+        res.send(successHtml);
+
+        // Run remaining background verification, registration checks, and audits asynchronously
+        setImmediate(async () => {
+          try {
+            console.log(`[WhatsApp OAuth] 🔄 Running background post-onboarding tasks...`);
         
         console.log(`[WhatsApp OAuth] ðŸ”„ Found ${uniqueWabaIds.size} unique WABA(s) to subscribe`);
         
@@ -1838,16 +1981,7 @@ export function registerWhatsAppBusinessOAuthRoutes(app: Express) {
           });
         } else if (phonesForAutoSession.length > 0) {
           console.log(
-            `[WhatsApp OAuth] ðŸ”„ Automatically adding ${phonesForAutoSession.length} phone number(s) (activation steps already complete)...`
-          );
-          await createOfficialSessionsForOAuthPhones({
-            userId: oauthState.userId,
-            integrationId: newIntegration.id,
-            accessToken,
-            phones: phonesForAutoSession,
-          });
-          console.log(
-            `[WhatsApp OAuth] âœ… Successfully processed ${phonesForAutoSession.length} phone number(s) for sessions`
+            `[WhatsApp OAuth] Phones were already fast-added to sessions on callback response.`
           );
         } else {
           console.warn(
@@ -1878,60 +2012,8 @@ export function registerWhatsAppBusinessOAuthRoutes(app: Express) {
       } catch (onboardErr: any) {
         console.warn("[WhatsApp OAuth] Post-onboarding checklist failed:", onboardErr.message);
       }
-
-      const onboardingJson = JSON.stringify(onboardingForClient);
-
-      const flushEmbeddedSignupScript = `
-            (function() {
-              try {
-                var key = 'wa_embedded_signup_pending';
-                var raw = localStorage.getItem(key);
-                if (!raw) return;
-                localStorage.removeItem(key);
-                fetch('/api/integrations/whatsapp-business/oauth/embedded-signup-session', {
-                  method: 'POST',
-                  credentials: 'include',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: raw
-                }).then(function() {
-                  return fetch('/api/whatsapp/complete-onboarding', {
-                    method: 'POST',
-                    credentials: 'include',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: raw
-                  });
-                }).catch(function(){});
-              } catch (e) {}
-            })();
-      `;
-      // Return HTML page that closes popup and redirects to /connect page
-      const phonePickPayload = postOAuthPhonePickIntegrationId
-        ? `window.opener.postMessage({ type: 'WHATSAPP_BUSINESS_PHONE_PICK_REQUIRED', integrationId: ${JSON.stringify(postOAuthPhonePickIntegrationId)}, onboarding: ${onboardingJson} }, '*');`
-        : `window.opener.postMessage({ type: 'WHATSAPP_BUSINESS_OAUTH_SUCCESS', integration: 'whatsapp-business', onboarding: ${onboardingJson} }, '*');`;
-      const successHtml = `
-        <!DOCTYPE html>
-        <html>
-        <head>
-          <title>WhatsApp Business OAuth Success</title>
-        </head>
-        <body>
-          <script>
-            ${flushEmbeddedSignupScript}
-            if (window.opener) {
-              ${phonePickPayload}
-              setTimeout(() => {
-                window.close();
-                window.opener.location.href = '${BASE_URL}/integrations';
-              }, 500);
-            } else {
-              window.location.href = '${BASE_URL}/integrations';
-            }
-          </script>
-          <p>Connection successful! Redirectingâ€¦</p>
-        </body>
-        </html>
-      `;
-      res.send(successHtml);
+    });
+    return;
     } catch (error: any) {
       console.error("Error in WhatsApp Business OAuth callback:", error);
       

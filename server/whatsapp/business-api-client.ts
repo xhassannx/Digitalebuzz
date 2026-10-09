@@ -220,38 +220,19 @@ export class WhatsAppBusinessAPIManager {
     sessionId: string,
     credentials: BusinessAPICredentials
   ): Promise<void> {
-    // If credentials are already in memory (from restoreSession), verify they match
-    if (this.credentials.has(sessionId)) {
-      const existing = this.credentials.get(sessionId);
-      if (existing?.accessToken === credentials.accessToken && existing?.phoneNumberId === credentials.phoneNumberId) {
-        console.log(`[Create Session] Session already exists with same credentials, skipping credential storage`);
-        // Still verify credentials and continue with session setup
-        const isValid = await this.verifyCredentials(credentials);
-        if (!isValid) {
-          throw new Error('Invalid WhatsApp Business API credentials');
-        }
-        // Continue with phone info and session update (skip credential storage)
-      } else {
-        throw new Error('Session already exists with different credentials');
-      }
-    } else {
-      // Store credentials FIRST before verification to avoid race conditions
-      // This ensures credentials are available even if verification takes time
-      this.credentials.set(sessionId, credentials);
-      console.log(`[Create Session] Credentials stored before verification`);
-      
-      try {
-        const isValid = await this.verifyCredentials(credentials);
-        if (!isValid) {
-          // Remove credentials if verification fails
-          this.credentials.delete(sessionId);
-          throw new Error('Invalid WhatsApp Business API credentials');
-        }
-      } catch (verifyError) {
-        // Remove credentials if verification fails
+    // If credentials are already in memory, allow updating when token/phone changes
+    this.credentials.set(sessionId, credentials);
+    console.log(`[Create Session] Credentials stored/updated for session ${sessionId}`);
+
+    try {
+      const isValid = await this.verifyCredentials(credentials);
+      if (!isValid) {
         this.credentials.delete(sessionId);
-        throw verifyError;
+        throw new Error('Invalid WhatsApp Business API credentials');
       }
+    } catch (verifyError) {
+      this.credentials.delete(sessionId);
+      throw verifyError;
     }
 
     try {

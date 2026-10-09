@@ -223,17 +223,32 @@ export class MongoStorage implements IStorage {
   }
 
   async getOfficialSessionsForWebhook(phoneNumberId: string, displayPhoneNumber?: string) {
+    const idVariants: any[] = [phoneNumberId, String(phoneNumberId)];
+    const num = Number(phoneNumberId);
+    if (!isNaN(num)) idVariants.push(num);
+
     const query: any = {
       connectionType: "official",
-      "deviceInfo.apiPhoneNumberId": phoneNumberId,
+      $or: [
+        { "deviceInfo.apiPhoneNumberId": { $in: idVariants } },
+        { "deviceInfo.phoneNumberId": { $in: idVariants } },
+      ],
     };
     const docs = await WhatsappSessionModel.find(query).lean();
     if (docs.length > 0) return docs.map((d) => ({ ...d, id: d._id }));
 
     if (displayPhoneNumber) {
+      const cleanDigits = displayPhoneNumber.replace(/\D/g, "");
       const fallbackDocs = await WhatsappSessionModel.find({
         connectionType: "official",
-        "deviceInfo.displayPhoneNumber": displayPhoneNumber,
+        $or: [
+          { "deviceInfo.displayPhoneNumber": displayPhoneNumber },
+          { "deviceInfo.phoneNumber": displayPhoneNumber },
+          ...(cleanDigits ? [
+            { "deviceInfo.displayPhoneNumber": { $regex: cleanDigits.slice(-10) } },
+            { "deviceInfo.phoneNumber": { $regex: cleanDigits.slice(-10) } },
+          ] : []),
+        ],
       }).lean();
       return fallbackDocs.map((d) => ({ ...d, id: d._id }));
     }
@@ -2644,7 +2659,7 @@ export class MongoStorage implements IStorage {
     } else if (userId) {
       filter.$and = [{ $or: [{ userId }, { user_id: userId }] }];
     }
-    const doc = await IntegrationModel.findOne(filter).lean();
+    const doc = await IntegrationModel.findOne(filter).sort({ updatedAt: -1, createdAt: -1 }).lean();
     if (!doc) return undefined;
     return {
       ...doc,

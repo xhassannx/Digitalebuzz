@@ -238,6 +238,38 @@ app.use((req, res, next) => {
         console.log("[DB] Pool ready — starting Plans + schedulers");
       }
 
+      // Pre-warm and restore official WhatsApp Business sessions
+      try {
+        const { storage } = await import("./storage");
+        const { businessAPIManager } = await import("./whatsapp/business-api-client");
+        const allSessions = await storage.getAllSessions();
+        const officialSessions = allSessions.filter(
+          (s) => s.connectionType === "official" && !(s as any).deletedAt
+        );
+        console.log(`[Startup] Pre-warming ${officialSessions.length} official WhatsApp session(s)...`);
+        for (const s of officialSessions) {
+          const phoneId = s.deviceInfo?.apiPhoneNumberId || s.deviceInfo?.phoneNumberId;
+          if (!phoneId) continue;
+          let integration = null;
+          if (s.deviceInfo?.integrationId) {
+            integration = await storage.getIntegration(s.deviceInfo.integrationId, s.userId);
+          }
+          if (!integration) {
+            integration = await storage.getIntegrationByName("whatsapp-business", s.userId, s.organizationId || undefined);
+          }
+          if (integration?.status === "connected" && (integration.credentials as any)?.access_token) {
+            await businessAPIManager.restoreSession(s.sessionId, {
+              phoneNumberId: String(phoneId),
+              accessToken: (integration.credentials as any).access_token,
+              businessAccountId: (integration.credentials as any).business_account_id || s.deviceInfo?.businessAccountId,
+            });
+            console.log(`[Startup] ✅ Pre-warmed official session ${s.sessionId} (${phoneId})`);
+          }
+        }
+      } catch (warmupErr: any) {
+        console.warn(`[Startup] Official sessions pre-warm error:`, warmupErr.message);
+      }
+
       try {
         await ensureSystemFreePlan();
       } catch (error) {
